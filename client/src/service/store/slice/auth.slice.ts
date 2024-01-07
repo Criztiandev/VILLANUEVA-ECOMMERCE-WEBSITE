@@ -2,13 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import authReducer from "../reducer/auth.reducer";
 
 export interface AuthState {
-  token: string | null;
+  UID: string | null;
+  role: string | null;
 }
-
-const storedInfo = localStorage.getItem("info");
+const BASE_KEY_ID = import.meta.env.VITE_LOCAL_STORAGE_KEY;
+const BASE_KEY_ROLE = import.meta.env.VITE_LOCAL_STORAGE_KEY + "_role";
 
 const initialState: AuthState = {
-  token: storedInfo ? JSON.parse(storedInfo) : null,
+  UID: localStorage.getItem(BASE_KEY_ID)?.toString() || null,
+  role: localStorage.getItem(BASE_KEY_ROLE)?.toString() || null,
 };
 
 const authSlice = createSlice({

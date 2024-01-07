@@ -1,20 +1,17 @@
-import tableConfig from "@/config/table.config";
-import Layout from "../layout";
-import usersApi from "@/service/api/users.api";
-
+import Sidebar from "./layout/Sidebar";
+import TopBar from "./layout/TopBar";
 import { Outlet } from "react-router-dom";
 
-const UserScreen = () => {
-  const { name, invalidateKey } = tableConfig.userTable;
-
+const UserEntyPoint = () => {
   return (
-    <Layout.Dynamic
-      queryKey={invalidateKey}
-      name={name}
-      fetchFn={usersApi.fetchAllUser}>
-      <Outlet />
-    </Layout.Dynamic>
+    <div className="h-screen flex overflow-y-auto">
+      <Sidebar />
+      <main className="flex flex-col w-screen overflow-x-hidden">
+        <TopBar />
+        <Outlet />
+      </main>
+    </div>
   );
 };
 
-export default UserScreen;
+export default UserEntyPoint;

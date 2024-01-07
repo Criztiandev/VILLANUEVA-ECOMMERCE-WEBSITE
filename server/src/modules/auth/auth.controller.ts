@@ -32,7 +32,7 @@ export default {
         tokenUtils.generateCookies(res, "refreshToken", refreshToken);
 
         res.status(200).json({
-          payload: _user?._id,
+          payload: { UID: _user?._id, role: _user?.role },
         });
       } else {
         throw new Error("Password Incorrect, Please Try again");

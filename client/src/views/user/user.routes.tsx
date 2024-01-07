@@ -1,30 +1,39 @@
 /* eslint-disable react-refresh/only-export-components */
-import { Route } from "@/interface/server";
-import tableConfig from "@/config/table.config";
-import withLazyLoading from "@/hoc/withLazyLoading.hoc";
+import withTableFetching from "@/hoc/withTableFetching.hoc";
+import OrderScreen from "./modules/order";
+import { createBrowserRouter } from "react-router-dom";
+import orderTable from "./config/order.table.config";
+import UserEntyPoint from ".";
+import orderApi from "./api/order.api";
+import StoreScreen from "./modules/store";
 
-const UserLazyScreen = withLazyLoading(() => import("."));
-const UserTableLazy = withLazyLoading(() => import("./screen/UserTable"));
-const UserDetailsScreenLazy = withLazyLoading(
-  () => import("./screen/UserDetailsScreen")
-);
-const UserEditScreenLazy = withLazyLoading(
-  () => import("./screen/UserEditScreen")
-);
+const OrderTable = withTableFetching(OrderScreen, {
+  name: orderTable.name,
+  base: orderTable.base,
+});
 
-const UserCreateFormLazy = withLazyLoading(
-  () => import("./screen/UserCreateForm")
-);
+const userRootRoute = createBrowserRouter([
+  {
+    path: "/",
+    element: <UserEntyPoint />,
+    children: [
+      { path: "/", element: <StoreScreen /> },
+      { path: "/product/:id", element: <div>Profile</div> },
+      { path: "/address", element: <div>Address</div> },
+    ],
+  },
 
-const { base } = tableConfig.userTable;
+  {
+    path: "/order",
+    element: <UserEntyPoint />,
+    children: [
+      {
+        path: "/order",
+        element: <OrderTable fetchFn={orderApi.fetchAll} />,
+      },
+      { path: "/order/:id", element: <div>Order Detail</div> },
+    ],
+  },
+]);
 
-export const userRoutes: Route = {
-  path: `/${base}`,
-  element: <UserLazyScreen />,
-  children: [
-    { path: `/${base}`, element: <UserTableLazy /> },
-    { path: `/${base}/:id`, element: <UserDetailsScreenLazy base={base} /> },
-    { path: `/${base}/edit/:id`, element: <UserEditScreenLazy base={base} /> },
-    { path: `/${base}/create`, element: <UserCreateFormLazy base={base} /> },
-  ],
-};
+export default userRootRoute;

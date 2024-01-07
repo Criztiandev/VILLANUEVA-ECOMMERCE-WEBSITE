@@ -18,7 +18,7 @@ const TableHeader = (props: Props) => {
       alignItems="center"
       className="w-full mb-8">
       <Container>
-        <Heading level={1} className="capitalize">
+        <Heading level={2} className="capitalize">
           {props.title}
         </Heading>
         <BreadCrumbs

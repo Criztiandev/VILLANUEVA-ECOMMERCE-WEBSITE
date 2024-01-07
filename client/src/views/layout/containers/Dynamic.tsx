@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { BaseProps } from "@/interface/component";
 import Layout from "..";
-import LoadingScreen from "@/views/general/LoadingScreen";
+import LoadingScreen from "@/views/public/auth/LoginScreen";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { toast, ToastContent } from "react-toastify";
 import { useDispatch } from "react-redux";

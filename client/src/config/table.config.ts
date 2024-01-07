@@ -16,7 +16,7 @@ const general = {
   cellWidth: "200px",
   pagination: {
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 0,
   },
 };
 

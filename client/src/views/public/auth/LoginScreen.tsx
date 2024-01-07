@@ -13,6 +13,10 @@ import { setCredentials } from "@/service/store/slice/auth.slice";
 import Heading from "@/components/Heading";
 import Text from "@/components/Text";
 
+const cookies = document.cookie;
+
+console.log(cookies);
+
 const LoginScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,6 +27,7 @@ const LoginScreen = () => {
     invalidateKey: ["user"],
     onSuccess: (res) => {
       const { payload } = res.data;
+
       dispatch(setCredentials(payload));
       navigate("/");
     },

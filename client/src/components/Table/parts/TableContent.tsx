@@ -34,12 +34,7 @@ const Content = <T,>({ columns, ...props }: TableProps<T>) => {
   );
 
   const dispatch = useDispatch();
-  const {
-    payload: selectorPayload,
-    globalFilter: selectorGlobalFilter,
-    columnFilters: selectorColumnFilters,
-    pagination: selectorPagination,
-  } = useSelector((state: RootReducer) => state.table[props.id]);
+  const selection = useSelector((state: RootReducer) => state.table[props.id]);
 
   const memoizedData: Array<T> = useMemo(() => payload, [payload]);
   const _columns: ColumnDef<T, any>[] = useMemo(() => columns, [columns]);
@@ -60,7 +55,7 @@ const Content = <T,>({ columns, ...props }: TableProps<T>) => {
   const table = useReactTable<T>({
     data: memoizedData,
     columns: _columns,
-    pageCount: selectorPagination?.size,
+    pageCount: selection?.pagination?.size,
 
     state: {
       pagination,
@@ -84,21 +79,21 @@ const Content = <T,>({ columns, ...props }: TableProps<T>) => {
   });
 
   useEffect(() => {
-    if (selectorPayload) {
-      setPayload(selectorPayload);
+    if (selection?.payload) {
+      setPayload(selection?.payload);
     }
 
-    if (selectorGlobalFilter) {
-      setGlobalFilter(selectorGlobalFilter);
+    if (selection?.globalFilter) {
+      setGlobalFilter(selection?.globalFilter);
     }
 
-    if (selectorColumnFilters) {
-      setColumnsFilter(selectorColumnFilters);
+    if (selection?.columnFilters) {
+      setColumnsFilter(selection?.columnFilters);
     }
-    if (selectorPagination) {
+    if (selection?.pagination) {
       setPagination({
-        pageIndex: selectorPagination.index,
-        pageSize: selectorPagination.size,
+        pageIndex: selection?.pagination.index,
+        pageSize: selection?.pagination.size,
       });
     }
 
@@ -109,10 +104,10 @@ const Content = <T,>({ columns, ...props }: TableProps<T>) => {
       setPagination(tableConfig.general.pagination);
     };
   }, [
-    selectorPayload,
-    selectorColumnFilters,
-    selectorPagination,
-    selectorGlobalFilter,
+    selection?.payload,
+    selection?.columnFilters,
+    selection?.globalFilter,
+    selection?.pagination,
   ]);
 
   return (
@@ -124,79 +119,95 @@ const Content = <T,>({ columns, ...props }: TableProps<T>) => {
         style={{
           height: "calc(100vh - 280px)",
         }}>
-        {/* Header */}
-        <Container className="w-full">
-          {table.getHeaderGroups().map((headerGroup) => (
-            <GridStack
-              columns={repeat}
-              key={headerGroup.id}
-              className="p-4 items-center">
-              {headerGroup.headers.map((header) => (
-                // Items
-                <Container
-                  key={header.id}
-                  style={{
-                    width: repeat > 5 ? tableConfig.general.cellWidth : "auto",
-                  }}>
-                  {header.isPlaceholder ? null : (
-                    <div className="flex gap-4 items-center">
-                      {header.index === 0 && (
-                        <CheckBox
-                          {...{
-                            checked: table.getIsAllRowsSelected(),
-                            indeterminate: table.getIsSomeRowsSelected(),
-                            onChange: table.getToggleAllRowsSelectedHandler(),
-                          }}
-                        />
-                      )}
-                      <div
-                        {...{
-                          className: header.column.getCanSort()
-                            ? "cursor-pointer select-none flex"
-                            : "",
-                          onClick: header.column.getToggleSortingHandler(),
-                        }}>
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+        {memoizedData.length > 0 ? (
+          <>
+            {/* Header */}
+            <Container className="w-full">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <GridStack
+                  columns={repeat}
+                  key={headerGroup.id}
+                  className="p-4 items-center">
+                  {headerGroup.headers.map((header) => (
+                    // Items
+                    <Container
+                      key={header.id}
+                      style={{
+                        width:
+                          repeat > 5 ? tableConfig.general.cellWidth : "auto",
+                      }}>
+                      {header.isPlaceholder ? null : (
+                        <div className="flex gap-4 items-center">
+                          {header.index === 0 && (
+                            <CheckBox
+                              {...{
+                                checked: table.getIsAllRowsSelected(),
+                                indeterminate: table.getIsSomeRowsSelected(),
+                                onChange:
+                                  table.getToggleAllRowsSelectedHandler(),
+                              }}
+                            />
+                          )}
+                          <div
+                            {...{
+                              className: header.column.getCanSort()
+                                ? "cursor-pointer select-none flex"
+                                : "",
+                              onClick: header.column.getToggleSortingHandler(),
+                            }}>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
 
-                        {/* // Sorting Indicator */}
-                        <SortingIndicator
-                          ascIcon="Asc"
-                          descIcon="Desc"
-                          isSorted={header.column.getIsSorted() as string}
-                        />
-                      </div>
-                    </div>
-                  )}
-                </Container>
+                            {/* // Sorting Indicator */}
+                            <SortingIndicator
+                              ascIcon="Asc"
+                              descIcon="Desc"
+                              isSorted={header.column.getIsSorted() as string}
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </Container>
+                  ))}
+                </GridStack>
               ))}
-            </GridStack>
-          ))}
-        </Container>
-        {/* Content */}
-        <Container className="w-full">
-          {table.getRowModel().rows.map((row, index) => (
-            <GridStack
-              key={row.id}
-              columns={repeat}
-              className={`p-4 items-center ${
-                index === 0 ? "border-t border-b" : "border-b"
-              } border-gray-200`}>
-              {row.getVisibleCells().map((cell) => (
-                <Container
-                  key={cell.id}
-                  className=""
-                  style={{
-                    width: repeat > 5 ? tableConfig.general.cellWidth : "auto",
-                  }}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Container>
+            </Container>
+            {/* Content */}
+            <Container className="w-full">
+              {table.getRowModel().rows.map((row, index) => (
+                <GridStack
+                  key={row.id}
+                  columns={repeat}
+                  className={`p-4 items-center ${
+                    index === 0 ? "border-t border-b" : "border-b"
+                  } border-gray-200`}>
+                  {row.getVisibleCells().map((cell) => (
+                    <Container
+                      key={cell.id}
+                      className=""
+                      style={{
+                        width:
+                          repeat > 5 ? tableConfig.general.cellWidth : "auto",
+                      }}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </Container>
+                  ))}
+                </GridStack>
               ))}
-            </GridStack>
-          ))}
-        </Container>
+            </Container>
+          </>
+        ) : (
+          <div className="flex justify-center items-center w-full h-full skeleton">
+            <h1 className="text-[48px] font-bold text-center">
+              No Data Available
+            </h1>
+          </div>
+        )}
       </Container>
 
       <TablePagination<T> table={table} />

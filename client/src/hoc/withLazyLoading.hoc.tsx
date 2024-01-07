@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import LoadingScreen from "@/views/general/LoadingScreen";
+import LoadingScreen from "@/views/utils/LoadingScreen";
 import { lazy, Suspense, ComponentType } from "react";
 
 // Define a type for the component that will be dynamically loaded
