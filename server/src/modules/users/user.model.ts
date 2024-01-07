@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
-import { UserSchemaDocument } from "../interfaces/model.js";
 import bcrypt from "bcrypt";
+import { UserSchemaDocument } from "./user.js";
 
 const userSchema = new mongoose.Schema<UserSchemaDocument>({
   profileImg: { type: String, default: "" },

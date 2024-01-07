@@ -1,49 +1,46 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { forwardRef, ForwardedRef, InputHTMLAttributes } from "react";
+import { TextareaHTMLAttributes } from "react";
 import { useFormContext, FieldValues } from "react-hook-form";
-import Text from "./Text";
 import Heading from "./Heading";
 
-interface Props extends InputHTMLAttributes<HTMLInputElement> {
+interface Props extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   name: string;
   title?: string;
   default?: string | number;
-  forwardedRef?: ForwardedRef<HTMLInputElement>;
 }
 
-const FileInput = forwardRef<HTMLInputElement, Props>((props, ref) => {
+const Textarea = (props: Props) => {
   const { register, formState, setValue } = useFormContext<FieldValues>();
   const { errors } = formState;
 
   const errorMessage: any = errors[props.name as string]?.message;
 
-  if (props.default !== undefined) {
+  if (props.default) {
     setValue(props.name, props.default);
   }
 
   return (
-    <label className="flex flex-col gap-4 border  w-full">
+    <label className="flex flex-col gap-2 w-full">
       {props.title && (
         <Heading level={3} className="font-semibold">
           {props.title}
         </Heading>
       )}
 
-      <input
+      <textarea
         {...props}
         {...register(props?.name)}
-        ref={ref || null}
-        type="file"
-        className={`file-input file-input-bordered ${
+        className={`textarea textarea-bordered h-[300px] ${
           props.className ? props.className : ""
         } w-full ${errorMessage ? "input-error" : ""}`}
         autoComplete={`current-${props.name}`}
       />
+
       {errorMessage && (
-        <Text className="text-base text-error">{errorMessage}</Text>
+        <span className="text-base text-error">{errorMessage}</span>
       )}
     </label>
   );
-});
+};
 
-export default FileInput;
+export default Textarea;

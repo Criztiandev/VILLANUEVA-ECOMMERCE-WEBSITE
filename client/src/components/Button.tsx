@@ -14,7 +14,7 @@ const Button = (props: Props) => {
       {props.dir && props.icon && props.dir === "left" && (
         <i className="w-6 h-6">{props.icon}</i>
       )}
-      {props.title}
+      <span className="text-base">{props.title}</span>
       {props.dir && props.icon && props.dir === "right" && (
         <i className="w-6 h-6">{props.icon}</i>
       )}

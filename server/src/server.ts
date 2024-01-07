@@ -9,10 +9,9 @@ import compression from "compression";
 import authRoute from "./modules/auth/auth.routes.ts";
 import accountRoute from "./modules/account/account.routes.ts";
 import userRoute from "./modules/users/user.routes.ts";
+import productRoute from "./modules/products/product.routes.ts";
 import { connectDB } from "./config/connectDb.ts";
 import { errorHandler, notFound } from "./middleware/error.middlewares.ts";
-import multer from "multer";
-import * as path from "path";
 
 // Init
 dotnevn.config();
@@ -32,6 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use(express.static("public"));
 
 app.use("/api/users", userRoute);
+app.use("/api/products", productRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/account", accountRoute);
 app.use("/api/upload", express.static("public"));

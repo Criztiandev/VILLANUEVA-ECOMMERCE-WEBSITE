@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { InputHTMLAttributes } from "react";
 import { useFormContext, FieldValues } from "react-hook-form";
+import Text from "./Text";
+import Heading from "./Heading";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
@@ -23,7 +25,9 @@ const Field = (props: Props) => {
       className="grid gap-2 w-full"
       style={{ gridTemplateRows: `24px auto ${errorMessage && "24px"}` }}>
       {props.title && (
-        <span className="text-base font-medium">{props.title}</span>
+        <Heading level={3} className="font-semibold">
+          {props.title}
+        </Heading>
       )}
       <input
         {...props}
@@ -34,7 +38,7 @@ const Field = (props: Props) => {
         autoComplete={`current-${props.name}`}
       />
       {errorMessage && (
-        <span className="text-base text-error">{errorMessage}</span>
+        <Text className="text-error text-base">{errorMessage}</Text>
       )}
     </label>
   );

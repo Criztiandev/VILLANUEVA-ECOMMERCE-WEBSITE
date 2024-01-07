@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import userModel from "../../models/user.model.ts";
-import { UserSchema } from "../../interfaces/model.js";
+import userModel from "../users/user.model.ts";
+import { UserSchema } from "../../modules/users/user.js";
 import tokenUtils from "../../utils/token.utils.ts";
 
 export default {

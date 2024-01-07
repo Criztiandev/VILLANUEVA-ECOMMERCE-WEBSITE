@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
-import userModel from "../../models/user.model.ts";
+import userModel from "../users/user.model.ts";
 
 export default {
   getProfile: asyncHandler(async (req: Request, res: Response) => {

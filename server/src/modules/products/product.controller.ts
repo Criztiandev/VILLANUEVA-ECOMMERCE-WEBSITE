@@ -1,64 +1,43 @@
+import * as path from "path";
+import * as fs from "fs";
 import asyncHandler from "express-async-handler";
-import userModel from "./user.model.ts";
+import userModel from "../users/user.model.ts";
 import { Request, Response } from "express";
 import { validatePaginationOptions } from "../../utils/api.utils.ts";
 import { AdminRequest } from "../../interfaces/server.js";
-import * as path from "path";
-import * as fs from "fs";
+import productModel from "./product.model.ts";
 
 export default {
-  createUser: asyncHandler(async (req: AdminRequest, res: Response) => {
-    const { email, userName } = req.body;
-    if (req.file) {
-      req.body.profileImg = req.file.filename;
-    }
+  create: asyncHandler(async (req: AdminRequest, res: Response) => {}),
 
-    const _email = await userModel.findOne({ email }).lean().select("_id");
-    if (_email) throw new Error("Email alreay exist, Please Try again");
-
-    const _userName = await userModel
-      .findOne({ userName })
-      .lean()
-      .select("_id");
-    if (_userName) throw new Error("User Name already exist Please Try again");
-
-    const credentials = await userModel.create(req.body);
-    if (!credentials)
-      throw new Error("Something went wrong, Please Try again later");
-
-    res.status(200).json({
-      payload: credentials?._id,
-    });
-  }),
-
-  fetchAllUser: asyncHandler(async (req: Request, res: Response) => {
+  fetchAll: asyncHandler(async (req: Request, res: Response) => {
     const {
       size = 10,
       index = 0,
       filter = {},
     } = validatePaginationOptions(req.query);
 
-    const totalUsers = await userModel.countDocuments({});
-    const totalPages = Math.ceil(totalUsers / 10);
+    const totalItems = await productModel.countDocuments({});
+    const totalPages = Math.ceil(totalItems / 10);
 
-    const users = await userModel
+    const payload = await productModel
       .find(filter)
       .skip(size * index)
       .limit(size)
       .lean()
-      .select("-password -__v");
+      .select("-__v");
 
     res.status(200).json({
-      payload: users,
+      payload: payload,
       pageCount: totalPages,
       currentPage: index,
     });
   }),
 
-  fetchUserById: asyncHandler(async (req: Request, res: Response) => {
+  fetchById: asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const user = await userModel.findById(id).lean().select("-password");
+    const user = await productModel.findById(id).lean().select("-__v");
     if (!user) throw new Error("User doest exist");
 
     res.status(200).json({
@@ -66,18 +45,21 @@ export default {
     });
   }),
 
-  updateUserById: asyncHandler(async (req: Request, res: Response) => {
+  updateById: asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
     if (req.file) {
-      req.body.profileImg = req.file.filename;
+      req.body.productImg = req.file.filename;
     }
 
-    const _user = await userModel.findById(id).lean().select("_id profileImg");
-    if (!_user) throw new Error("User doesnt exist");
+    const palyload = await productModel
+      .findById(id)
+      .lean()
+      .select("_id profileImg");
+    if (!palyload) throw new Error("User doesnt exist");
 
     const rootDir = path.resolve(process.cwd());
-    const filePath = `${rootDir}/public/images/profile/${_user.profileImg}`;
+    const filePath = `${rootDir}/public/images/product/${palyload.productImg}`;
 
     // check if the profile exist
     const oldProfileExists = fs.existsSync(filePath);
@@ -86,7 +68,7 @@ export default {
       fs.unlinkSync(filePath);
     }
 
-    const _updated = await userModel
+    const _updated = await productModel
       .findByIdAndUpdate(id, req.body, {
         new: true,
       })
@@ -100,28 +82,34 @@ export default {
     });
   }),
 
-  deleteUserById: asyncHandler(async (req: Request, res: Response) => {
+  deleteById: asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const _user = await userModel.findById(id).lean().select("_id");
-    if (!_user) throw new Error("User doest exist");
+    const payload = await productModel.findById(id).lean().select("_id");
+    if (!payload) throw new Error("User doest exist");
 
     try {
-      const credentials = await userModel.deleteOne({ _id: id });
+      const credentials = await productModel.deleteOne({ _id: id });
       if (credentials.deletedCount !== 1)
         throw new Error("Document not found or not deleted.");
 
       // delete the profile using the fs module
+      const rootDir = path.resolve(process.cwd());
+      const filePath = `${rootDir}/public/images/product/${payload?.productImg}`;
+
+      // check if the productImg exist
+      const oldProfileExists = fs.existsSync(filePath);
+      if (oldProfileExists) fs.unlinkSync(filePath);
 
       res.status(200).json({
-        payload: _user?._id,
+        payload: payload?._id,
       });
     } catch (error) {
       throw new Error(`Error deleting document: ${error}`);
     }
   }),
 
-  deleteUserByBatch: asyncHandler(async (req: Request, res: Response) => {
+  deleteByBatch: asyncHandler(async (req: Request, res: Response) => {
     try {
       const { payload } = req.body;
 

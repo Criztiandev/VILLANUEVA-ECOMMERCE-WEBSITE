@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { JWTPayload } from "./token.js";
-import { Roles } from "./model.js";
 
 interface Base {
   user?: JWTPayload;

@@ -12,6 +12,7 @@ export default {
 
   Links: [
     { path: "/", title: "Home", icon: "T" },
+    { path: "/products", title: "Products", icon: "T" },
     { path: "/users", title: "Users", icon: "T" },
   ],
 };

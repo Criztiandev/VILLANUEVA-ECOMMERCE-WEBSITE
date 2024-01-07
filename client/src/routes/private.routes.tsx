@@ -2,6 +2,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import { userRoutes } from "@/views/user/user.routes";
 import withLazyLoading from "@/hoc/withLazyLoading.hoc";
+import { productRoutes } from "@/views/products/product.routes";
 
 const DashboardLazyScreen = withLazyLoading(() => import("@/views/dashboard"));
 const SettingsLazyScreen = withLazyLoading(() => import("@/views/settings"));
@@ -13,4 +14,5 @@ export const privateRoutes = createBrowserRouter([
   { path: "/", element: <DashboardLazyScreen /> },
   { path: "/settings", element: <SettingsLazyScreen /> },
   userRoutes,
+  productRoutes,
 ]);

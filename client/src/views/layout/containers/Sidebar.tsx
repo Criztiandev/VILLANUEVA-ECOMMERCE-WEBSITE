@@ -50,15 +50,6 @@ const Sidebar = () => {
       </nav>
 
       <div className="flex flex-col gap-4 px-4">
-        <Tooltip title="Support" active={`${isExpand}`}>
-          <Button
-            dir={"left"}
-            title={isExpand ? "Support" : undefined}
-            icon={"T"}
-            className={`w-full justify-start btn-ghost`}
-          />
-        </Tooltip>
-
         <Tooltip title="Settings" active={`${isExpand}`}>
           <Button
             dir={"left"}

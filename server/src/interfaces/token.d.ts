@@ -1,10 +1,4 @@
-import { Roles } from "./model.js";
-
-export interface JWTPayload {
-  UID: string;
-  role: Roles;
-  scope: Array<string>;
-}
+import { Roles } from "../modules/users/user.js";
 
 export interface JWTPayload {
   UID: string;
