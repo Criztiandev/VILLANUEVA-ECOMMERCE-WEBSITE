@@ -8,9 +8,12 @@ export interface AuthState {
 const BASE_KEY_ID = import.meta.env.VITE_LOCAL_STORAGE_KEY;
 const BASE_KEY_ROLE = import.meta.env.VITE_LOCAL_STORAGE_KEY + "_role";
 
+const storedUID = localStorage.getItem(BASE_KEY_ID);
+const storedRole = localStorage.getItem(BASE_KEY_ROLE);
+
 const initialState: AuthState = {
-  UID: localStorage.getItem(BASE_KEY_ID)?.toString() || null,
-  role: localStorage.getItem(BASE_KEY_ROLE)?.toString() || null,
+  UID: storedUID ? JSON.parse(storedUID) : null,
+  role: storedRole ? JSON.parse(storedRole) : null,
 };
 
 const authSlice = createSlice({

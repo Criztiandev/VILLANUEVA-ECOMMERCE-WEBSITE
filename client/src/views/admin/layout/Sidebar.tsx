@@ -1,18 +1,19 @@
 import Button from "@/components/Button";
 import Tooltip from "@/components/Tooltip";
-import sidebarConfig from "@/config/sidebar.config";
+import sidebarConfig from "../config/sidebar.config";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { LinkProps } from "../interface/sidebar";
 
 const Sidebar = () => {
   const [isExpand, setIsExpand] = useState<boolean>(true);
-  const { size, Links } = sidebarConfig;
+  const { size, MainLinks, FooterLinks } = sidebarConfig;
   const currentActive = "Home";
   const navigate = useNavigate();
 
   const handleNavigate = (path: string) => navigate(path);
 
-  const renderNavLinks = Links.map(({ path, title, icon }) => (
+  const renderNavLinks = MainLinks.map(({ path, title, icon }: LinkProps) => (
     <Tooltip key={title} title={title} active={`${isExpand}`}>
       <Button
         dir={"left"}
@@ -50,15 +51,17 @@ const Sidebar = () => {
       </nav>
 
       <div className="flex flex-col gap-4 px-4">
-        <Tooltip title="Settings" active={`${isExpand}`}>
-          <Button
-            dir={"left"}
-            title={isExpand ? "Settings" : undefined}
-            icon={"T"}
-            className={`w-full justify-start btn-ghost`}
-            onClick={() => handleNavigate("/settings")}
-          />
-        </Tooltip>
+        {FooterLinks.map(({ path, title, icon }: LinkProps) => (
+          <Tooltip title="Settings" active={`${isExpand}`}>
+            <Button
+              dir={"left"}
+              title={isExpand ? title : undefined}
+              icon={icon}
+              className={`w-full justify-start btn-ghost`}
+              onClick={() => handleNavigate(path)}
+            />
+          </Tooltip>
+        ))}
       </div>
     </aside>
   );

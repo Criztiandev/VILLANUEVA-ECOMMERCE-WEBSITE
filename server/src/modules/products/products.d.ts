@@ -1,10 +1,13 @@
 export interface ProductSchema {
   productImg: Array<string> | string;
-  title: string;
+  name: string;
   price: number;
+  rating: number;
   description: string;
+  keywords: Array<string>;
+  quantity: number;
   stocks: number;
-  tags: string;
   regularPrice: number;
-  category: "all" | "tress" | "plants" | "indoor" | "outdoor" | "shrubs";
+  shipping: number;
+  category: "indoor" | "outdoor" | "accessories" | "sessional" | "gift";
 }

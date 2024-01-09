@@ -2,7 +2,7 @@ import { useState } from "react";
 import Tabs from "@/components/Tabs";
 import AccountTab from "./containers/Tabs/AccountTab";
 import ThemeTab from "./containers/Tabs/ThemeTab";
-import Layout from "../layout";
+import Layout from "@/views/layout/index";
 
 const tabLists = [
   { title: "Account", content: <AccountTab /> },

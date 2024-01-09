@@ -6,6 +6,7 @@ import orderTable from "./config/order.table.config";
 import UserEntyPoint from ".";
 import orderApi from "./api/order.api";
 import StoreScreen from "./modules/store";
+import ProductDetails from "./modules/store/screen/ProductDetails";
 
 const OrderTable = withTableFetching(OrderScreen, {
   name: orderTable.name,
@@ -18,7 +19,7 @@ const userRootRoute = createBrowserRouter([
     element: <UserEntyPoint />,
     children: [
       { path: "/", element: <StoreScreen /> },
-      { path: "/product/:id", element: <div>Profile</div> },
+      { path: "/product/:id", element: <ProductDetails /> },
       { path: "/address", element: <div>Address</div> },
     ],
   },

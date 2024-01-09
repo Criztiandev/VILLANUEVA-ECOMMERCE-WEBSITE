@@ -19,7 +19,7 @@ import PasswordModal from "../Modals/PasswordModal";
 import accountApi from "@/service/api/account.api";
 import queryUtils from "@/utils/query.utils";
 import { useState } from "react";
-import LoadingScreen from "@/views/general/LoadingScreen";
+import LoadingScreen from "@/views/utils/LoadingScreen";
 import { useNavigate } from "react-router-dom";
 import { clearCredentials } from "@/service/store/slice/auth.slice";
 import Avatar from "@/components/Avatar";
@@ -31,16 +31,16 @@ import FlexStack from "@/components/FlexStack";
 
 const AccountTab = () => {
   const [active, setActive] = useState(true);
-  const { token } = useSelector((state: RootReducer) => state.auth);
+  const { UID } = useSelector((state: RootReducer) => state.auth);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const key: any = `user-${token}`;
+  const key: any = `user-${UID}`;
 
-  if (!token) throw new Error("No Token");
+  if (!UID) throw new Error("No Token");
 
   const query = useQuery({
-    queryFn: async () => await accountApi.getUserDetails(token),
+    queryFn: async () => await accountApi.getUserDetails(UID),
     queryKey: [key],
   });
   const { payload } = (query?.data as { payload: User }) || {};
@@ -87,13 +87,13 @@ const AccountTab = () => {
         }
       }
 
-      credentialMutation.mutate({ UID: token, payload: formData });
+      credentialMutation.mutate({ UID: UID, payload: formData });
       return;
     }
-    credentialMutation.mutate({ UID: token, payload: payload });
+    credentialMutation.mutate({ UID: UID, payload: payload });
   };
 
-  const handleDeleteMutation = () => deleteMutation.mutate({ id: token });
+  const handleDeleteMutation = () => deleteMutation.mutate({ id: UID });
 
   if (query.isLoading) {
     return <LoadingScreen />;
@@ -192,7 +192,7 @@ const AccountTab = () => {
         </Form>
       </div>
 
-      <PasswordModal key={key} token={token} />
+      <PasswordModal key={key} token={UID} />
       <DeleteModal id="delete-account" onSubmit={handleDeleteMutation} />
     </>
   );

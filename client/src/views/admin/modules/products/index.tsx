@@ -1,5 +1,5 @@
 import tableConfig from "@/config/table.config";
-import Layout from "../layout";
+import Layout from "@/views/layout/index";
 
 import { Outlet } from "react-router-dom";
 import productApi from "@/service/api/product.api";

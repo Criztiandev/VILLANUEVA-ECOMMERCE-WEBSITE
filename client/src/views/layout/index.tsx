@@ -1,5 +1,5 @@
 import Dynamic from "./containers/Dynamic";
-import Sidebar from "./containers/Sidebar";
+import Sidebar from "../admin/layout/Sidebar";
 import Static from "./containers/Static";
 import Topbar from "./containers/Topbar";
 

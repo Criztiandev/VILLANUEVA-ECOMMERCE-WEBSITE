@@ -3,17 +3,16 @@ import { ProductSchema } from "./products.js";
 
 const productSchema = new mongoose.Schema<ProductSchema>({
   productImg: { type: String, default: "" },
-  title: { type: String, require: true, unique: true },
-  price: { type: Number, require: true, unique: true },
-  description: { type: String, require: true },
-  stocks: { type: Number, require: true },
-  tags: { type: String, require: true },
-  regularPrice: { type: Number, require: true },
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+  rating: { type: Number, default: 0 },
+  description: { type: String, required: true },
+  quantity: { type: Number, default: 0 },
+  stocks: { type: Number, default: 0 },
   category: {
     type: String,
-    enum: ["all", "tress", "plants", "indoor", "outdoor", "shrubs"],
-    default: "all",
-    require: true,
+    enum: ["indoor", "outdoor", "accessories", "sessional", "gift"],
+    required: true,
   },
 });
 

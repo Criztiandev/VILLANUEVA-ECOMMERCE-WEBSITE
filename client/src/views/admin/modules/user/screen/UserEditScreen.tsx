@@ -1,54 +1,48 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Button from "@/components/Button";
 import Field from "@/components/Field";
 import Form from "@/components/Form";
 import GridStack from "@/components/GridStack";
 import FlexStack from "@/components/FlexStack";
-import { User } from "@/interface/user";
 import TableHeader from "@/components/Table/parts/TableHeader";
 import Select from "@/components/Select";
-import queryUtils from "@/utils/query.utils";
 import usersApi from "@/service/api/users.api";
 import { useLocation, useNavigate } from "react-router-dom";
-import LoadingScreen from "@/views/general/LoadingScreen";
 import { ToastContent, toast } from "react-toastify";
 import { PreferedUserDetailsSchema } from "@/service/validation/user.validation";
-import FileInput from "@/components/FileInput";
 import Avatar from "@/components/Avatar";
 import { useQuery } from "@tanstack/react-query";
 import fileApi from "@/service/api/file.api";
 import Container from "@/components/Container";
-
-interface Props {
-  base: string;
-}
+import LoadingScreen from "@/views/utils/LoadingScreen";
+import queryUtils from "@/utils/query.utils";
+import FileInput from "@/components/FileInput";
 
 interface PreferedUserDetails {
-  profileImg?: string;
+  profileImg?: any;
   userName: string;
   email: string;
   role: "user" | "admin";
 }
 
-const UserEditScreen = ({ base }: Props) => {
+const UserEditScreen = () => {
   const location = useLocation();
-  const UID: string = location.pathname.split("/").pop() || "";
   const navigate = useNavigate();
+  const UID: string = location.pathname.split("/").pop() || "";
 
-  const { data, isError, isLoading, error, refetch } = queryUtils.query({
+  const query = useQuery({
     queryFn: async () => await usersApi.fetchUserById(UID),
-    key: [`user-${UID}`],
+    queryKey: [`user-${UID}`],
   });
-  const { payload: res } = data?.data || {};
 
   const imageQuery = useQuery({
     queryFn: async () =>
-      await fileApi.fetchImage(`/profile/${res?.profileImg}`),
+      await fileApi.fetchImage(`/profile/${query?.data?.payload?.profileImg}`),
     queryKey: [`user-${UID}-img`],
-    enabled: !!res?.profileImg,
+    enabled: !!query?.data?.payload?.profileImg,
   });
 
-  // make it multiple
   const mutation = queryUtils.mutation({
     mutationFn: async ({ UID, payload }: { UID: string; payload: any }) =>
       usersApi.updateUserById(UID, payload),
@@ -56,7 +50,7 @@ const UserEditScreen = ({ base }: Props) => {
     toast: "Updated Successfull",
 
     onSuccess: () => {
-      refetch();
+      query.refetch();
 
       setTimeout(() => {
         imageQuery.refetch();
@@ -64,25 +58,23 @@ const UserEditScreen = ({ base }: Props) => {
     },
   });
 
-  if (isError) {
-    const errorToastContent: ToastContent<Error> = `Error: ${error.message}`;
+  if (query.isLoading) return <LoadingScreen />;
+
+  if (query.isError) {
+    const errorToastContent: ToastContent<Error> = `Error: ${query.error.message}`;
     toast.error(errorToastContent);
     return <LoadingScreen />;
   }
 
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  const { payload: res } = query.data || {};
+  const base = "users";
 
-  const handleSubmit = (payload: User) => {
-    console.log(payload);
-
-    if (payload.profileImg) {
-      const profileFile = payload.profileImg[0];
-
+  const handleSubmit = (payload: PreferedUserDetails) => {
+    if (payload?.profileImg) {
       const formData = new FormData();
-      formData.append("profileImg", profileFile);
+      const imageFile = payload.profileImg[0];
 
+      formData.append("profileImg", imageFile);
       for (const [key, value] of Object.entries(payload)) {
         if (key !== "profileImg") {
           formData.append(key, value);
@@ -92,12 +84,11 @@ const UserEditScreen = ({ base }: Props) => {
       mutation.mutate({ UID: UID, payload: formData });
       return;
     }
-    mutation.mutate({ UID: UID, payload: payload });
   };
 
   return (
-    <section className="px-[32px] py-4 overflow-y-scroll h-screen ">
-      <div className="w-full mx-auto p-8 max-w-[1240px]">
+    <section className="overflow-y-scroll">
+      <div className="w-full mx-auto p-8 ">
         <TableHeader
           title="Edit User"
           current={`/${base}`}
@@ -105,13 +96,13 @@ const UserEditScreen = ({ base }: Props) => {
             { title: "Details", path: `/${base}/${UID}` },
             { title: "Edit", path: `/${base}/edit/${UID}` },
           ]}></TableHeader>
+
         <Form<PreferedUserDetails>
           onSubmit={handleSubmit}
           validation={PreferedUserDetailsSchema}>
           <GridStack columns={2} className="border-b pb-8 ">
             <Container>
               <h2 className="text-xl font-semibold">Profile</h2>
-              <p className="my-4 text-base">dfsdfsdfsdfsdfsdfsdfsf</p>
             </Container>
 
             <Container>
@@ -126,14 +117,13 @@ const UserEditScreen = ({ base }: Props) => {
                   />
                 )}
               </Container>
-              <FileInput title="Profile" name="profileImg" />
+
+              <FileInput name="profileImg" />
             </Container>
           </GridStack>
-
           <GridStack columns={2} className="border-b border-gray-400 my-8 pb-8">
             <Container>
               <h2 className="text-xl font-semibold">Details</h2>
-              <p className="my-4 text-base">dfsdfsdfsdfsdfsdfsdfsf</p>
             </Container>
 
             <FlexStack className="py-4">
@@ -163,7 +153,6 @@ const UserEditScreen = ({ base }: Props) => {
               />
             </FlexStack>
           </GridStack>
-
           <GridStack columns={2} className="border-b border-gray-200 pb-8">
             <Container>
               <h2 className="text-xl font-semibold">Actions</h2>
