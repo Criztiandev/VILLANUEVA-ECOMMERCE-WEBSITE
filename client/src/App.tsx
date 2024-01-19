@@ -1,9 +1,8 @@
 import { useSelector } from "react-redux";
 import { RouterProvider } from "react-router-dom";
 import { RootReducer } from "./service/store";
-import publicRoutes from "./views/public/public.routes";
-import adminRoutes from "./views/admin/admin.routes";
-import userRootRoute from "./views/user/user.routes";
+import publicRoutes from "./modules/public/index.routes";
+import adminRoutes from "./modules/admin/admin.routes";
 
 const App = () => {
   const { UID, role } = useSelector((state: RootReducer) => state.auth);
@@ -11,7 +10,7 @@ const App = () => {
   if (!UID || !role) {
     return <RouterProvider router={publicRoutes} />;
   }
-  const protectedRoutes = UID && role === "admin" ? adminRoutes : userRootRoute;
+  const protectedRoutes = adminRoutes;
   return <RouterProvider router={protectedRoutes} />;
 };
 

@@ -44,7 +44,7 @@ const Content = ({ children, className }: BaseProps) => {
   return (
     <ul
       tabIndex={0}
-      className={`p-2 shadow menu dropdown-content  bg-base-100 text-base w-52 rounded-[5px] z-[99px] fixed ${
+      className={`p-2 shadow menu dropdown-content border  bg-base-100 text-base w-52 rounded-[5px] z-[99px] fixed ${
         className ? className : null
       } `}>
       {children}
@@ -57,7 +57,7 @@ const Item = ({ children, className, ...props }: BaseProps) => {
     <li
       className={`${
         className ? className : null
-      } cursor-pointer btn btn-ghost items-start text-base`}
+      } cursor-pointer items-start btn btn-ghost  text-base font-medium w-full`}
       {...props}>
       {children}
     </li>

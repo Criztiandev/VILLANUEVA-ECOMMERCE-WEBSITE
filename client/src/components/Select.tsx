@@ -9,12 +9,13 @@ interface Options {
 }
 
 interface Props {
-  title: string;
+  title?: string;
   name: string;
   placeholder: string;
   option: Array<Options>;
   className?: string;
   default?: string | number;
+  disabled?: boolean;
 }
 
 const Select = (props: Props) => {
@@ -29,9 +30,11 @@ const Select = (props: Props) => {
 
   return (
     <label className="relative flex flex-col gap-2 w-full">
-      <Heading level={3} className="font-semibold">
-        {props.title}
-      </Heading>
+      {props.title && (
+        <Heading level={3} className="text-[18px]">
+          {props.title}
+        </Heading>
+      )}
 
       <select
         {...props}

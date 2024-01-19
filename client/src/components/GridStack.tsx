@@ -10,7 +10,7 @@ interface GridStackProps {
 }
 
 const GridStack = (props: GridStackProps) => {
-  const { dir = "col", columns = 2, gap = "1rem", style, children } = props;
+  const { dir = "col", columns = 2, gap = "0", style, children } = props;
 
   const gridStyle: CSSProperties = {
     display: "grid",

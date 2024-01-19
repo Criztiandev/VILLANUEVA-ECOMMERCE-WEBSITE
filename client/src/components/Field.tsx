@@ -7,7 +7,7 @@ import Heading from "./Heading";
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   title?: string;
-  default?: string | number;
+  default?: any;
 }
 
 const Field = (props: Props) => {

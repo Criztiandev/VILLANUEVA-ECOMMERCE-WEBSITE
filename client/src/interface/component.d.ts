@@ -15,23 +15,49 @@ export interface TableProps<T> {
   className?: string;
 }
 
+export interface TableStructProps<T> {
+  base: string;
+  name: string;
+  columns: ColumnDef<T, any>[];
+}
+
 export interface ActionProps<T> {
   id: string | number;
   payload: CellContext<T, any>;
   invalidateKey: QueryKey;
+  configFn: any;
+  isView?: boolean;
+  isDelete?: boolean;
+  isEdit?: boolean;
 }
 
 export interface ColumnOption<T> {
   id?: string;
   name: keyof T;
   header: string;
+  path?: string;
   isBadge?: boolean;
   isFirst?: boolean;
   isLast?: boolean;
+  isDate?: boolean;
+
+  isView?: boolean;
+  isDelete?: boolean;
+  isEdit?: boolean;
+  isToggle?: boolean;
+  hasImage?: boolean;
 }
 
 export interface BreadCrumbsItems {
   title: string;
   icon?: JSX.Element;
   path: string;
+}
+
+export interface LinkProps {
+  path: string;
+  title: string;
+  icon: string;
+  isDropdown?: boolean;
+  dropdown?: LinkProps[];
 }

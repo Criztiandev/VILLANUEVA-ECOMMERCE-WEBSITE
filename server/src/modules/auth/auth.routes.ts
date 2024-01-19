@@ -1,18 +1,11 @@
 import express from "express";
 import authController from "./auth.controller.ts";
-import validationMiddleware from "../../middleware/validation.middleware.ts";
-import userValidation from "../../validation/user.validation.ts";
+import encryptionMiddleware from "../../middleware/encryption.middleware.ts";
 const router = express.Router();
 
-const { validateBody, authValidation } = validationMiddleware;
-const loginValidation = authValidation(userValidation.loginSchema);
-const registrationValidation = authValidation(userValidation.registerSchema);
+const { decryptPassword } = encryptionMiddleware;
 
-router.post("/", [validateBody, loginValidation], authController.login);
-router.post(
-  "/register",
-  [validateBody, registrationValidation],
-  authController.register
-);
+router.post("/", [decryptPassword], authController.login);
+router.post("/register", authController.register);
 
 export default router;

@@ -1,19 +1,11 @@
 import { z } from "zod";
 
-const accountSchema = z.object({
-  email: z.string().email().min(3, "Too Short").max(255, "Too Long"),
-  userName: z.string().min(3, "Too Short").max(255, "Too Long"),
+const UserModelValidation = z.object({
+  _id: z.string().optional(),
+  fullName: z.string(),
+  email: z.string().email(),
+  password: z.string().min(6),
+  role: z.string().optional(),
 });
 
-const loginSchema = z.object({
-  email: z.string().email().min(3, "Too Short").max(255, "Too Long"),
-  password: z.string().min(3, "Too Short").max(255, "Too Long"),
-});
-
-const registerSchema = z.object({
-  userName: z.string().min(3, "Too Short").max(255, "Too Long"),
-  email: z.string().email().min(3, "Too Short").max(255, "Too Long"),
-  password: z.string().min(3, "Too Short").max(255, "Too Long"),
-});
-
-export default { loginSchema, registerSchema, accountSchema };
+export default UserModelValidation;

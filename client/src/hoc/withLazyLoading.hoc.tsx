@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import LoadingScreen from "@/views/utils/LoadingScreen";
+import LoadingScreen from "@/containers/LoadingScreen";
 import { lazy, Suspense, ComponentType } from "react";
 
-// Define a type for the component that will be dynamically loaded
 type LazyComponentType = ComponentType<any>;
 
 const withLazyLoading = (

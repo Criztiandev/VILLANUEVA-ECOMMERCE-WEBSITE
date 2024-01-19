@@ -23,7 +23,7 @@ const CheckBox = ({
       type="checkbox"
       ref={ref}
       className={
-        className + " cursor-pointer checkbox checkbox-sm rounded-[5px]"
+        className + " cursor-pointer checkbox checkbox-sm rounded-[5px] "
       }
       {...rest}
     />

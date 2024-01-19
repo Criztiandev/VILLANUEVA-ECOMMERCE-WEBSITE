@@ -1,11 +1,10 @@
 import tokenConfig from "../config/token.config.ts";
 import { Response } from "express";
-import { JWTPayload, VerifyToken } from "../interfaces/token.js";
+import { JWTPayload, VerifiedPayload } from "../interfaces/token.js";
 import jwt, { SignOptions } from "jsonwebtoken";
-import { title } from "process";
 
 export default {
-  verifyToken: (token: string, secret: string): VerifyToken | null => {
+  verifyToken: (token: string, secret: string): VerifiedPayload | null => {
     try {
       const data = jwt.verify(token, secret) as JWTPayload;
       return { payload: data, expired: false };

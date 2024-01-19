@@ -1,16 +1,18 @@
-import { Roles } from "../modules/users/user.js";
-
 export interface JWTPayload {
   UID: string;
-  role: Roles;
-  scope: Array<string>;
+  roles: string;
+}
+
+interface ProtectedRoutes extends Request {
+  admin?: JWTPayload;
+  user?: JWTPayload;
 }
 
 export interface JWTSigningOptions {
   expiresAt: string | number;
 }
 
-export interface VerifyToken {
+export interface VerifiedPayload {
   payload: JWTPayload;
   expired: boolean;
 }

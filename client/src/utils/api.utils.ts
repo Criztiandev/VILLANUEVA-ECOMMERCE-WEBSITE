@@ -5,19 +5,14 @@ import axios, { AxiosInstance } from "axios";
 
 const BASE_URL = import.meta.env.VITE_BASE_URL; // Replace with your API base URL
 const BASE_IMG = import.meta.env.VITE_BASE_IMAGE_URL;
-interface PrivateAxiosProps {
-  isFile?: boolean;
-}
 
 export default {
-  privateAxios: ({ isFile }: PrivateAxiosProps = {}) => {
+  privateAxios: () => {
     const instance: AxiosInstance = axios.create({
       baseURL: BASE_URL,
       withCredentials: true,
       headers: {
-        "Content-Type": isFile
-          ? "multipart/form-data"
-          : "application/json;charset=utf-8",
+        "Content-Type": "application/json;charset=utf-8",
       },
     });
 

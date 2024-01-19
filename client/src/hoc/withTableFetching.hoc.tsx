@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { setTableData } from "@/service/store/slice/table.slice";
-import LoadingScreen from "@/views/utils/LoadingScreen";
 import { useQuery } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +9,7 @@ import { AxiosError } from "axios";
 import { clearCredentials } from "@/service/store/slice/auth.slice";
 import { toast } from "react-toastify";
 import { ServerErrorResponse } from "@/interface/server";
+import LoadingScreen from "@/containers/LoadingScreen";
 
 interface ConfigProps {
   base: string;
@@ -66,7 +66,8 @@ const withTableFetching = (
     }
 
     if (query.isSuccess) {
-      const { data: res } = query.data;
+      const { payload: res } = query.data;
+
       dispatch(setTableData({ id: config.name, data: res }));
     }
 
