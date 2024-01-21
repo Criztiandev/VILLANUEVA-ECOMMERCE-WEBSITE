@@ -11,7 +11,7 @@ const Button = (props: Props) => {
   return (
     <button
       {...props}
-      className={`bg-[#3686ff] text-white ${
+      className={`bg-[#244d4d] text-white ${
         props.className ? props.className : null
       } btn text-normal`}>
       {props.dir && props.icon && props.dir === "left" && (

@@ -5,6 +5,9 @@ export interface UserModel {
   firstName: string;
   middleName: string;
   lastName: string;
+
+  fullName?: string;
+
   age: number;
   birthDate: string;
   contact: string;
@@ -25,7 +28,6 @@ export interface UserModel {
 
 export interface ProductModel {
   _id?: string;
-  cover?: string;
   images?: Array<string>;
   name: string;
   price: number;
@@ -33,8 +35,8 @@ export interface ProductModel {
   category: string;
   status: string;
   summary?: string;
-  shippingFee: number;
   description?: string;
+  shippingFee: number;
   isPublished: boolean;
   isFeatured: boolean;
 }
@@ -71,4 +73,22 @@ export interface CategoryModel {
   count?: number;
 }
 
-export interface ServiceMode {}
+export interface MessageModel {
+  customer: string;
+  message: string;
+}
+
+export interface ServiceModel {
+  images?: Array<string>;
+  name: string;
+  price: number;
+
+  scheduleStart: string;
+  scheduleEnd: string;
+
+  summary?: string;
+  description?: string;
+  isPublished: boolean;
+  isFeatured: boolean;
+  status: string;
+}

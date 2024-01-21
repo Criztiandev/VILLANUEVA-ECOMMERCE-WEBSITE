@@ -1,25 +1,35 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
-import Button from "@/components/Button";
 import Container from "@/components/Container";
-import GridStack from "@/components/GridStack";
-
+import ProductItems from "../components/ProductItems";
 import { useQuery } from "@tanstack/react-query";
+import serviceApi from "../service.api";
 import { CategoryModel, ProductModel } from "@/interface/model";
 import LoadingScreen from "@/containers/LoadingScreen";
-import { useState } from "react";
 import categoriesApi from "../../categories/categories.api";
-import { Link } from "react-router-dom";
 import Table from "@/components/Table";
 import tableConfig from "@/modules/admin/config/table.config";
-import serviceApi from "../service.api";
-import ServiceCard from "./components/ServiceCard";
+import GridViewAction from "../components/GridViewAction";
+import useGridView from "@/hooks/useGridView";
+
+interface Props {
+  name: string;
+  columns: any;
+}
+
+interface GridProps {
+  render: any;
+}
 
 const ServiceTable = () => {
-  const [isTable, setIsTable] = useState(false);
-  const [filter, setFilter] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-
+  const {
+    isTable,
+    filter,
+    categoryFilter,
+    handleFilter,
+    handleCategoryFilter,
+    handleIsTable,
+  } = useGridView();
   const { name, columns } = tableConfig.productTable;
 
   const productQuery = useQuery({
@@ -32,13 +42,10 @@ const ServiceTable = () => {
     queryKey: ["category"],
   });
 
-  if (productQuery?.isLoading || categoryQuery?.isLoading)
-    return <LoadingScreen />;
-
-  const searchProducs = () => {
+  const renderProducts = () => {
     if (!productQuery?.data) return;
 
-    return productQuery?.data?.payload.filter((field: ProductModel) => {
+    return productQuery?.data?.payload?.filter((field: ProductModel) => {
       if (categoryFilter) {
         return field.category
           .toLocaleLowerCase()
@@ -51,73 +58,49 @@ const ServiceTable = () => {
     });
   };
 
-  const TransformedCategory = () =>
-    categoryQuery?.data?.payload?.map((category: CategoryModel) => ({
-      title: category.name,
-      value: category?.name,
-    }));
+  if (productQuery?.isLoading || categoryQuery?.isLoading)
+    return <LoadingScreen />;
 
   return (
-    <Container className="mt-4">
+    <Container className="mt-4  ">
       {!isTable && (
-        <div className="flex justify-between items-center mb-4">
-          <div className="w-[450px] flex gap-4">
-            <input
-              className="input input-bordered"
-              placeholder="Search here"
-              value={filter}
-              onChange={(e) => setFilter(e.currentTarget.value)}
-            />
-
-            <select
-              className="select select-bordered w-full"
-              value={categoryFilter}
-              onChange={(e) => setCategoryFilter(e.currentTarget.value)}>
-              <option value={""}>All Service</option>
-              {TransformedCategory()?.map((category: any) => (
-                <option key={category.value} value={category.value}>
-                  {category.title}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex gap-4">
-            <Link to={"/service/create"}>
-              <Button title="Create" />
-            </Link>
-            <Button
-              className="btn-circle"
-              icon="T"
-              title="T"
-              onClick={() => setIsTable((prev) => !prev)}
-            />
-          </div>
-        </div>
+        <GridViewAction<CategoryModel>
+          payload={categoryQuery.data?.payload}
+          filter={filter}
+          categoryFilter={categoryFilter}
+          onFilter={handleFilter}
+          onCategoryFilter={handleCategoryFilter}
+          toggleTable={handleIsTable}
+          path="create"
+        />
       )}
       {isTable ? (
-        <Container>
-          <Table.Panel title="Service" name={name} />
-          <Table<ProductModel> id={name} columns={columns} />
-        </Container>
+        <CurrentTable name={name} columns={columns} />
       ) : (
-        <>
-          <GridStack columns={4} gap={16}>
-            {searchProducs().map((fields: ProductModel) => (
-              <ServiceCard key={fields?._id} {...fields} />
-            ))}
-          </GridStack>
-
-          <div className="my-8 flex justify-center items-center">
-            <div className="join">
-              <button className="join-item btn">«</button>
-              <button className="join-item btn">Page 22</button>
-              <button className="join-item btn">»</button>
-            </div>
-          </div>
-        </>
+        <GridView render={renderProducts} />
       )}
     </Container>
+  );
+};
+
+const CurrentTable = ({ name, columns }: Props) => {
+  return (
+    <Container>
+      <Table.Panel title="Service" name={name} />
+      <Table<ProductModel> id={name} columns={columns} />
+    </Container>
+  );
+};
+
+const GridView = ({ render }: GridProps) => {
+  return (
+    <div className="" style={{ height: "calc(100vh - 280px)" }}>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4  ">
+        {render()?.map((fields: ProductModel) => (
+          <ProductItems key={fields?._id} {...fields} />
+        ))}
+      </div>
+    </div>
   );
 };
 

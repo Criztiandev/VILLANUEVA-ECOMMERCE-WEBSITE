@@ -16,7 +16,7 @@ const NavLink = ({
   icon: string;
 }) => {
   return (
-    <Link to={path} className="flex gap-2">
+    <Link to={path} className="flex gap-2 hover:bg-[#244d4d] hover:text-white">
       <img src={icon} className="w-[24px] h-[24px]" loading="lazy" />
       <span className="text-[16px]">{title}</span>
     </Link>
@@ -24,7 +24,7 @@ const NavLink = ({
 };
 const NavTitle = ({ title, icon }: { title: string; icon: string }) => {
   return (
-    <summary>
+    <summary className="hover:bg-[#244d4d] hover:text-white">
       <img src={icon} className="w-[24px] h-[24px]" />
       <span className="text-base">{title}</span>
     </summary>
@@ -47,10 +47,18 @@ const Sidebar = () => {
             <NavTitle icon={ProductIcon} title="Products" />
             <ul>
               <li>
-                <Link to={"/products"}>Product List</Link>
+                <Link
+                  className="hover:bg-[#244d4d] hover:text-white"
+                  to={"/products"}>
+                  Product List
+                </Link>
               </li>
               <li>
-                <Link to={"/products/create"}>Create Product</Link>
+                <Link
+                  className="hover:bg-[#244d4d] hover:text-white"
+                  to={"/products/create"}>
+                  Create Product
+                </Link>
               </li>
             </ul>
           </details>
@@ -65,10 +73,18 @@ const Sidebar = () => {
             <NavTitle title="Order" icon={OrderIcon} />
             <ul>
               <li>
-                <Link to={"/order"}>Orders List</Link>
+                <Link
+                  className="hover:bg-[#244d4d] hover:text-white"
+                  to={"/order"}>
+                  Orders List
+                </Link>
               </li>
               <li>
-                <Link to={"/order/details"}>Order Details</Link>
+                <Link
+                  className="hover:bg-[#244d4d] hover:text-white"
+                  to={"/order/details"}>
+                  Order Details
+                </Link>
               </li>
             </ul>
           </details>
@@ -79,10 +95,18 @@ const Sidebar = () => {
             <NavTitle title="Customer" icon={CustomerIcon} />
             <ul>
               <li>
-                <Link to={"/customer"}>Customer List</Link>
+                <Link
+                  className="hover:bg-[#244d4d] hover:text-white"
+                  to={"/customer"}>
+                  Customer List
+                </Link>
               </li>
               <li>
-                <Link to={"/customer/create"}>Create Customer</Link>
+                <Link
+                  className="hover:bg-[#244d4d] hover:text-white"
+                  to={"/customer/create"}>
+                  Create Customer
+                </Link>
               </li>
             </ul>
           </details>
@@ -93,10 +117,18 @@ const Sidebar = () => {
             <NavTitle title="Service" icon={NaviIcon} />
             <ul>
               <li>
-                <Link to={"/service"}>Service List</Link>
+                <Link
+                  className="hover:bg-[#244d4d] hover:text-white"
+                  to={"/service"}>
+                  Service List
+                </Link>
               </li>
               <li>
-                <Link to={"/service/create"}>Create Service</Link>
+                <Link
+                  className="hover:bg-[#244d4d] hover:text-white"
+                  to={"/service/create"}>
+                  Create Service
+                </Link>
               </li>
             </ul>
           </details>

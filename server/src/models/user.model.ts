@@ -17,6 +17,8 @@ const userSchema = new Schema<UserDocument>(
     birthDate: { type: String, require: true },
     contact: { type: String, require: true },
 
+    fullName: { type: String, require: true },
+
     address: { type: String, require: true },
     street: { type: String, require: true },
     building: { type: String, require: true },
@@ -33,6 +35,11 @@ const userSchema = new Schema<UserDocument>(
 );
 
 // Middleware
+// Define a virtual property for fullName
+userSchema.virtual("fullName").get(function () {
+  return `${this.firstName} ${this.middleName} ${this.lastName}`;
+});
+
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();

@@ -6,6 +6,7 @@ interface Props {
   onSelect: (event: ChangeEvent<HTMLSelectElement>) => void;
   options: any;
   disabled?: boolean;
+  default?: string;
 }
 const AddressSelect = (props: Props) => {
   return (
@@ -14,9 +15,14 @@ const AddressSelect = (props: Props) => {
       <select
         className="select select-bordered"
         onChange={props.onSelect}
+        value={props.default ? props.default : ""}
         disabled={props.disabled}>
         <option value={""} className="text-base">
-          {props.disabled ? "Waiting.." : ` Select ${props.title}`}
+          {props.default
+            ? props.default
+            : props.disabled
+            ? "Waiting..."
+            : `Select ${props.title}`}
         </option>
         {props.options?.map(
           ({ code, name }: { code: string; name: string }) => (

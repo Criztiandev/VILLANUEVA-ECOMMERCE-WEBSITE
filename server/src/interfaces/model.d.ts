@@ -3,6 +3,9 @@ export interface UserModel {
   firstName: string;
   middleName: string;
   lastName: string;
+
+  fullName?: string;
+
   age: number;
   birthDate: string;
   contact: string;
@@ -20,6 +23,7 @@ export interface UserModel {
   password: string;
   role?: string;
 }
+
 export interface ProductModel {
   _id?: string;
   cover?: string;

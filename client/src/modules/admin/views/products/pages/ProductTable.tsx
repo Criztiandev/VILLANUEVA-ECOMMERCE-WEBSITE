@@ -11,10 +11,12 @@ import Table from "@/components/Table";
 import tableConfig from "@/modules/admin/config/table.config";
 import GridViewAction from "../components/GridViewAction";
 import useGridView from "@/hooks/useGridView";
+import Button from "@/components/Button";
 
 interface Props {
   name: string;
   columns: any;
+  onToggleTable: () => void;
 }
 
 interface GridProps {
@@ -74,7 +76,11 @@ const ProductTable = () => {
         />
       )}
       {isTable ? (
-        <CurrentTable name={name} columns={columns} />
+        <CurrentTable
+          name={name}
+          columns={columns}
+          onToggleTable={handleIsTable}
+        />
       ) : (
         <GridView render={renderProducts} />
       )}
@@ -82,10 +88,12 @@ const ProductTable = () => {
   );
 };
 
-const CurrentTable = ({ name, columns }: Props) => {
+const CurrentTable = ({ name, columns, onToggleTable }: Props) => {
   return (
     <Container>
-      <Table.Panel title="Products" name={name} />
+      <Table.Panel title="Products" name={name}>
+        <Button title="T" className="btn-circle" onClick={onToggleTable} />
+      </Table.Panel>
       <Table<ProductModel> id={name} columns={columns} />
     </Container>
   );
@@ -95,7 +103,7 @@ const GridView = ({ render }: GridProps) => {
   return (
     <div className="" style={{ height: "calc(100vh - 280px)" }}>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4  ">
-        {render().map((fields: ProductModel) => (
+        {render()?.map((fields: ProductModel) => (
           <ProductItems key={fields?._id} {...fields} />
         ))}
       </div>

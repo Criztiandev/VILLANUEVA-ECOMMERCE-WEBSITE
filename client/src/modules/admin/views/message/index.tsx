@@ -6,7 +6,7 @@ import Notification from "../../layout/Notification";
 const MainEntryPoint = () => {
   return (
     <>
-      <main className="flex gap-4">
+      <main className="flex ">
         <Sidebar />
         <section className=" flex flex-col w-screen overflow-x-hidden">
           <Topbar />

@@ -87,4 +87,26 @@ const orderTable: TableStructProps<OrderModel> = {
   }),
 };
 
-export default { productTable, categoryTable, customerTable, orderTable };
+const recentTable: TableStructProps<ProductModel> = {
+  base: "recent",
+  name: "rencet-table",
+  columns: tableUtils.columnGenerator<ProductModel>({
+    deleteFn: () => {},
+    invalidateKey: ["recent"],
+    options: [
+      { name: "name", header: "Name", isFirst: true },
+      { name: "category", header: "Category" },
+      { name: "price", header: "Price" },
+      { name: "stock", header: "Stocks" },
+      { name: "status", header: "Status", isBadge: true },
+    ],
+  }),
+};
+
+export default {
+  productTable,
+  categoryTable,
+  customerTable,
+  orderTable,
+  recentTable,
+};

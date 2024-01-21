@@ -9,6 +9,7 @@ body,
   font-family: "Poppins", sans-serif;
   line-height: 1.5;
   min-height: 100vh;
+  background: #f6f8ff;
 }
 
 input::-webkit-outer-spin-button,

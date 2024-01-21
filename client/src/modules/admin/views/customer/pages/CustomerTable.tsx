@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import Table from "@/components/Table";
@@ -16,7 +17,7 @@ const CustomerTable = () => {
             <Button title="Create" />
           </Link>
         </Table.Panel>
-        <Table<UserModel> id={name} columns={columns} />
+        <Table<UserModel> id={name} columns={columns as any} />
       </Container>
     </>
   );
