@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import viewIcon from "@/assets/icons/Eye_duotone.svg";
-import editIcon from "@/assets/icons/Edit_SVG.svg";
-import trashIcon from "@/assets/icons/Trash_icon.svg";
+import viewIcon from "@/assets/icons/view_light_icon.svg";
+import editIcon from "@/assets/icons/edit_light_icon.svg";
+import trashIcon from "@/assets/icons/delete_light_icon.svg";
 import Modal from "@/components/Modal";
 import DeleteModal from "@/containers/DeleteModal";
 import { CellContext } from "@tanstack/react-table";

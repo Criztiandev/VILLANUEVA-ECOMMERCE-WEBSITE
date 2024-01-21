@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 // chage this
 import model from "../../../models/product.model.ts";
 import categoryModel from "../../../models/category.model.ts";
+import productModel from "../../../models/product.model.ts";
 
 export default {
   // Create User
@@ -11,21 +12,29 @@ export default {
   create: asyncHandler(async (req: Request, res: Response) => {
     const payload = req.body;
 
-    // Add Logic to create
+    const productExist = await productModel
+      .findOne({ name: payload?.name })
+      .lean()
+      .select("_id");
+
+    if (productExist) throw new Error("Prodict already exist");
 
     const category = await categoryModel.findOneAndUpdate(
       { name: payload?.category },
       { $inc: { count: 1 } },
       { new: true }
     );
-
     if (!category) throw new Error("Something went wrong");
 
-    const credentials = await model.create(payload);
+    if (req.files && Array.isArray(req.files) && req.files.length > 0) {
+      const images = (req.files as any).map((file: any) => file?.filename);
 
-    if (!credentials)
-      handleError("Something went wrong, Please Try again later");
-    handleSuccess(res, payload);
+      const credentials = await model.create({ images: images, ...req.body });
+
+      if (!credentials)
+        handleError("Something went wrong, Please Try again later");
+      handleSuccess(res, payload);
+    }
   }),
 
   // Update User By Id
@@ -50,8 +59,11 @@ export default {
   // DELETE /api/user/delete/:id (Private, Admin)
   deleteById: asyncHandler(async (req: Request, res: Response) => {
     const UID = req.params.id;
+    const existance = await model
+      .findById({ _id: UID })
+      .lean()
+      .select("_id category");
 
-    const existance = await model.findById(UID).lean().select("_id category");
     if (!existance) handleError("Not Found, Please Try again");
 
     const category = await categoryModel.findOneAndUpdate(
@@ -95,13 +107,15 @@ export default {
     handleSuccess(res, credentials);
   }),
 
-  // Get All Users by Filter
-  // GET /api/user/:filter (Private, Admin)
-  getAllByFilter: asyncHandler(async (req: Request, res: Response) => {
-    const filter = req.params.filter || {};
-    const exception = "-password -__v";
+  // Get User By Filter query
+  // GET /api/user/:id (Private, Admin)
+  getByFilter: asyncHandler(async (req: Request, res: Response) => {
+    const filter = req.query.filter;
 
-    const credentials = await model.find(filter).lean().select(exception);
+    const credentials = await model
+      .findById(filter)
+      .lean()
+      .select("-password -__v");
     if (!credentials) handleError("Something went wrong, Please Try again");
 
     handleSuccess(res, credentials);

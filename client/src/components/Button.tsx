@@ -4,6 +4,7 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   dir?: "left" | "right" | undefined;
   title?: string;
   icon?: string;
+  onClick?: () => void;
 }
 
 const Button = (props: Props) => {

@@ -1,8 +1,9 @@
+import React from "react";
 import { useFormContext, FieldValues } from "react-hook-form";
 import Heading from "./Heading";
-import Text from "./Text";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 interface Options {
   title: string;
   value: string | number;
@@ -21,12 +22,24 @@ interface Props {
 const Select = (props: Props) => {
   const { register, formState, setValue } = useFormContext<FieldValues>();
   const { errors } = formState;
-
   const errorMessage: any = errors[props.name as string]?.message;
 
-  if (props.default) {
-    setValue(props.name, props.default);
-  }
+  // Set default value if provided
+  React.useEffect(() => {
+    if (props.default) {
+      setValue(props.name, props.default);
+    }
+  }, [props.default, props.name, setValue]);
+
+  const defaultClass = `${
+    props.className && props.className
+  } w-full select select-bordered`;
+
+  const tooltipDisplay = props?.disabled
+    ? "No Categories available"
+    : errorMessage
+    ? `${props.title} is ${errorMessage}`
+    : null;
 
   return (
     <label className="relative flex flex-col gap-2 w-full">
@@ -36,25 +49,36 @@ const Select = (props: Props) => {
         </Heading>
       )}
 
-      <select
-        {...props}
-        {...register(props?.name)}
+      <div
         className={`${
-          props.className ? props.className : ""
-        } select select-bordered`}>
-        <option value={""} className="text-[18px]">
-          {props.placeholder}
-        </option>
-        {props.option?.map((field) => (
-          <option key={field.title} value={field.value} className="text-[18px]">
-            {field.title}
+          (props.disabled || errorMessage) && "tooltip  tooltip-bottom"
+        }  flex w-full ${errorMessage && !props.disabled && "tooltip-error"}`}
+        data-tip={tooltipDisplay}>
+        <select
+          {...props}
+          {...register(props?.name)}
+          className={`${
+            errorMessage
+              ? "select border-2 border-red-500 w-full"
+              : defaultClass
+          }`}>
+          {/* Placeholder */}
+          <option value={""} className="text-[18px]">
+            {props.placeholder}
           </option>
-        ))}
-      </select>
 
-      {errorMessage && (
-        <Text className="text-base text-error">{errorMessage}</Text>
-      )}
+          {/* Options */}
+          {props.option &&
+            props.option?.map((field) => (
+              <option
+                key={field.title}
+                value={field.value}
+                className="text-[18px]">
+                {field.title}
+              </option>
+            ))}
+        </select>
+      </div>
     </label>
   );
 };

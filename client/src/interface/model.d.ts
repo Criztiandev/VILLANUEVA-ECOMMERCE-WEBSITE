@@ -8,14 +8,18 @@ export interface UserModel {
 
 export interface ProductModel {
   _id?: string;
+  cover?: string;
   images?: Array<string>;
   name: string;
-  description?: string;
   price: number;
   stock: number;
   category: string;
   status: string;
+  summary?: string;
+  shippingFee: number;
+  description?: string;
   isPublished: boolean;
+  isFeatured: boolean;
 }
 
 export interface ProductDetails {

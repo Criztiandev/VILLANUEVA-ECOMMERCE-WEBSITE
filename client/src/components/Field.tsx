@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { InputHTMLAttributes } from "react";
 import { useFormContext, FieldValues } from "react-hook-form";
-import Text from "./Text";
 import Heading from "./Heading";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
@@ -29,17 +28,20 @@ const Field = (props: Props) => {
           {props.title}
         </Heading>
       )}
-      <input
-        {...props}
-        {...register(props?.name)}
-        className={`input input-bordered ${
-          props.className ? props.className : ""
-        } w-full ${errorMessage ? "input-error" : ""}`}
-        autoComplete={`current-${props.name}`}
-      />
-      {errorMessage && (
-        <Text className="text-error text-base">{errorMessage}</Text>
-      )}
+      <div
+        className={`${
+          errorMessage && !props.disabled && "tooltip tooltip-bottom"
+        }`}
+        data-tip={`${errorMessage && !props.disabled && errorMessage}`}>
+        <input
+          {...props}
+          {...register(props?.name)}
+          className={`input input-bordered ${
+            props.className ? props.className : ""
+          } w-full ${errorMessage ? "input-error" : ""}`}
+          autoComplete={`current-${props.name}`}
+        />
+      </div>
     </label>
   );
 };

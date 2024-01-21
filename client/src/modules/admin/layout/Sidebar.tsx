@@ -1,5 +1,34 @@
 import { Link } from "react-router-dom";
-import DashboardIcon from "@/assets/icons/Dashboard.svg";
+import DashboardIcon from "@/assets/icons/dashboard_light_icon.svg";
+import ProductIcon from "@/assets/icons/product_light_icon.svg";
+import CategoryIcon from "@/assets/icons/category_light_icon.svg";
+import CustomerIcon from "@/assets/icons/customer_light_icon.svg";
+import OrderIcon from "@/assets/icons/order_light_icon.svg";
+
+const NavLink = ({
+  title,
+  path,
+  icon,
+}: {
+  title: string;
+  path: string;
+  icon: string;
+}) => {
+  return (
+    <Link to={path} className="flex gap-2">
+      <img src={icon} className="w-[24px] h-[24px]" loading="lazy" />
+      <span className="text-[16px]">{title}</span>
+    </Link>
+  );
+};
+const NavTitle = ({ title, icon }: { title: string; icon: string }) => {
+  return (
+    <summary>
+      <img src={icon} className="w-[24px] h-[24px]" />
+      <span className="text-base">{title}</span>
+    </summary>
+  );
+};
 
 const Sidebar = () => {
   return (
@@ -9,15 +38,12 @@ const Sidebar = () => {
       </div>
       <ul className="menu">
         <li>
-          <Link to={"/"} className="flex gap-2">
-            <img src={DashboardIcon} className="w-[24px] h-[24px]" />
-            <span className="text-[16px]">Dashboard</span>
-          </Link>
+          <NavLink title="Dashboard" path="/" icon={DashboardIcon} />
         </li>
 
         <li>
           <details>
-            <summary>Produts</summary>
+            <NavTitle icon={ProductIcon} title="Products" />
             <ul>
               <li>
                 <Link to={"/products"}>Product List</Link>
@@ -30,12 +56,12 @@ const Sidebar = () => {
         </li>
 
         <li>
-          <Link to={"/category"}>Category</Link>
+          <NavLink title="Category" path="/category" icon={CategoryIcon} />
         </li>
 
         <li>
           <details>
-            <summary>Orders</summary>
+            <NavTitle title="Order" icon={OrderIcon} />
             <ul>
               <li>
                 <Link to={"/order"}>Orders List</Link>
@@ -49,7 +75,7 @@ const Sidebar = () => {
 
         <li>
           <details>
-            <summary>Customer</summary>
+            <NavTitle title="Customer" icon={CustomerIcon} />
             <ul>
               <li>
                 <Link to={"/customer"}>Customer List</Link>

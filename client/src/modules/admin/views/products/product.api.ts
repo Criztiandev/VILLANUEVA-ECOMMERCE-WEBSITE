@@ -4,6 +4,9 @@ import apiUtils from "@/utils/api.utils";
 const base = "products";
 
 export default {
+  sendFile: async (title: string, payload: any) =>
+    await apiUtils.sendFileAxios().post(`/${base}/upload/${title}`, payload),
+
   create: async (payload: ProductModel) =>
     await apiUtils.privateAxios().post(`/${base}/create`, payload),
 
@@ -33,6 +36,9 @@ export default {
     if (id === currentId) {
       throw new Error("You cant Perform this Action");
     }
+
+    console.log(id);
+
     return await apiUtils.privateAxios().delete(`/${base}/${id}`);
   },
 

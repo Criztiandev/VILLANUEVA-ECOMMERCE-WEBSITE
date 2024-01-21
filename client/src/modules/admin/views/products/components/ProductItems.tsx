@@ -1,8 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import LoadingScreen from "@/containers/LoadingScreen";
 import { ProductModel } from "@/interface/model";
+import fileApi from "@/service/api/file.api";
+import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
 const ProductItems = (props: ProductModel) => {
   const navigate = useNavigate();
+
+  // Ensure that props.images is an array before accessing its elements
+  const coverImage =
+    props.images && props.images.length > 0 ? props.images[0] : null;
+
+  // Use the newer optional chaining and nullish coalescing syntax for safer property access
+  const modifiedName = props.name?.split(" ")?.join("_")?.toLowerCase();
+
+  // Use a more descriptive variable name for the query
+  const coverImageQuery = useQuery({
+    queryFn: async () =>
+      fileApi.fetchImage(`products/${modifiedName}/${coverImage}`),
+    queryKey: [`${props._id}-${props.name}`],
+    enabled: !!props._id && !!coverImage,
+  });
+
+  if (coverImageQuery.isLoading) return <LoadingScreen />;
+  const { data: image } = coverImageQuery;
   return (
     <div
       onDoubleClick={() => navigate(`${props?._id}`)}
@@ -15,7 +37,16 @@ const ProductItems = (props: ProductModel) => {
         <div className="badge p-4 capitalize">{props.status}</div>
       </div>
 
-      <div className="h-[250px]  w-full my-4"></div>
+      <div className="h-[250px]  w-full my-4">
+        {/* Use optional chaining to safely access coverImageQuery.data */}
+        {(image as any) && (
+          <img
+            src={image as string}
+            alt={props.name}
+            className="w-full h-full object-cover"
+          />
+        )}
+      </div>
 
       <div className="flex justify-between items-end">
         <div>
