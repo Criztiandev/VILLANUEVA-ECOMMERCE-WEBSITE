@@ -1,9 +1,26 @@
 export interface UserModel {
   _id?: string;
-  fullName: string;
+
+  // Details
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  age: number;
+  birthDate: string;
+  contact: string;
+  gender: string;
+
+  // Address
+  address: string;
+  street: string;
+  building: string;
+  houseNo: string;
+  postalCode: string;
+
+  // Account
   email: string;
   password: string;
-  role?: "admin" | "user" | "guest";
+  role?: string;
 }
 
 export interface ProductModel {
@@ -52,16 +69,6 @@ export interface CategoryModel {
   _id?: string;
   name: string;
   count?: number;
-}
-
-export interface CustomerModel {
-  _id?: string;
-  fullName: string;
-  contact: string;
-  email: string;
-  address: string;
-  gender: string;
-  age: number;
 }
 
 export interface ServiceMode {}

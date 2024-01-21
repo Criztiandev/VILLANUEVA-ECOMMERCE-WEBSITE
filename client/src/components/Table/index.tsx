@@ -116,7 +116,7 @@ const Table = <T,>({ columns, ...props }: TableProps<T>) => {
             {table.getHeaderGroups().map((row) => (
               <tr key={row.id}>
                 {row.headers.map((header, index) => (
-                  <th key={header.id} className="">
+                  <th key={header.id} className="bg-slate-500 text-white">
                     {header.isPlaceholder ? null : (
                       <div
                         className={`flex items-center ${

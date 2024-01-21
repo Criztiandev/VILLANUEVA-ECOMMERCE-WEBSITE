@@ -2,84 +2,97 @@
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import Field from "@/components/Field";
-import FlexStack from "@/components/FlexStack";
 import Form from "@/components/Form";
 import GridStack from "@/components/GridStack";
-import Select from "@/components/Select";
 
-import { CustomerModel } from "@/interface/model";
+import { UserModel } from "@/interface/model";
 import customerValidationSchema from "../customer.validation";
 import queryUtils from "@/utils/query.utils";
 import customerApi from "../customer.api";
+import Select from "@/components/Select";
+
+import LoadingScreen from "@/containers/LoadingScreen";
+import usePhillAddress from "@/hooks/usePhillAddress";
+import AddressSelect from "../components/AddressSelect";
 
 const CustomerCreate = () => {
+  const {
+    finalAddress,
+    region,
+    province,
+    cities,
+    municipalities,
+    barangays,
+    handleSelectRegion,
+    handleSelectProvince,
+    handleSelectCities,
+    handleSelectMunicipalities,
+    handleSelectedBarangay,
+  } = usePhillAddress();
+
   const mutation = queryUtils.mutation({
-    mutationFn: async (payload: CustomerModel) =>
-      await customerApi.create(payload),
+    mutationFn: async (payload: UserModel) => await customerApi.create(payload),
     invalidateKey: ["customer"],
     toast: "Created Customer Successfully",
   });
 
-  const handleSubmit = (payload: CustomerModel) => {
+  const handleSubmit = (payload: UserModel) => {
     mutation.mutate(payload);
   };
 
+  if (region.isLoading) return <LoadingScreen />;
+  const { data: regionRes } = region as { data: any };
+
   return (
     <div className="overflow-hidden">
+      <h1 className="mt-8 mb-4 text-[32px] font-bold">User Create</h1>
       <Container className="my-8 mx-auto border-t border-gray-300 py-4">
-        <Form<CustomerModel>
+        <Form<UserModel>
           onSubmit={handleSubmit}
           validation={customerValidationSchema}>
           <GridStack
             columns={2}
             gap={24}
-            className=" mb-8 border-b border-gray-200 pb-8">
-            <Container className="">
-              <h2 className="text-[18px] font-semibold">Profile Picture</h2>
-            </Container>
-
-            <Container>
-              <div className="w-full border-2 border-dashed border-gray-400 h-[300px] rounded-[5px] p-4 flex justify-center items-center">
-                <input type="file" />
-              </div>
-            </Container>
-          </GridStack>
-
-          <GridStack columns={2} gap={24}>
+            className="mb-8 border-b border-gray-200 pb-8">
             <Container>
               <h2 className="text-[18px] font-semibold">Customer Details</h2>
             </Container>
 
-            <FlexStack gap={16} className="">
-              <Field
-                title="Full name"
-                name="fullName"
-                placeholder="Enter Custoemr Full Name"
-                required
-              />
-              <GridStack columns={2} gap={16} className="w-full">
+            <Container>
+              <GridStack columns={2} gap={16}>
                 <Field
-                  type="email"
-                  title="Email"
-                  name="email"
-                  placeholder="Enter customer email"
+                  title="First Name"
+                  name="firstName"
+                  placeholder="Enter Custoemr Full Name"
                   required
                 />
                 <Field
-                  type="tel"
+                  title="Middle name"
+                  name="middleName"
+                  placeholder="Enter Custoemr Full Name"
+                  required
+                />
+                <Field
+                  title="Last Name"
+                  name="lastName"
+                  placeholder="Enter Custoemr Full Name"
+                  required
+                />
+              </GridStack>
+
+              <GridStack columns={2} gap={16} className="my-4">
+                <Field title="Age" name="age" placeholder="Enter Street" />
+                <Field
+                  type="date"
+                  title="Birth date"
+                  name="birthDate"
+                  placeholder="Enter Custoemr Full Name"
+                  required
+                />
+                <Field
                   title="Contact"
                   name="contact"
-                  placeholder="Enter contact number"
-                  required
-                />
-
-                {/* Add a Address API here */}
-
-                <Field
-                  type="text"
-                  title="Address"
-                  name="address"
-                  placeholder="Enter Customer Address"
+                  placeholder="Enter Custoemr Full Name"
                   required
                 />
 
@@ -92,16 +105,115 @@ const CustomerCreate = () => {
                     { title: "Female", value: "female" },
                   ]}
                 />
+              </GridStack>
+            </Container>
+          </GridStack>
+
+          <GridStack
+            columns={2}
+            gap={24}
+            className="mb-8 border-b border-gray-200 pb-8">
+            <Container className="">
+              <h2 className="text-[18px] font-semibold">Customer Address</h2>
+            </Container>
+
+            <Container>
+              <GridStack columns={2} gap={16}>
+                <Field
+                  title="Street"
+                  name="street"
+                  placeholder="Enter Street"
+                />
+                <Field
+                  title="Building"
+                  name="building"
+                  placeholder="Enter Building"
+                />
+                <Field
+                  title="House no"
+                  name="houseNo"
+                  placeholder="Enter House"
+                />
 
                 <Field
-                  type="number"
-                  title="Age"
-                  name="age"
-                  placeholder="Enter Customer age"
-                  required
+                  default={region}
+                  name="region"
+                  hidden
+                  className="hidden"
                 />
+
+                <AddressSelect
+                  title="Region"
+                  disabled={region.isLoading}
+                  onSelect={handleSelectRegion}
+                  options={regionRes}
+                />
+                <AddressSelect
+                  title="Provice"
+                  disabled={province?.isLoading || province?.data === undefined}
+                  onSelect={handleSelectProvince}
+                  options={province.data}
+                />
+                <AddressSelect
+                  title="Cities"
+                  disabled={cities.isLoading || cities?.data === undefined}
+                  onSelect={handleSelectCities}
+                  options={cities.data}
+                />
+                <AddressSelect
+                  title="Municipality"
+                  disabled={
+                    municipalities.isLoading ||
+                    municipalities?.data === undefined
+                  }
+                  onSelect={handleSelectMunicipalities}
+                  options={municipalities.data}
+                />
+                <AddressSelect
+                  title="Barangay"
+                  disabled={
+                    barangays.isLoading || barangays?.data === undefined
+                  }
+                  onSelect={handleSelectedBarangay}
+                  options={barangays.data}
+                />
+
+                <Field default={finalAddress} name="address" required hidden />
               </GridStack>
-            </FlexStack>
+              <div className="my-4">
+                <Field
+                  title="Postal Code"
+                  name="postalCode"
+                  placeholder="Enter Postal Code"
+                />
+              </div>
+            </Container>
+          </GridStack>
+
+          <GridStack
+            columns={2}
+            gap={24}
+            className="mb-8 border-b border-gray-200 pb-8">
+            <Container className="">
+              <h2 className="text-[18px] font-semibold">Customer Account</h2>
+            </Container>
+
+            <GridStack columns={2} gap={16}>
+              <Field
+                type="email"
+                title="Email"
+                name="email"
+                placeholder="Enter Email"
+                required
+              />
+              <Field
+                type="password"
+                title="Password"
+                name="password"
+                placeholder="Enter Password"
+                required
+              />
+            </GridStack>
           </GridStack>
 
           <GridStack columns={2} gap={24}>

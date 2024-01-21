@@ -1,9 +1,9 @@
 import Button from "@/components/Button";
 import Container from "@/components/Container";
 import Table from "@/components/Table";
-import { CustomerModel } from "@/interface/model";
 import tableConfig from "@/modules/admin/config/table.config";
 import { Link } from "react-router-dom";
+import { UserModel } from "../customer.validation";
 
 const CustomerTable = () => {
   const { name, columns } = tableConfig.customerTable;
@@ -16,7 +16,7 @@ const CustomerTable = () => {
             <Button title="Create" />
           </Link>
         </Table.Panel>
-        <Table<CustomerModel> id={name} columns={columns} />
+        <Table<UserModel> id={name} columns={columns} />
       </Container>
     </>
   );

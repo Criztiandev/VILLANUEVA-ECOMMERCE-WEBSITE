@@ -12,7 +12,7 @@ export default {
   optionTransformer: <T>(args: Options<T>) => {
     const { payload, options } = args;
 
-    return payload.map((items: any) => ({
+    return payload?.map((items: any) => ({
       title: items[options.key],
       value: items[options.value],
     }));

@@ -21,7 +21,7 @@ const Field = (props: Props) => {
 
   return (
     <label
-      className="grid gap-2 w-full"
+      className="flex flex-col gap-2"
       style={{ gridTemplateRows: `24px auto ${errorMessage && "24px"}` }}>
       {props.title && (
         <Heading level={3} className="font-semibold">

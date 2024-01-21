@@ -1,22 +1,40 @@
 import * as z from "zod";
 
-export interface CustomerModel {
+export interface UserModel {
   _id?: string;
-  fullName: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  age: number;
+  birthDate: string;
   contact: string;
-  email: string;
   address: string;
   gender: string;
-  age: string;
+  email: string;
+  password: string;
+  role?: string;
 }
 
 const customerValidationSchema = z.object({
-  fullName: z.string().min(3).max(50),
-  contact: z.string().min(3, "Too Short").max(12, "Too Long"),
-  email: z.string().email().min(3).max(50),
-  address: z.string().min(3).max(50),
-  gender: z.string().min(3).max(50),
+  firstName: z.string().min(3).max(50),
+  middleName: z.string().min(3).max(50),
+  lastName: z.string().min(3).max(50),
   age: z.coerce.number().gte(0, "Stock Required"),
+  birthDate: z.string().min(3).max(50),
+  contact: z.string().min(3, "Too Short").max(12, "Too Long"),
+  gender: z.string().min(3).max(50),
+
+  address: z.string().min(3).max(255),
+  street: z.string().min(3).max(50),
+  building: z.string().min(0).max(50),
+  houseNo: z.string().min(0).max(50),
+  postalCode: z.string().min(3).max(50),
+
+  email: z.string().email().min(3).max(50),
+  password: z
+    .string()
+    .min(3, "Password Too Short")
+    .max(15, "Password Too long"),
 });
 
 export default customerValidationSchema;

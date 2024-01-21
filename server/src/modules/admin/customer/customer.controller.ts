@@ -2,13 +2,18 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
 // chage this
-import model from "../../../models/customer.model.ts";
+import model from "../../../models/user.model.ts";
 
 export default {
   // Create User
   // POST /api/user/create (Private, Admin)
   create: asyncHandler(async (req: Request, res: Response) => {
     const payload = req.body;
+
+    const existance = await model
+      .findOne({ email: payload?.email })
+      .lean("_id");
+    if (existance) throw new Error("User Already exist");
 
     // Add Logic to create
     const credentials = await model.create(payload);
@@ -23,8 +28,6 @@ export default {
   updateById: asyncHandler(async (req: Request, res: Response) => {
     const UID = req.params.id;
     const payload = req.body;
-
-    console.log(payload);
 
     const existance = await model.findById(UID).lean().select("_id");
     if (!existance) handleError("Not Found, Please Try again");
@@ -72,8 +75,15 @@ export default {
   // Get All Users
   // GET /api/user (Private, Admin)
   getAll: asyncHandler(async (req: Request, res: Response) => {
+    const { role } = req.query as { role: "user" | "admin" };
+
+    console.log(role);
+
     const exception = "-password -__v";
-    const credentials = await model.find({}).lean().select(exception);
+    const credentials = await model
+      .find(role ? { role } : {})
+      .lean()
+      .select(exception);
     if (!credentials) handleError("Something went wrong, Please Try again");
 
     handleSuccess(res, credentials);

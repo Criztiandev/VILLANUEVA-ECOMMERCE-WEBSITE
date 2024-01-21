@@ -44,7 +44,7 @@ const Select = (props: Props) => {
   return (
     <label className="relative flex flex-col gap-2 w-full">
       {props.title && (
-        <Heading level={3} className="text-[18px]">
+        <Heading level={3} className="text-[18px] font-semibold">
           {props.title}
         </Heading>
       )}
@@ -63,7 +63,7 @@ const Select = (props: Props) => {
               : defaultClass
           }`}>
           {/* Placeholder */}
-          <option value={""} className="text-[18px]">
+          <option value={""} className="text-base">
             {props.placeholder}
           </option>
 
@@ -73,7 +73,7 @@ const Select = (props: Props) => {
               <option
                 key={field.title}
                 value={field.value}
-                className="text-[18px]">
+                className="text-base">
                 {field.title}
               </option>
             ))}

@@ -15,7 +15,7 @@ const Panel = ({ name, title, ...props }: Props) => {
 
   return (
     <div className="flex justify-between items-center">
-      <h1 className="text-[24px] my-4">{title}</h1>
+      <h1 className="text-[24px] font-semibold my-4">{title}</h1>
 
       <div className="flex gap-2">
         <input

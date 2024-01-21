@@ -1,9 +1,9 @@
 import { TableStructProps } from "@/interface/component";
 import {
   CategoryModel,
-  CustomerModel,
   OrderModel,
   ProductModel,
+  UserModel,
 } from "@/interface/model";
 import tableUtils from "@/utils/table.utils";
 import productApi from "../views/products/product.api";
@@ -50,18 +50,19 @@ const categoryTable: TableStructProps<CategoryModel> = {
   }),
 };
 
-const customerTable: TableStructProps<CustomerModel> = {
+const customerTable: TableStructProps<UserModel> = {
   base: "customer",
   name: "customer-table",
-  columns: tableUtils.columnGenerator<CustomerModel>({
+  columns: tableUtils.columnGenerator<UserModel>({
     deleteFn: customerApi.deleteById,
     invalidateKey: ["customer"],
     options: [
-      { name: "fullName", header: "Name", isFirst: true },
-      { name: "contact", header: "Contact" },
-      { name: "email", header: "Email" },
-      { name: "gender", header: "Gender", isBadge: true },
+      { name: "firstName", header: "Name", isFirst: true },
+      { name: "email", header: "Emai" },
+      { name: "contact", header: "contact" },
       { name: "address", header: "Address" },
+      { name: "gender", header: "Gender" },
+
       { name: "_id", header: "Action", isLast: true },
     ],
   }),

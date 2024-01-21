@@ -4,6 +4,7 @@ import ProductIcon from "@/assets/icons/product_light_icon.svg";
 import CategoryIcon from "@/assets/icons/category_light_icon.svg";
 import CustomerIcon from "@/assets/icons/customer_light_icon.svg";
 import OrderIcon from "@/assets/icons/order_light_icon.svg";
+import NaviIcon from "@/assets/icons/service_light_icon.svg";
 
 const NavLink = ({
   title,
@@ -89,7 +90,7 @@ const Sidebar = () => {
 
         <li>
           <details>
-            <summary>Service</summary>
+            <NavTitle title="Service" icon={NaviIcon} />
             <ul>
               <li>
                 <Link to={"/service"}>Service List</Link>

@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { CustomerModel } from "@/interface/model";
+import { UserModel } from "@/interface/model";
 import apiUtils from "@/utils/api.utils";
 
 const base = "customer";
 
 export default {
-  create: async (payload: CustomerModel) =>
+  create: async (payload: UserModel) =>
     await apiUtils.privateAxios().post(`/${base}/create`, payload),
 
-  fetchAll: async () => {
+  fetchAll: async (role?: any) => {
     try {
-      const res = await apiUtils.privateAxios().get(`/${base}`);
+      const res = await apiUtils.privateAxios().get(`/${base}?role=${role}`);
       return res.data;
     } catch (e) {
       return e;

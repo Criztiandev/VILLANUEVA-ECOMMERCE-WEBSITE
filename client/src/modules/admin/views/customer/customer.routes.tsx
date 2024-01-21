@@ -18,7 +18,7 @@ const categoryRoutes = [
     children: [
       {
         path: `/${base}`,
-        element: <FechTableScreen fetchFn={ServerApi.fetchAll} />,
+        element: <FechTableScreen fetchFn={() => ServerApi.fetchAll("user")} />,
       },
       { path: `/${base}/create`, element: <CreateScreen /> },
       { path: `/${base}/:id`, element: <DetailsScreen /> },

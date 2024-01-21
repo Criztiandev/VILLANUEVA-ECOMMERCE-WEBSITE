@@ -22,12 +22,14 @@ const DeleteModal = ({ id, onSubmit, ...props }: Props) => {
       </p>
 
       <Stack gap={8}>
-        <Button
-          disabled={props.isPending}
-          title="Confirm"
-          className="w-full"
-          onClick={onSubmit}
-        />
+        <label htmlFor={id} className="w-full">
+          <Button
+            disabled={props.isPending}
+            title="Confirm"
+            className="w-full"
+            onClick={onSubmit}
+          />
+        </label>
 
         <label className="btn w-full text-balance" htmlFor={id}>
           Cancel

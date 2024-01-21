@@ -2,16 +2,35 @@ import { Document, Schema, model } from "mongoose";
 import * as bcrypt from "bcrypt";
 import { UserModel } from "../interfaces/model.ts";
 
-interface UserDocument extends Document, Omit<UserModel, "_id"> {
+// Extend the UserModel interface to include the matchPassword method
+interface UserDocument extends Document, UserModel {
   matchPassword(currentPassword: string): Promise<boolean>;
 }
 
-const userSchema = new Schema<UserDocument>({
-  fullName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  role: { type: String, default: "user" },
-});
+const userSchema = new Schema<UserDocument>(
+  {
+    firstName: { type: String, require: true },
+    middleName: { type: String, require: true },
+    lastName: { type: String, require: true },
+    age: { type: Number, require: true },
+    gender: { type: String, require: true },
+    birthDate: { type: String, require: true },
+    contact: { type: String, require: true },
+
+    address: { type: String, require: true },
+    street: { type: String, require: true },
+    building: { type: String, require: true },
+    houseNo: { type: String, require: true },
+    postalCode: { type: String, require: true },
+
+    email: { type: String, require: true },
+    password: { type: String, require: true },
+    role: { type: String, default: "user", enum: ["user", "admin"] },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 // Middleware
 userSchema.pre("save", async function (next) {
