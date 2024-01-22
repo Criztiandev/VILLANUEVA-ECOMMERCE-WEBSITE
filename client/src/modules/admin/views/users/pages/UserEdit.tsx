@@ -17,7 +17,7 @@ import AddressSelect from "../components/AddressSelect";
 import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
-const CustomerEdit = () => {
+const UserEdit = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -268,4 +268,4 @@ const CustomerEdit = () => {
   );
 };
 
-export default CustomerEdit;
+export default UserEdit;

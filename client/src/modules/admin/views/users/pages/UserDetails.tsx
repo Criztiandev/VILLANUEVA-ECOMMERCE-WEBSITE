@@ -14,7 +14,7 @@ import Modal from "@/components/Modal";
 import DeleteModal from "@/containers/DeleteModal";
 import queryUtils from "@/utils/query.utils";
 
-const CustomerDetails = () => {
+const UserDetails = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -142,4 +142,4 @@ const CustomerDetails = () => {
   );
 };
 
-export default CustomerDetails;
+export default UserDetails;

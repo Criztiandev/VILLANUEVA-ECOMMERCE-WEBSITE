@@ -41,6 +41,15 @@ export interface ProductModel {
   isFeatured: boolean;
 }
 
+export interface RecentModel {
+  no: string;
+  customer: string;
+  product: string;
+  status: string;
+  deliverAt: string;
+  total: number;
+}
+
 export interface ProductDetails {
   _id: string;
   name: string;

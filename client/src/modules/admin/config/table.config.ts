@@ -4,6 +4,7 @@ import {
   ConvoModel,
   OrderModel,
   ProductModel,
+  RecentModel,
   UserModel,
 } from "@/interface/model";
 import tableUtils from "@/utils/table.utils";
@@ -89,18 +90,19 @@ const orderTable: TableStructProps<OrderModel> = {
   }),
 };
 
-const recentTable: TableStructProps<ProductModel> = {
+const recentTable: TableStructProps<RecentModel> = {
   base: "recent",
   name: "rencet-table",
-  columns: tableUtils.columnGenerator<ProductModel>({
+  columns: tableUtils.columnGenerator<RecentModel>({
     deleteFn: () => {},
     invalidateKey: ["recent"],
     options: [
-      { name: "name", header: "Name", isFirst: true },
-      { name: "category", header: "Category" },
-      { name: "price", header: "Price" },
-      { name: "stock", header: "Stocks" },
+      { name: "no", header: "No#", isFirst: true },
+      { name: "customer", header: "Customer" },
+      { name: "product", header: "Product" },
       { name: "status", header: "Status", isBadge: true },
+      { name: "deliverAt", header: "Deliver At" },
+      { name: "total", header: "Total" },
     ],
   }),
 };

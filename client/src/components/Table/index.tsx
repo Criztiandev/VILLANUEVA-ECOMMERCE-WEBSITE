@@ -108,15 +108,17 @@ const Table = <T,>({ columns, ...props }: TableProps<T>) => {
 
   return (
     <div
-      className="overflow-x-auto border bg-white"
+      className="overflow-x-auto  bg-white"
       style={{ height: "calc(100vh - 250px)" }}>
       {memoizedData && (
-        <table className="table table-md border rounded-[5px] bg-white">
+        <table className="table table-md  rounded-[5px] bg-white">
           <thead>
             {table.getHeaderGroups().map((row) => (
-              <tr key={row.id}>
+              <tr
+                key={row.id}
+                className="rounded-t-[10px] border-b overflow-hidden">
                 {row.headers.map((header, index) => (
-                  <th key={header.id} className="bg-slate-500 text-white">
+                  <th key={header.id} className=" text-gray-400 font-semibold">
                     {header.isPlaceholder ? null : (
                       <div
                         className={`flex items-center ${

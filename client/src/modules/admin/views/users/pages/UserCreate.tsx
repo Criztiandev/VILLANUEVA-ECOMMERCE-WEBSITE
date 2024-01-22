@@ -15,7 +15,7 @@ import LoadingScreen from "@/containers/LoadingScreen";
 import usePhillAddress from "@/hooks/usePhillAddress";
 import AddressSelect from "../components/AddressSelect";
 
-const CustomerCreate = () => {
+const UserCreate = () => {
   const {
     finalAddress,
     region,
@@ -232,4 +232,4 @@ const CustomerCreate = () => {
   );
 };
 
-export default CustomerCreate;
+export default UserCreate;
