@@ -18,10 +18,6 @@ export default {
     const existance = await userModel.findOne({ email });
 
     if (existance && (await existance.matchPassword(currentPassword))) {
-      // generate access and refresh token
-
-      // store the payload to the cookies
-
       handleSuccess(res, {
         UID: existance._id,
         role: existance.role,
@@ -30,13 +26,14 @@ export default {
       handleError("Invalid Credentials");
     }
   }),
+
   register: asyncHandler(async (req: Request, res: Response) => {
     const { email, ...rest } = req.body;
 
     const existance = await userModel.findOne({ email }).lean().select("_id");
     if (existance) handleError("Email already exists");
 
-    const credentials = await userModel.create(rest);
+    const credentials = await userModel.create(req.body);
 
     if (!credentials)
       handleError("Something went wrong, Please Try again later");

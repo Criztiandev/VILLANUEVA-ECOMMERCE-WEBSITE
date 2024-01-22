@@ -10,7 +10,7 @@ import Textarea from "@/components/Textarea";
 import Toggle from "@/components/Toggle";
 
 import { ProductModel } from "@/interface/model";
-import productValidationSchema from "../service.validation";
+import serviceValidationSchema from "../service.validation";
 import queryUtils from "@/utils/query.utils";
 import productApi from "../service.api";
 import { useQuery } from "@tanstack/react-query";
@@ -51,7 +51,7 @@ const ServiceEdit = () => {
       <Container className="my-8 mx-auto border-t border-gray-300 py-4">
         <Form<ProductModel>
           onSubmit={handleSubmit}
-          validation={productValidationSchema}>
+          validation={serviceValidationSchema}>
           <GridStack
             columns={2}
             gap={24}

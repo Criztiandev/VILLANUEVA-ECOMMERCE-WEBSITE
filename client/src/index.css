@@ -10,6 +10,7 @@ body,
   line-height: 1.5;
   min-height: 100vh;
   background: #f6f8ff;
+  /* background: #3578ff80; */
 }
 
 input::-webkit-outer-spin-button,

@@ -7,6 +7,8 @@ import customerRoutes from "./views/customer/customer.routes";
 import orderRoutes from "./views/orders/order.routes";
 import serviceRoutes from "./views/service/service.routes";
 import messageRoutes from "./views/message/message.routes";
+import userRoutes from "./views/users/user.routes";
+
 const adminRoutes = createBrowserRouter([
   { path: "/", element: <Dashboard /> },
   ...productRoutes,
@@ -16,6 +18,7 @@ const adminRoutes = createBrowserRouter([
   ...orderRoutes,
   ...serviceRoutes,
   ...messageRoutes,
+  ...userRoutes,
 ]);
 
 export default adminRoutes;

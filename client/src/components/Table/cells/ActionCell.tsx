@@ -7,7 +7,9 @@ import DeleteModal from "@/containers/DeleteModal";
 import { CellContext } from "@tanstack/react-table";
 import queryUtils from "@/utils/query.utils";
 import { QueryKey } from "@tanstack/react-query";
+import KebbabIcon from "@/assets/icons/kebbab_light_icon.svg";
 import { Link } from "react-router-dom";
+import Button from "@/components/Button";
 
 interface Props<T> {
   data: CellContext<T, any>;
@@ -18,6 +20,13 @@ interface Props<T> {
   isDelete?: boolean;
 }
 
+interface Items {
+  title: string;
+  icon: string;
+  path: string;
+  isActive?: boolean;
+}
+
 const ActionCell = <T,>({
   isView = true,
   isEdit = true,
@@ -26,6 +35,12 @@ const ActionCell = <T,>({
 }: Props<T>) => {
   const { original } = props?.data?.row as { original: any };
   const { _id: UID } = original as { _id: string };
+
+  const ActionItems: Items[] = [
+    { title: "View", icon: viewIcon, path: `${UID}`, isActive: isView },
+    { title: "Edit", icon: editIcon, path: `edit/${UID}`, isActive: isEdit },
+    { title: "Delete", icon: trashIcon, path: "/", isActive: isDelete },
+  ];
 
   const mutation = queryUtils.mutation({
     mutationFn: async () => await props.deleteFn(UID),
@@ -40,31 +55,58 @@ const ActionCell = <T,>({
   return (
     <>
       <div className="flex gap-4 justify-center items-center">
-        {isView && (
-          <Link to={`${UID}`}>
-            <button className="p-2 rounded-[5px] bg-gray-200 text-white">
-              <img src={viewIcon} />
-            </button>
-          </Link>
-        )}
-        {isEdit && (
-          <Link to={`edit/${UID}`}>
-            <button className="p-2 rounded-[5px] bg-gray-200 text-white">
-              <img src={editIcon} />
-            </button>
-          </Link>
-        )}
-        {isDelete && (
-          <Modal.Button
-            target={`${UID}-delete-modal`}
-            icon={trashIcon}
-            className="p-2 rounded-[5px] bg-gray-200 text-white"
+        <div className="dropdown dropdown-end">
+          <Button
+            tabIndex={0}
+            as="ghost"
+            dir="left"
+            icon={KebbabIcon}
+            className="btn-circle"
           />
-        )}
+          <ul
+            tabIndex={0}
+            className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-[4px] w-[130px] border">
+            {ActionItems.map((items: Items) => {
+              if (items.title === "Delete") {
+                return <ModalButton UID={UID} />;
+              }
+
+              return <DropdonItems key={items.title} {...items} />;
+            })}
+          </ul>
+        </div>
       </div>
 
       <DeleteModal id={`${UID}-delete-modal`} onSubmit={handleSubmit} />
     </>
+  );
+};
+
+const DropdonItems = ({ icon, title, path, isActive }: Items) => {
+  return (
+    <>
+      {isActive && (
+        <li>
+          <Link to={path}>
+            <img src={icon} loading="lazy" alt="icon" />
+            <span>{title}</span>
+          </Link>
+        </li>
+      )}
+    </>
+  );
+};
+
+const ModalButton = ({ UID }: { UID: string }) => {
+  return (
+    <li>
+      <Modal.Button
+        target={`${UID}-delete-modal`}
+        dir="left"
+        icon={trashIcon}
+        title="Delete"
+      />
+    </li>
   );
 };
 

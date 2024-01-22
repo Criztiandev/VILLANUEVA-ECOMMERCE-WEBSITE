@@ -18,7 +18,9 @@ const FirstCell = <T,>(props: CellProps<T>) => {
     <Container
       onDoubleClick={() => navigate(`${payload._id}`)}
       className="first-cell cursor-pointer flex items-center gap-4">
-      <span className="capitalize">{getValue() || ""}</span>
+      <span className="capitalize text-black font-semibold">
+        {getValue() || ""}
+      </span>
     </Container>
   );
 };

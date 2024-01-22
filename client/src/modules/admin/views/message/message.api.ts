@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { CategoryModel } from "@/interface/model";
 import apiUtils from "@/utils/api.utils";
-const base = "category";
+const base = "message";
 
 export default {
   create: async (payload: CategoryModel) =>

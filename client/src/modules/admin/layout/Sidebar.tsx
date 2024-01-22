@@ -5,31 +5,9 @@ import CategoryIcon from "@/assets/icons/category_light_icon.svg";
 import CustomerIcon from "@/assets/icons/customer_light_icon.svg";
 import OrderIcon from "@/assets/icons/order_light_icon.svg";
 import NaviIcon from "@/assets/icons/service_light_icon.svg";
-
-const NavLink = ({
-  title,
-  path,
-  icon,
-}: {
-  title: string;
-  path: string;
-  icon: string;
-}) => {
-  return (
-    <Link to={path} className="flex gap-2 hover:bg-[#244d4d] hover:text-white">
-      <img src={icon} className="w-[24px] h-[24px]" loading="lazy" />
-      <span className="text-[16px]">{title}</span>
-    </Link>
-  );
-};
-const NavTitle = ({ title, icon }: { title: string; icon: string }) => {
-  return (
-    <summary className="hover:bg-[#244d4d] hover:text-white">
-      <img src={icon} className="w-[24px] h-[24px]" />
-      <span className="text-base">{title}</span>
-    </summary>
-  );
-};
+import MessageIcon from "@/assets/icons/chat_light_icon.svg";
+import UserIcon from "@/assets/icons/user_light_icon.svg";
+import SettingsIcon from "@/assets/icons/settings_light_icon.svg";
 
 const Sidebar = () => {
   return (
@@ -37,55 +15,27 @@ const Sidebar = () => {
       <div className="">
         <button className="btn text-[24px] btn-ghost">Logo</button>
       </div>
-      <ul className="menu">
-        <li>
-          <NavLink title="Dashboard" path="/" icon={DashboardIcon} />
-        </li>
+      <ul className="menu mt-8">
+        <NavLink title="Dashboard" path="/" icon={DashboardIcon} />
 
         <li>
           <details>
             <NavTitle icon={ProductIcon} title="Products" />
             <ul>
-              <li>
-                <Link
-                  className="hover:bg-[#244d4d] hover:text-white"
-                  to={"/products"}>
-                  Product List
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="hover:bg-[#244d4d] hover:text-white"
-                  to={"/products/create"}>
-                  Create Product
-                </Link>
-              </li>
+              <NavLink title="Products" path="/products" />
+              <NavLink title="Create Producs" path="/products/create" />
             </ul>
           </details>
         </li>
 
-        <li>
-          <NavLink title="Category" path="/category" icon={CategoryIcon} />
-        </li>
+        <NavLink title="Category" path="/category" icon={CategoryIcon} />
 
         <li>
           <details>
             <NavTitle title="Order" icon={OrderIcon} />
             <ul>
-              <li>
-                <Link
-                  className="hover:bg-[#244d4d] hover:text-white"
-                  to={"/order"}>
-                  Orders List
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="hover:bg-[#244d4d] hover:text-white"
-                  to={"/order/details"}>
-                  Order Details
-                </Link>
-              </li>
+              <NavLink title="Order List" path="/order" />
+              <NavLink title="Order Details" path="/order/details" />
             </ul>
           </details>
         </li>
@@ -94,20 +44,8 @@ const Sidebar = () => {
           <details>
             <NavTitle title="Customer" icon={CustomerIcon} />
             <ul>
-              <li>
-                <Link
-                  className="hover:bg-[#244d4d] hover:text-white"
-                  to={"/customer"}>
-                  Customer List
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="hover:bg-[#244d4d] hover:text-white"
-                  to={"/customer/create"}>
-                  Create Customer
-                </Link>
-              </li>
+              <NavLink title="Customer List" path="/customer" />
+              <NavLink title="Customer Create" path="/customer/create" />
             </ul>
           </details>
         </li>
@@ -126,6 +64,13 @@ const Sidebar = () => {
               <li>
                 <Link
                   className="hover:bg-[#244d4d] hover:text-white"
+                  to={"/service/schedule"}>
+                  Client Schedule
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="hover:bg-[#244d4d] hover:text-white"
                   to={"/service/create"}>
                   Create Service
                 </Link>
@@ -135,15 +80,42 @@ const Sidebar = () => {
         </li>
 
         <div className="divider"></div>
-        <li>
-          <Link to={"/message"} className="flex gap-2 items-center">
-            <i className="bx bx-message-dots text-[18px]"></i>
-            <span className="text-[16px]">Chats</span>
-          </Link>
-        </li>
+        <NavLink title="Message" icon={MessageIcon} path="/message" />
+        <NavLink title="User" icon={UserIcon} path="/users" />
+        <NavLink title="Settings" icon={SettingsIcon} path="/settings" />
       </ul>
     </aside>
   );
 };
 
 export default Sidebar;
+
+interface NavLinkProps {
+  title: string;
+  path: string;
+  icon?: string;
+}
+
+const NavLink = ({ title, path, icon }: NavLinkProps) => {
+  return (
+    <li>
+      <Link
+        to={path}
+        className="flex gap-2 hover:bg-[#244d4d] hover:text-white">
+        {icon && (
+          <img src={icon} className="w-[24px] h-[24px]" loading="lazy" />
+        )}
+        <span className="text-[16px]">{title}</span>
+      </Link>
+    </li>
+  );
+};
+
+const NavTitle = ({ title, icon }: { title: string; icon: string }) => {
+  return (
+    <summary className="hover:bg-[#244d4d] hover:text-white">
+      <img src={icon} className="w-[24px] h-[24px]" />
+      <span className="text-base">{title}</span>
+    </summary>
+  );
+};

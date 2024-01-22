@@ -6,6 +6,6 @@ const router = express.Router();
 const { decryptPassword } = encryptionMiddleware;
 
 router.post("/", [decryptPassword], authController.login);
-router.post("/register", authController.register);
+router.post("/register", [decryptPassword], authController.register);
 
 export default router;

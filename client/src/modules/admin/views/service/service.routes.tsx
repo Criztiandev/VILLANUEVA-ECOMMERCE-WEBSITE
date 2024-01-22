@@ -6,6 +6,7 @@ import ServiceEdit from "./pages/ServiceEdit";
 import ServiceTable from "./pages/ServiceTable";
 import productApi from "./service.api";
 import tableConfig from "../../config/table.config";
+import ServiceSchedule from "./pages/ServiceSchedule";
 
 const FetchProductTable = withTableFetching(
   ServiceTable,
@@ -23,6 +24,7 @@ const productRoutes = [
       },
       { path: "/service/create", element: <ServiceCreate /> },
       { path: "/service/:id", element: <ServiceDetails /> },
+      { path: "/service/schedule", element: <ServiceSchedule /> },
       { path: "/service/edit/:id", element: <ServiceEdit /> },
     ],
   },

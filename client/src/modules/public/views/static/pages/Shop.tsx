@@ -117,7 +117,7 @@ const Shop = () => {
             </div>
             <div className="grid grid-cols-3 gap-4 pr-4">
               {displayProducts()?.map((items: ProductModel) => (
-                <ProductItem key={items._id} {...items} />
+                <ProductItem key={items._id} {...items} action isDoubleClick />
               ))}
             </div>
           </div>

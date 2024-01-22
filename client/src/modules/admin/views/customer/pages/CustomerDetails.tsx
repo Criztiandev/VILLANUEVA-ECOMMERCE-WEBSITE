@@ -1,55 +1,49 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Button from "@/components/Button";
 import Container from "@/components/Container";
-import Field from "@/components/Field";
-import Form from "@/components/Form";
 import GridStack from "@/components/GridStack";
 
 import { UserModel } from "@/interface/model";
-import customerValidationSchema from "../customer.validation";
-import queryUtils from "@/utils/query.utils";
+
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import customerApi from "../customer.api";
-import Select from "@/components/Select";
-
 import LoadingScreen from "@/containers/LoadingScreen";
-import usePhillAddress from "@/hooks/usePhillAddress";
-import AddressSelect from "../components/AddressSelect";
+import FieldDisplay from "@/components/FieldDisplay";
+import Modal from "@/components/Modal";
+import DeleteModal from "@/containers/DeleteModal";
+import queryUtils from "@/utils/query.utils";
 
-const CustomerCreate = () => {
-  const {
-    finalAddress,
-    region,
-    province,
-    cities,
-    municipalities,
-    barangays,
-    handleSelectRegion,
-    handleSelectProvince,
-    handleSelectCities,
-    handleSelectMunicipalities,
-    handleSelectedBarangay,
-  } = usePhillAddress();
+const CustomerDetails = () => {
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-  const mutation = queryUtils.mutation({
-    mutationFn: async (payload: UserModel) => await customerApi.create(payload),
-    invalidateKey: ["customer"],
-    toast: "Created Customer Successfully",
+  const deletemMutation = queryUtils.mutation({
+    mutationFn: async () => customerApi.deleteById(id || ""),
+    invalidateKey: [`customer-${id}`],
+    toast: "Deleted Successfully",
+    onSuccess: () => {
+      navigate("/customer");
+    },
   });
 
-  const handleSubmit = (payload: UserModel) => {
-    mutation.mutate(payload);
-  };
+  const customerQuery = useQuery({
+    queryFn: async () => await customerApi.fetchById(id || ""),
+    queryKey: [`customer-${id}`],
+    enabled: !!id,
+  });
 
-  if (region.isLoading) return <LoadingScreen />;
-  const { data: regionRes } = region as { data: any };
+  if (customerQuery.isLoading) return <LoadingScreen />;
+
+  const { payload: response } = customerQuery.data as { payload: UserModel };
+
+  const addressPayload = response.address.split(",");
 
   return (
-    <div className="overflow-hidden">
-      <h1 className="mt-8 mb-4 text-[32px] font-bold">User Create</h1>
-      <Container className="my-8 mx-auto border-t border-gray-300 py-4">
-        <Form<UserModel>
-          onSubmit={handleSubmit}
-          validation={customerValidationSchema}>
+    <>
+      <div className="overflow-hidden">
+        <h1 className="mt-8 mb-4 text-[32px] font-bold">User Details</h1>
+        <Container className="my-8 mx-auto border-t border-gray-300 py-4">
           <GridStack
             columns={2}
             gap={24}
@@ -60,51 +54,19 @@ const CustomerCreate = () => {
 
             <Container>
               <GridStack columns={2} gap={16}>
-                <Field
-                  title="First Name"
-                  name="firstName"
-                  placeholder="Enter Custoemr Full Name"
-                  required
+                <FieldDisplay title="First Name" payload={response.firstName} />
+                <FieldDisplay
+                  title="Middle Name"
+                  payload={response.middleName}
                 />
-                <Field
-                  title="Middle name"
-                  name="middleName"
-                  placeholder="Enter Custoemr Full Name"
-                  required
-                />
-                <Field
-                  title="Last Name"
-                  name="lastName"
-                  placeholder="Enter Custoemr Full Name"
-                  required
-                />
+                <FieldDisplay title="Last Name" payload={response.lastName} />
               </GridStack>
 
               <GridStack columns={2} gap={16} className="my-4">
-                <Field title="Age" name="age" placeholder="Enter Street" />
-                <Field
-                  type="date"
-                  title="Birth date"
-                  name="birthDate"
-                  placeholder="Enter Custoemr Full Name"
-                  required
-                />
-                <Field
-                  title="Contact"
-                  name="contact"
-                  placeholder="Enter Custoemr Full Name"
-                  required
-                />
-
-                <Select
-                  title="Gender"
-                  name="gender"
-                  placeholder="Select Gender"
-                  option={[
-                    { title: "Male", value: "male" },
-                    { title: "Female", value: "female" },
-                  ]}
-                />
+                <FieldDisplay title="Age" payload={response.age} />
+                <FieldDisplay title="Birth Date" payload={response.birthDate} />
+                <FieldDisplay title="Contact" payload={response.contact} />
+                <FieldDisplay title="Gender" payload={response.gender} />
               </GridStack>
             </Container>
           </GridStack>
@@ -119,73 +81,21 @@ const CustomerCreate = () => {
 
             <Container>
               <GridStack columns={2} gap={16}>
-                <Field
-                  title="Street"
-                  name="street"
-                  placeholder="Enter Street"
-                />
-                <Field
-                  title="Building"
-                  name="building"
-                  placeholder="Enter Building"
-                />
-                <Field
-                  title="House no"
-                  name="houseNo"
-                  placeholder="Enter House"
-                />
-
-                <Field
-                  default={region}
-                  name="region"
-                  hidden
-                  className="hidden"
-                />
-
-                <AddressSelect
-                  title="Region"
-                  disabled={region.isLoading}
-                  onSelect={handleSelectRegion}
-                  options={regionRes}
-                />
-                <AddressSelect
-                  title="Provice"
-                  disabled={province?.isLoading || province?.data === undefined}
-                  onSelect={handleSelectProvince}
-                  options={province.data}
-                />
-                <AddressSelect
-                  title="Cities"
-                  disabled={cities.isLoading || cities?.data === undefined}
-                  onSelect={handleSelectCities}
-                  options={cities.data}
-                />
-                <AddressSelect
+                <FieldDisplay title="Street" payload={response.street} />
+                <FieldDisplay title="House" payload={response.houseNo} />
+                <FieldDisplay title="Building" payload={response.building} />
+                <div></div>
+                <FieldDisplay title="Region" payload={addressPayload[0]} />
+                <FieldDisplay title="Province" payload={addressPayload[1]} />
+                <FieldDisplay title="City" payload={addressPayload[2]} />
+                <FieldDisplay
                   title="Municipality"
-                  disabled={
-                    municipalities.isLoading ||
-                    municipalities?.data === undefined
-                  }
-                  onSelect={handleSelectMunicipalities}
-                  options={municipalities.data}
+                  payload={addressPayload[3]}
                 />
-                <AddressSelect
-                  title="Barangay"
-                  disabled={
-                    barangays.isLoading || barangays?.data === undefined
-                  }
-                  onSelect={handleSelectedBarangay}
-                  options={barangays.data}
-                />
-
-                <Field default={finalAddress} name="address" required hidden />
+                <FieldDisplay title="Barangay" payload={addressPayload[4]} />
               </GridStack>
               <div className="my-4">
-                <Field
-                  title="Postal Code"
-                  name="postalCode"
-                  placeholder="Enter Postal Code"
-                />
+                <FieldDisplay title="Postal" payload={response.postalCode} />
               </div>
             </Container>
           </GridStack>
@@ -198,22 +108,10 @@ const CustomerCreate = () => {
               <h2 className="text-[18px] font-semibold">Customer Account</h2>
             </Container>
 
-            <GridStack columns={2} gap={16}>
-              <Field
-                type="email"
-                title="Email"
-                name="email"
-                placeholder="Enter Email"
-                required
-              />
-              <Field
-                type="password"
-                title="Password"
-                name="password"
-                placeholder="Enter Password"
-                required
-              />
-            </GridStack>
+            <div className="flex flex-col gap-4">
+              <FieldDisplay title="Email" payload={response.email} />
+              <Button title="Change Password" />
+            </div>
           </GridStack>
 
           <GridStack columns={2} gap={24}>
@@ -222,14 +120,26 @@ const CustomerCreate = () => {
             </Container>
 
             <Container className="flex flex-col gap-4 mt-4">
-              <Button title="Submit" />
-              <Button type="button" title="Cancel" />
+              <Link to={`/customer/edit/${id}`} className="w-full">
+                <Button title="Edit" className="w-full bg-slate-400" />
+              </Link>
+
+              <Modal.Button
+                title="Delete"
+                target={`delete-${id}`}
+                className="btn bg-red-500 text-base text-white"
+              />
             </Container>
           </GridStack>
-        </Form>
-      </Container>
-    </div>
+        </Container>
+      </div>
+
+      <DeleteModal
+        id={`delete-${id}`}
+        onSubmit={() => deletemMutation.mutate({})}
+      />
+    </>
   );
 };
 
-export default CustomerCreate;
+export default CustomerDetails;

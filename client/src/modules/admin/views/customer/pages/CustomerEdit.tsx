@@ -14,11 +14,12 @@ import Select from "@/components/Select";
 import LoadingScreen from "@/containers/LoadingScreen";
 import usePhillAddress from "@/hooks/usePhillAddress";
 import AddressSelect from "../components/AddressSelect";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
 const CustomerEdit = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const {
     finalAddress,
@@ -41,8 +42,9 @@ const CustomerEdit = () => {
   });
 
   const mutation = queryUtils.mutation({
-    mutationFn: async (payload: UserModel) => await customerApi.create(payload),
-    invalidateKey: ["customer"],
+    mutationFn: async (payload: UserModel) =>
+      await customerApi.updateById(id || "", payload),
+    invalidateKey: [`customer-${id}`],
     toast: "Created Customer Successfully",
   });
 
@@ -50,12 +52,16 @@ const CustomerEdit = () => {
     mutation.mutate(payload);
   };
 
+  if (region?.isError || customerQuery?.isError) {
+    navigate("/customer");
+    return <LoadingScreen />;
+  }
   if (region.isLoading || customerQuery.isLoading) return <LoadingScreen />;
 
   const { payload: result } = customerQuery?.data as { payload: UserModel };
   const { data: regionRes } = region as { data: any };
 
-  const addressPayload = result.address.split(",");
+  const addressPayload = result?.address.split(",");
 
   return (
     <div className="overflow-hidden">
@@ -63,7 +69,7 @@ const CustomerEdit = () => {
       <Container className="my-8 mx-auto border-t border-gray-300 py-4">
         <Form<UserModel>
           onSubmit={handleSubmit}
-          validation={customerValidationSchema}>
+          validation={customerValidationSchema as any}>
           <GridStack
             columns={2}
             gap={24}
@@ -78,34 +84,34 @@ const CustomerEdit = () => {
                   title="First Name"
                   name="firstName"
                   placeholder="Enter first name"
-                  default={result.firstName}
+                  default={result?.firstName}
                   required
                 />
                 <Field
                   title="Middle name"
                   name="middleName"
                   placeholder="Enter Custoemr Full Name"
-                  default={result.middleName}
+                  default={result?.middleName}
                   required
                 />
                 <Field
                   title="Last Name"
                   name="lastName"
                   placeholder="Enter Custoemr Full Name"
-                  default={result.lastName}
+                  default={result?.lastName}
                   required
                 />
               </GridStack>
 
               <GridStack columns={2} gap={16} className="my-4">
                 <Field
-                  default={result.age}
+                  default={result?.age}
                   title="Age"
                   name="age"
                   placeholder="Enter Street"
                 />
                 <Field
-                  default={result.birthDate}
+                  default={result?.birthDate}
                   type="date"
                   title="Birth date"
                   name="birthDate"
@@ -113,7 +119,7 @@ const CustomerEdit = () => {
                   required
                 />
                 <Field
-                  default={result.contact}
+                  default={result?.contact}
                   title="Contact"
                   name="contact"
                   placeholder="Enter Custoemr Full Name"
@@ -121,7 +127,7 @@ const CustomerEdit = () => {
                 />
 
                 <Select
-                  default={result.gender}
+                  default={result?.gender}
                   title="Gender"
                   name="gender"
                   placeholder="Select Gender"
@@ -145,19 +151,19 @@ const CustomerEdit = () => {
             <Container>
               <GridStack columns={2} gap={16}>
                 <Field
-                  default={result.street}
+                  default={result?.street}
                   title="Street"
                   name="street"
                   placeholder="Enter Street"
                 />
                 <Field
-                  default={result.building}
+                  default={result?.building}
                   title="Building"
                   name="building"
                   placeholder="Enter Building"
                 />
                 <Field
-                  default={result.houseNo}
+                  default={result?.houseNo}
                   title="House no"
                   name="houseNo"
                   placeholder="Enter House"
@@ -171,35 +177,35 @@ const CustomerEdit = () => {
                 />
 
                 <AddressSelect
-                  default={addressPayload[0]}
+                  default={addressPayload && addressPayload[0]}
                   title="Region"
-                  disabled={region.isLoading}
+                  disabled={region?.isLoading}
                   onSelect={handleSelectRegion}
                   options={regionRes}
                 />
                 <AddressSelect
-                  default={addressPayload[1]}
+                  default={addressPayload && addressPayload[1]}
                   title="Provice"
                   disabled={province?.isLoading}
                   onSelect={handleSelectProvince}
                   options={province.data}
                 />
                 <AddressSelect
-                  default={addressPayload[2]}
+                  default={addressPayload && addressPayload[2]}
                   title="Cities"
                   disabled={cities.isLoading}
                   onSelect={handleSelectCities}
-                  options={cities.data}
+                  options={cities?.data}
                 />
                 <AddressSelect
-                  default={addressPayload[3]}
+                  default={addressPayload && addressPayload[3]}
                   title="Municipality"
                   disabled={municipalities.isLoading}
                   onSelect={handleSelectMunicipalities}
                   options={municipalities.data}
                 />
                 <AddressSelect
-                  default={addressPayload[4]}
+                  default={addressPayload && addressPayload[4]}
                   title="Barangay"
                   disabled={barangays.isLoading}
                   onSelect={handleSelectedBarangay}
@@ -207,7 +213,7 @@ const CustomerEdit = () => {
                 />
 
                 <Field
-                  default={result.address || finalAddress}
+                  default={result?.address || finalAddress}
                   name="address"
                   required
                   hidden
@@ -215,7 +221,7 @@ const CustomerEdit = () => {
               </GridStack>
               <div className="my-4">
                 <Field
-                  default={result.postalCode}
+                  default={result?.postalCode}
                   title="Postal Code"
                   name="postalCode"
                   placeholder="Enter Postal Code"
@@ -234,13 +240,14 @@ const CustomerEdit = () => {
 
             <div className="flex flex-col gap-4">
               <Field
-                default={result.email}
+                default={result?.email}
                 type="email"
                 title="Email"
                 name="email"
                 placeholder="Enter Email"
                 required
               />
+
               <Button title="Change Password" />
             </div>
           </GridStack>

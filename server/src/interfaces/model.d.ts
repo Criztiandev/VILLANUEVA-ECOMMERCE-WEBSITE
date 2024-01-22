@@ -62,3 +62,31 @@ export interface CategoryModel {
   name: string;
   count?: number;
 }
+
+export interface MessageModel {
+  _id?: string;
+  target: string;
+  sender: string;
+  content: string;
+  createdAt?: string;
+}
+
+export interface ConvoModel {
+  title: string;
+  participants: Array<string>;
+  messages: Array<MessageModel>;
+}
+
+export interface ServiceModel {
+  images?: Array<string>;
+  name: string;
+  price: number;
+
+  scheduleStart: string;
+  scheduleEnd: string;
+
+  description?: string;
+  isPublished: boolean;
+  isFeatured: boolean;
+  status: string;
+}

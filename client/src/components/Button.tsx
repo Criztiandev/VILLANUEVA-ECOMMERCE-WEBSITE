@@ -1,25 +1,29 @@
 import { ButtonHTMLAttributes } from "react";
 
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
+  as?: "ghost" | "neutral";
   dir?: "left" | "right" | undefined;
   title?: string;
   icon?: string;
   onClick?: () => void;
 }
 
-const Button = (props: Props) => {
+const Button = ({ as = "neutral", ...props }: Props) => {
   return (
     <button
       {...props}
-      className={`bg-[#244d4d] text-white ${
-        props.className ? props.className : null
-      } btn text-normal`}>
+      className={`btn text-normal
+      ${as === "ghost" ? "btn-ghost text-black" : "bg-[#244d4d] text-white"}
+      ${props.className && props.className}`}>
+      {/* Left icon */}
       {props.dir && props.icon && props.dir === "left" && (
-        <i className="w-6 h-6">{props.icon}</i>
+        <img src={props.icon} alt="icon" loading="lazy" />
       )}
-      <span className="text-base">{props.title}</span>
+      {/* Content */}
+      {props.title && <span className="text-base">{props.title}</span>}
+      {/* Right icon */}
       {props.dir && props.icon && props.dir === "right" && (
-        <i className="w-6 h-6">{props.icon}</i>
+        <img src={props.icon} alt="icon" loading="lazy" />
       )}
     </button>
   );

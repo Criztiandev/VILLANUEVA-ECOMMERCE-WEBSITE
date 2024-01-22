@@ -9,7 +9,6 @@ import Textarea from "@/components/Textarea";
 import Toggle from "@/components/Toggle";
 
 import { ProductModel, ServiceModel } from "@/interface/model";
-import productValidationSchema from "../service.api";
 import queryUtils from "@/utils/query.utils";
 import useMutipleImage from "@/hooks/useMutipleImage";
 import MiniInput from "../components/MiniInput";
@@ -18,6 +17,7 @@ import CoverImage from "../components/CoverImage";
 import OtherImage from "../components/OtherImage";
 import CoverAction from "../components/CoverAction";
 import serviceApi from "../service.api";
+import serviceValidationSchema from "../service.validation";
 
 const ServiceCreate = () => {
   const [isDelete, setIsDelete] = useState(false);
@@ -36,7 +36,7 @@ const ServiceCreate = () => {
   const mutation = queryUtils.mutation({
     mutationFn: async ({ name, data }: { name: string; data: ProductModel }) =>
       serviceApi.sendFile(`${name}`, data),
-    invalidateKey: ["products"],
+    invalidateKey: ["service"],
     toast: "Create product Successfully",
     onSuccess: () => {
       handleImageClear();
@@ -87,7 +87,7 @@ const ServiceCreate = () => {
       <Container className="my-8 mx-auto border-t border-gray-300 py-4">
         <Form<ServiceModel>
           onSubmit={handleSubmit}
-          validation={productValidationSchema}
+          validation={serviceValidationSchema}
           className="flex flex-col gap-[24px]">
           <GridStack columns={2} gap={24} className=" border-b border-gray-200">
             <Container className="">
@@ -105,21 +105,6 @@ const ServiceCreate = () => {
                   ref={CoverRef}
                   onFileSelect={handleFileSelect}
                 />
-                {/* 
-export interface ServiceModel {
-  images?: Array<string>;
-  name: string;
-  price: number;
-
-  scheduleStart: string;
-  scheduleEnd: string;
-
-  summary?: string;
-  description?: string;
-  isPublished: boolean;
-  isFeatured: boolean;
-  status: string;
-} */}
 
                 {imagesExist(1) && (
                   <Container className="flex gap-4">

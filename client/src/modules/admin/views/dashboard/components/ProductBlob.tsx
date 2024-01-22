@@ -20,7 +20,7 @@ const ProductBlob = (props: ProductModel) => {
   if (productImage.isLoading) return <div>loading</div>;
 
   return (
-    <div className="p-4 border rounded-[5px] flex gap-4">
+    <div className="p-4 border rounded-[5px] flex gap-4 bg-primary text-white">
       <div className="w-[48px] h-[48px] rounded-[5px] border">
         <img
           src={productImage?.data as string}

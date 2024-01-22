@@ -9,23 +9,23 @@ interface UserDocument extends Document, UserModel {
 
 const userSchema = new Schema<UserDocument>(
   {
-    firstName: { type: String, require: true },
-    middleName: { type: String, require: true },
-    lastName: { type: String, require: true },
-    age: { type: Number, require: true },
-    gender: { type: String, require: true },
-    birthDate: { type: String, require: true },
-    contact: { type: String, require: true },
+    firstName: { type: String, default: "" },
+    middleName: { type: String, default: "" },
+    lastName: { type: String, default: "" },
+    age: { type: Number, default: 0 },
+    gender: { type: String, default: "" },
+    birthDate: { type: String, default: "" },
+    contact: { type: String, default: "" },
 
-    fullName: { type: String, require: true },
+    fullName: { type: String, default: "" },
 
-    address: { type: String, require: true },
-    street: { type: String, require: true },
-    building: { type: String, require: true },
-    houseNo: { type: String, require: true },
-    postalCode: { type: String, require: true },
+    address: { type: String, default: "" },
+    street: { type: String, default: "" },
+    building: { type: String, default: "" },
+    houseNo: { type: String, default: "" },
+    postalCode: { type: String, default: "" },
 
-    email: { type: String, require: true },
+    email: { type: String, require: true, unique: true },
     password: { type: String, require: true },
     role: { type: String, default: "user", enum: ["user", "admin"] },
   },
@@ -35,25 +35,21 @@ const userSchema = new Schema<UserDocument>(
 );
 
 // Middleware
-// Define a virtual property for fullName
-userSchema.virtual("fullName").get(function () {
-  return `${this.firstName} ${this.middleName} ${this.lastName}`;
-});
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
-
+  this.fullName = `${this.firstName} ${this.middleName} ${this.lastName}`;
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 });
 
 userSchema.pre("findOneAndUpdate", async function (next) {
-  const update: { password?: string } = this.getUpdate() as any;
+  const update: UserModel = this.getUpdate() as any;
 
   if (!update.password) {
-    // If the password is not being modified, move to the next middleware
+    update.fullName = `${update.firstName} ${update.middleName} ${update.lastName}`;
     return next();
   }
 

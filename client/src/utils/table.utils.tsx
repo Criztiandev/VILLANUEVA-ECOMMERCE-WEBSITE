@@ -70,7 +70,7 @@ export default {
           id: items.name as string,
           header: () => items.header,
           cell: (info) => (
-            <Badge className="px-5 py-3 bg-blue-500/50 text-black">
+            <Badge className="border-2 bg-[#4ba8f480] border-blue-400  px-4 py-3 capitalize text-black">
               {info.getValue()}
             </Badge>
           ),

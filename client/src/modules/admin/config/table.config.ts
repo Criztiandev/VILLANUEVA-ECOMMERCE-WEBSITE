@@ -1,6 +1,7 @@
 import { TableStructProps } from "@/interface/component";
 import {
   CategoryModel,
+  ConvoModel,
   OrderModel,
   ProductModel,
   UserModel,
@@ -10,6 +11,7 @@ import productApi from "../views/products/product.api";
 import categoriesApi from "../views/categories/categories.api";
 import customerApi from "../views/customer/customer.api";
 import orderApi from "../views/orders/order.api";
+import userApi from "../views/users/user.api";
 
 const productTable: TableStructProps<ProductModel> = {
   base: "products",
@@ -103,10 +105,39 @@ const recentTable: TableStructProps<ProductModel> = {
   }),
 };
 
+const messageTable: TableStructProps<ConvoModel> = {
+  base: "message",
+  name: "message-table",
+  columns: tableUtils.columnGenerator<ConvoModel>({
+    deleteFn: () => {},
+    invalidateKey: ["message"],
+    options: [{ name: "participants", header: "Participants" }],
+  }),
+};
+
+const userTable: TableStructProps<UserModel> = {
+  base: "user",
+  name: "user-table",
+  columns: tableUtils.columnGenerator<UserModel>({
+    deleteFn: userApi.deleteById,
+    invalidateKey: ["user"],
+    options: [
+      { name: "firstName", header: "Name", isFirst: true },
+      { name: "email", header: "Emai" },
+      { name: "contact", header: "contact" },
+      { name: "role", header: "Role", isBadge: true },
+      { name: "gender", header: "Gender" },
+      { name: "_id", header: "Action", isLast: true },
+    ],
+  }),
+};
+
 export default {
   productTable,
   categoryTable,
   customerTable,
   orderTable,
   recentTable,
+  messageTable,
+  userTable,
 };

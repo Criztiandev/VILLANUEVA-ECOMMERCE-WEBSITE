@@ -4,10 +4,12 @@ interface Props extends BaseProps {
   id: string;
 }
 
-interface ButtonProps extends BaseProps {
+interface Button extends BaseProps {
   target: string;
+  dir?: "left" | "right" | undefined;
   title?: string;
   icon?: string;
+  onClick?: () => void;
 }
 
 const Modal = (props: Props) => {
@@ -26,13 +28,19 @@ const Modal = (props: Props) => {
   );
 };
 
-const Button = (props: ButtonProps) => {
+const Button = (props: Button) => {
   return (
-    <label
-      htmlFor={props.target}
-      {...props}
-      className={`cursor-pointer ${props.className && props.className}`}>
-      {props.title ? props.title : <img src={props.icon} />}
+    <label htmlFor={props.target} {...props}>
+      {/* Left icon */}
+      {props.dir && props.icon && props.dir === "left" && (
+        <img src={props.icon} alt="icon" loading="lazy" />
+      )}
+      {/* Content */}
+      {props.title && <span className="text-base">{props.title}</span>}
+      {/* Right icon */}
+      {props.dir && props.icon && props.dir === "right" && (
+        <img src={props.icon} alt="icon" loading="lazy" />
+      )}
     </label>
   );
 };

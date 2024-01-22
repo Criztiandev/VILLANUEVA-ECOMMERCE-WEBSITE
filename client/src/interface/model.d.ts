@@ -22,7 +22,7 @@ export interface UserModel {
 
   // Account
   email: string;
-  password: string;
+  password?: string;
   role?: string;
 }
 
@@ -73,11 +73,6 @@ export interface CategoryModel {
   count?: number;
 }
 
-export interface MessageModel {
-  customer: string;
-  message: string;
-}
-
 export interface ServiceModel {
   images?: Array<string>;
   name: string;
@@ -86,9 +81,23 @@ export interface ServiceModel {
   scheduleStart: string;
   scheduleEnd: string;
 
-  summary?: string;
   description?: string;
   isPublished: boolean;
   isFeatured: boolean;
   status: string;
+}
+
+export interface MessageModel {
+  _id?: string;
+  target: string;
+  sender?: string;
+  content: string;
+  createdAt?: string;
+}
+
+export interface ConvoModel {
+  _id?: string;
+  title: string;
+  participants: Array<string>;
+  messages: Array<MessageModel>;
 }

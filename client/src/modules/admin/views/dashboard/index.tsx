@@ -22,7 +22,8 @@ const MainEntryPoint = () => {
 
   if (productQuery.isLoading) return <LoadingScreen />;
 
-  // get only 5 recent products
+  const { payload: result } = productQuery?.data as { payload: ProductModel[] };
+
   const products = productQuery.data?.payload?.slice(0, 5);
 
   return (
@@ -33,9 +34,9 @@ const MainEntryPoint = () => {
           <Topbar />
           <div className="px-[32px]">
             <GridStack columns={3} gap={16} className=" my-4">
-              <StatsCard />
-              <StatsCard />
-              <StatsCard />
+              <StatsCard title="Total Sales" value={0} />
+              <StatsCard title="Total Products" value={result.length} />
+              <StatsCard title="Schedule" value={0} />
             </GridStack>
           </div>
 
