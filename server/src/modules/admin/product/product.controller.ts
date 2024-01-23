@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
+import * as path from "path";
+import * as fs from "fs";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 // chage this
 import model from "../../../models/product.model.ts";
@@ -59,10 +63,14 @@ export default {
   // DELETE /api/user/delete/:id (Private, Admin)
   deleteById: asyncHandler(async (req: Request, res: Response) => {
     const UID = req.params.id;
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const { name } = req.params;
+
     const existance = await model
       .findById({ _id: UID })
       .lean()
-      .select("_id category");
+      .select("_id name category");
 
     if (!existance) handleError("Not Found, Please Try again");
 
@@ -71,8 +79,19 @@ export default {
       { $inc: { count: -1 } },
       { new: true }
     );
-
     if (!category) throw new Error("Category Update Error");
+
+    // delete the product images
+    const productName = existance?.name.split(" ").join("_").toLowerCase();
+    const productPath = path.join(
+      __dirname,
+      `../../../../public/products/${productName}`
+    );
+
+    console.log(productPath);
+    if (fs.existsSync(productPath)) {
+      fs.rmdirSync(productPath, { recursive: true });
+    }
 
     const credentials = await model
       .findByIdAndDelete({ _id: UID })

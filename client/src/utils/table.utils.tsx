@@ -69,11 +69,21 @@ export default {
         return columnHelper.accessor((row: any) => row[items.name], {
           id: items.name as string,
           header: () => items.header,
-          cell: (info) => (
-            <Badge className="border-2 bg-[#4ba8f480] border-blue-400  px-4 py-3 capitalize text-black">
-              {info.getValue()}
-            </Badge>
-          ),
+          cell: (info) => {
+            if (items.badgeStatus === "error") {
+              return (
+                <Badge className="border-2 bg-[#ff3f3f80] border-blue-400  p-4 capitalize text-black">
+                  {info.getValue()} {items.content}
+                </Badge>
+              );
+            }
+
+            return (
+              <Badge className="border-2 bg-[#4ba8f480] border-blue-400  p-4 capitalize text-black">
+                {info.getValue()} {items.content}
+              </Badge>
+            );
+          },
         });
       }
 

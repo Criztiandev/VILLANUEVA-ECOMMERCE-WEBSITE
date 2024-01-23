@@ -94,7 +94,7 @@ const ServiceCreate = () => {
               <h2 className="text-[18px] font-semibold">Service Image</h2>
             </Container>
 
-            <Container className="bg-white w-full  h-full  mb-8">
+            <Container className=" w-full  h-full  mb-8">
               <Container
                 className={`grid gap-4
                 ${imagesExist(1) && "grid-rows-[auto_100px]"}

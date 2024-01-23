@@ -9,7 +9,7 @@ import config from "../../config/table.config";
 import CreateScreen from "./pages/UserCreate";
 
 const base = "users";
-const FechTableScreen = withTableFetching(TableScreen, config.customerTable);
+const FechTableScreen = withTableFetching(TableScreen, config.userTable);
 
 const categoryRoutes = [
   {

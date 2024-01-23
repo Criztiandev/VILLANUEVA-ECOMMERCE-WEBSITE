@@ -29,8 +29,6 @@ export default {
     const UID = req.params.id;
     const payload = req.body;
 
-    console.log("payload");
-
     const existance = await model.findById(UID).lean().select("_id");
     if (!existance) handleError("Not Found, Please Try again");
 
@@ -78,8 +76,6 @@ export default {
   // GET /api/user (Private, Admin)
   getAll: asyncHandler(async (req: Request, res: Response) => {
     const { role } = req.query as { role: "user" | "admin" };
-
-    console.log(role);
 
     const exception = "-password -__v";
     const credentials = await model

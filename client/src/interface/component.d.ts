@@ -41,11 +41,13 @@ export interface ColumnOption<T> {
   isLast?: boolean;
   isDate?: boolean;
 
+  badgeStatus?: string;
   isView?: boolean;
   isDelete?: boolean;
   isEdit?: boolean;
   isToggle?: boolean;
   hasImage?: boolean;
+  content?: string;
 }
 
 export interface BreadCrumbsItems {

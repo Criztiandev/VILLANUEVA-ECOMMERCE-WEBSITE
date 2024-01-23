@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
-import Header from "../containers/Header";
+import Header from "../layout/Header";
 import categoriesApi from "@/modules/admin/views/categories/categories.api";
 import { CategoryModel, ProductModel } from "@/interface/model";
 import LoadingScreen from "@/containers/LoadingScreen";
@@ -27,9 +27,6 @@ const Shop = () => {
   if (categoryQuery?.isLoading || productQuery?.isLoading)
     return <LoadingScreen />;
 
-  const { payload: categoryRes } = categoryQuery.data as {
-    payload: CategoryModel[];
-  };
   const { payload: productRes } = productQuery.data as {
     payload: ProductModel[];
   };
@@ -67,34 +64,21 @@ const Shop = () => {
       <div className="h-screen">
         <Header isStatic={true} />
 
-        <div className="grid grid-cols-[300px_auto] gap-4">
-          <ul className="menu bg-white border w-[300px] h-screen">
-            <li>
-              <h2 className="menu-title">Categories</h2>
-              <ul>
-                {categoryRes?.map((items: CategoryModel) => (
-                  <li key={items._id}>
-                    <a>{items.name}</a>
-                  </li>
-                ))}
-              </ul>
-              <li>Services</li>
-            </li>
-          </ul>
-
+        <div className=" px-[32px]">
           <div className="w-full">
-            <div className="my-8 flex justify-between items-center">
-              <input
-                type="text"
-                placeholder="Search Here"
-                className="input input-bordered w-[250px]"
-                value={filter}
-                onChange={(e) => setFilter(e.currentTarget.value)}
-              />
+            <h1 className="text-[48px] my-4 font-semibold text-center">Shop</h1>
 
+            <div className="my-8 flex justify-center items-center  p-4 rounded-[5px] ">
               <div className="pr-4 flex gap-4">
+                <input
+                  type="text"
+                  placeholder="Search Here"
+                  className="input input-bordered w-[250px]"
+                  value={filter}
+                  onChange={(e) => setFilter(e.currentTarget.value)}
+                />
                 <select
-                  className="select select-bordered "
+                  className="select select-bordered bg-primary text-white "
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.currentTarget.value)}>
                   <option value={""}>Status</option>
@@ -115,7 +99,7 @@ const Shop = () => {
                 </select>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-4 pr-4">
+            <div className="grid grid-cols-4 gap-4 pr-4 p-4">
               {displayProducts()?.map((items: ProductModel) => (
                 <ProductItem key={items._id} {...items} isDoubleClick action />
               ))}

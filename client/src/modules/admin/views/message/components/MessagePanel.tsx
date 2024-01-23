@@ -11,9 +11,12 @@ import queryUtils from "@/utils/query.utils";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/service/store";
 import { motion } from "framer-motion";
+import Modal from "@/components/Modal";
+import DeleteModal from "@/containers/DeleteModal";
 
 interface Props {
   chatID: string;
+  onDelete: () => void;
 }
 
 interface Message {
@@ -28,6 +31,16 @@ const MessagePanel = (props: Props) => {
     enabled: !!props.chatID,
   });
 
+  const deleteMutation = queryUtils.mutation({
+    mutationFn: async () => messageApi.deleteById(props?.chatID || ""),
+    invalidateKey: [`convo`],
+    toast: "Deleted Successfully",
+    onSuccess: () => {
+      props.onDelete();
+    },
+  });
+
+  // send mutation
   const mutation = queryUtils.mutation({
     mutationFn: async (payload: MessageModel) =>
       messageApi.create(payload as any),
@@ -48,50 +61,66 @@ const MessagePanel = (props: Props) => {
   };
 
   return (
-    <div
-      className="w-full bg-white p-4 rounded-10px] rounded-[5px]"
-      style={{ height: "calc(100vh - 120px)" }}>
-      <h2 className="text-[24px] border-b p-2 font-semibold">
-        {convoQuery?.data?.payload?.title || "New Convo"}
-      </h2>
+    <>
+      <div
+        className="w-full bg-white p-4 rounded-10px] rounded-[5px] shadow-md"
+        style={{ height: "calc(100vh - 120px)" }}>
+        <div className="flex justify-between border-b pb-2">
+          <h2 className="text-[24px] font-semibold">
+            {convoQuery?.data?.payload?.title || "New Convo"}
+          </h2>
 
-      {props.chatID && (
-        <div className="h-[93%] flex flex-col justify-end">
-          <motion.div className="h-full border my-4 flex justify-end flex-col gap-4 pb-4 px-2 overflow-y-scroll">
-            {/* Your chat messages rendering code */}
-            {convoQuery?.data?.payload?.messages.map(
-              (message: MessageModel) => {
-                if (message?.sender === UID) {
+          {props?.chatID && (
+            <Modal.Button
+              target="delete-convo"
+              title="Delete"
+              className="btn bg-primary text-white"
+            />
+          )}
+        </div>
+        {props.chatID && (
+          <div className="h-[93%] flex flex-col justify-end">
+            <motion.div className="h-[100vh]  my-4 flex justify-start flex-col gap-4 pb-4 px-2 overflow-y-scroll">
+              {/* Your chat messages rendering code */}
+              {convoQuery?.data?.payload?.messages.map(
+                (message: MessageModel) => {
+                  if (message?.sender === UID) {
+                    return (
+                      <div className="chat chat-end" key={message?._id}>
+                        <div className="chat-bubble">{message.content}</div>
+                      </div>
+                    );
+                  }
+
                   return (
-                    <div className="chat chat-end" key={message?._id}>
+                    <div className="chat chat-start" key={message?._id}>
                       <div className="chat-bubble">{message.content}</div>
                     </div>
                   );
                 }
+              )}
+            </motion.div>
 
-                return (
-                  <div className="chat chat-start" key={message?._id}>
-                    <div className="chat-bubble">{message.content}</div>
-                  </div>
-                );
-              }
-            )}
-          </motion.div>
+            <Form<Message>
+              onSubmit={handleSubmit}
+              validation={singleMessage}
+              className="flex gap-4">
+              <Field
+                name="content"
+                placeholder="Enter message"
+                className="input-lg"
+              />
+              <Button title="Send" className="btn-lg" />
+            </Form>
+          </div>
+        )}
+      </div>
 
-          <Form<Message>
-            onSubmit={handleSubmit}
-            validation={singleMessage}
-            className="flex gap-4">
-            <Field
-              name="content"
-              placeholder="Enter message"
-              className="input-lg"
-            />
-            <Button title="Send" className="btn-lg" />
-          </Form>
-        </div>
-      )}
-    </div>
+      <DeleteModal
+        id="delete-convo"
+        onSubmit={() => deleteMutation.mutate({})}
+      />
+    </>
   );
 };
 

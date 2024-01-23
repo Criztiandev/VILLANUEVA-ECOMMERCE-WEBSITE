@@ -9,7 +9,6 @@ export default {
   // POST /api/user/create (Private, Admin)
   create: asyncHandler(async (req: Request, res: Response) => {
     const payload = req.body;
-    console.log(req.body);
 
     // Add Logic to create
     const credentials = await model.create(payload);
@@ -24,8 +23,6 @@ export default {
   updateById: asyncHandler(async (req: Request, res: Response) => {
     const UID = req.params.id;
     const payload = req.body;
-
-    console.log(payload);
 
     const existance = await model.findById(UID).lean().select("_id");
     if (!existance) handleError("Not Found, Please Try again");

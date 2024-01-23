@@ -43,4 +43,23 @@ export default {
   toggleCart: (state: CartState) => {
     state.isActive = !state.isActive;
   },
+
+  increaseQuantity: (state: CartState, action: PayloadAction<string>) => {
+    state.products = state.products
+      .map((product) =>
+        product._id === action.payload
+          ? { ...product, quantity: product.quantity + 1 }
+          : product
+      )
+      .filter((product) => product.quantity > 0);
+  },
+  decreaseQuantity: (state: CartState, action: PayloadAction<string>) => {
+    state.products = state.products
+      .map((product) =>
+        product._id === action.payload
+          ? { ...product, quantity: product.quantity - 1 }
+          : product
+      )
+      .filter((product) => product.quantity > 0);
+  },
 };

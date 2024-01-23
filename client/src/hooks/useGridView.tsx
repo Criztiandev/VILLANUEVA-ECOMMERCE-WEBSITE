@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 
 const useGridView = () => {
-  const [isTable, setIsTable] = useState(false);
+  const [isTable, setIsTable] = useState(true);
   const [filter, setFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
 

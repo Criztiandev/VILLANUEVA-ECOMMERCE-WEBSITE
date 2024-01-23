@@ -1,5 +1,5 @@
 import AddToCart from "../containers/AddToCart";
-import Header from "../containers/Header";
+import Header from "../layout/Header";
 import HeroSection from "../containers/HeroSection";
 import FeatureSection from "../containers/FeatureSection";
 import Footer from "../containers/Footer";

@@ -11,6 +11,8 @@ import Table from "@/components/Table";
 import tableConfig from "@/modules/admin/config/table.config";
 import GridViewAction from "../components/GridViewAction";
 import useGridView from "@/hooks/useGridView";
+import Button from "@/components/Button";
+import GridIcon from "@/assets/icons/grid_light_icon.svg";
 
 interface Props {
   name: string;
@@ -86,7 +88,9 @@ const ServiceTable = () => {
 const CurrentTable = ({ name, columns }: Props) => {
   return (
     <Container>
-      <Table.Panel title="Service" name={name} />
+      <Table.Panel title="Service" name={name}>
+        <Button className="btn" icon={GridIcon} dir="left" />
+      </Table.Panel>
       <Table<ProductModel> id={name} columns={columns} />
     </Container>
   );

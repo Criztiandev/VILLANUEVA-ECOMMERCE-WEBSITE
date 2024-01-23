@@ -12,6 +12,8 @@ import tableConfig from "@/modules/admin/config/table.config";
 import GridViewAction from "../components/GridViewAction";
 import useGridView from "@/hooks/useGridView";
 import Button from "@/components/Button";
+import Modal from "@/components/Modal";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   name: string;
@@ -64,35 +66,50 @@ const ProductTable = () => {
     return <LoadingScreen />;
 
   return (
-    <Container className="mt-4  ">
-      {!isTable && (
-        <GridViewAction<CategoryModel>
-          payload={categoryQuery.data?.payload}
-          filter={filter}
-          categoryFilter={categoryFilter}
-          onFilter={handleFilter}
-          onCategoryFilter={handleCategoryFilter}
-          toggleTable={handleIsTable}
-        />
-      )}
-      {isTable ? (
-        <CurrentTable
-          name={name}
-          columns={columns}
-          onToggleTable={handleIsTable}
-        />
-      ) : (
-        <GridView render={renderProducts} />
-      )}
-    </Container>
+    <>
+      <Container className="mt-4  ">
+        {!isTable && (
+          <GridViewAction<CategoryModel>
+            payload={categoryQuery.data?.payload}
+            filter={filter}
+            categoryFilter={categoryFilter}
+            onFilter={handleFilter}
+            onCategoryFilter={handleCategoryFilter}
+            toggleTable={handleIsTable}
+          />
+        )}
+        {isTable ? (
+          <CurrentTable
+            name={name}
+            columns={columns}
+            onToggleTable={handleIsTable}
+          />
+        ) : (
+          <GridView render={renderProducts} />
+        )}
+      </Container>
+      <Modal id="import-modal">
+        <h3 className="font-semibold">Import Products</h3>
+      </Modal>
+    </>
   );
 };
 
 const CurrentTable = ({ name, columns, onToggleTable }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <Container>
       <Table.Panel title="Products" name={name}>
-        <Button title="T" className="btn-circle" onClick={onToggleTable} />
+        <div className="flex gap-2">
+          <Modal.Button target="import-modal" title="import" className="btn" />
+          <Button
+            title="Create"
+            className=""
+            onClick={() => navigate("create")}
+          />
+          <Button title="T" className="btn-circle" onClick={onToggleTable} />
+        </div>
       </Table.Panel>
       <Table<ProductModel> id={name} columns={columns} />
     </Container>

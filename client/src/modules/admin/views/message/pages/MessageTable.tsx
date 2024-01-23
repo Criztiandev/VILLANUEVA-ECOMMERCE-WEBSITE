@@ -37,7 +37,7 @@ const MessageTable = () => {
   const mutation = queryUtils.mutation({
     mutationFn: async (payload: MessageModel) =>
       messageApi.create(payload as any),
-    invalidateKey: ["message"],
+    invalidateKey: ["convo"],
     toast: "Messaged Successfully",
   });
 
@@ -51,12 +51,14 @@ const MessageTable = () => {
     mutation.mutate({ sender: UID || "", ...payload });
   };
 
+  const handleClear = () => setSelectedConvo("");
+
   const { payload: result } = convoQuery.data as { payload: ConvoModel[] };
 
   return (
     <>
       <div className="grid grid-cols-[450px_auto] gap-4 mt-4">
-        <div className="w-full bg-white p-4 rounded-10px] rounded-[5px] ">
+        <div className="w-full bg-white p-4 rounded-10px] rounded-[5px] shadow-md">
           <div className="flex gap-2">
             <Searchbar />
             <Modal.Button
@@ -76,7 +78,7 @@ const MessageTable = () => {
             ))}
           </div>
         </div>
-        <MessagePanel chatID={selectedConvo} />
+        <MessagePanel chatID={selectedConvo} onDelete={handleClear} />
       </div>
 
       <Modal id="message-modal">

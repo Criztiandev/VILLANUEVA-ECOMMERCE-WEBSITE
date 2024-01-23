@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { RootReducer } from "@/service/store";
 import { toggleCart } from "@/service/store/slice/cart.slice";
 import { useEffect } from "react";
@@ -27,12 +28,10 @@ const AddToCart = () => {
     };
   }, [isActive]);
 
-  const totalValue =
-    products?.length > 0
-      ? products.reduce((acc, item) => {
-          return (acc + 200 * item.quantity) as number;
-        }, 0)
-      : 0;
+  const totalValue = products.reduce((total: number, product: any) => {
+    const productSubtotal = product.price * product.quantity;
+    return total + productSubtotal;
+  }, 0);
 
   return (
     <>
@@ -59,7 +58,9 @@ const AddToCart = () => {
                 className="btn"
                 title={`   Checkout ${totalValue}`}
               />
-              <button className="btn">View Cart</button>
+              <Link to={"/cart"} className="w-full">
+                <button className="btn w-full">View Cart</button>
+              </Link>
             </div>
           </div>
         </div>
@@ -75,8 +76,8 @@ const AddToCart = () => {
           prepared for a surge in charm, style, and potential admirers. Safe
           travels into the extraordinary!
         </p>
-        <div className="flex my-4 flex-col gap-2">
-          <Link to={"/checkout"} className="btn w-full">
+        <div className="flex my-4 flex-col gap-2 text-base">
+          <Link to={"/checkout"} className="btn w-full bg-primary text-white">
             Confirm
           </Link>
           <Modal.Button

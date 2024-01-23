@@ -10,6 +10,7 @@ export interface CartState {
 export interface CartPayload {
   _id: string;
   quantity: number;
+  price?: number;
 }
 const CartState: CartState = {
   isActive: false,
@@ -25,6 +26,8 @@ const cartSlice = createSlice({
     addToCart: cartReducer.addToCart,
     removeToCart: cartReducer.removeToCart,
     clearCart: cartReducer.removeToCart,
+    increaseQuantity: cartReducer.increaseQuantity,
+    decreaseQuantity: cartReducer.decreaseQuantity,
   },
 });
 

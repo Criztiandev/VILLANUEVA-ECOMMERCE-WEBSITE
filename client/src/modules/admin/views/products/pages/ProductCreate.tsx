@@ -108,7 +108,7 @@ const ProductCreate = () => {
               <h2 className="text-[18px] font-semibold">Product Image</h2>
             </Container>
 
-            <Container className="bg-white w-full  h-full border">
+            <Container className="mb-6 w-full  h-full ">
               <Container
                 className={`grid gap-4
                 ${imagesExist(1) && "grid-rows-[auto_100px]"}

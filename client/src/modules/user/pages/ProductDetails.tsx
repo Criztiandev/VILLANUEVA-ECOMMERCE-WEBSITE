@@ -5,7 +5,7 @@ import { CategoryModel, ProductModel } from "@/interface/model";
 import fileApi from "@/service/api/file.api";
 import Button from "@/components/Button";
 import productApi from "@/modules/admin/views/products/product.api";
-import Header from "../containers/Header";
+import Header from "../layout/Header";
 import categoriesApi from "@/modules/admin/views/categories/categories.api";
 
 const ProductDetails = () => {

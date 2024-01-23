@@ -36,7 +36,7 @@ const Field = (props: Props) => {
         <input
           {...props}
           {...register(props?.name)}
-          className={`input input-bordered ${
+          className={`input input-bordered bg-none ${
             props.className ? props.className : ""
           } w-full ${errorMessage ? "input-error" : ""}`}
           autoComplete={`current-${props.name}`}

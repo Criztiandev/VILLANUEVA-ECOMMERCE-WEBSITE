@@ -14,11 +14,9 @@ interface Props extends ProductModel {
 const ProductItems = (props: Props) => {
   const navigate = useNavigate();
 
-  // Ensure that props.images is an array before accessing its elements
   const coverImage =
     props.images && props.images.length > 0 ? props.images[0] : null;
 
-  // Use the newer optional chaining and nullish coalescing syntax for safer property access
   const modifiedName = props.name?.split(" ")?.join("_")?.toLowerCase();
 
   // Use a more descriptive variable name for the query
@@ -53,7 +51,7 @@ const ProductItems = (props: Props) => {
           <img
             src={image as string}
             alt={props.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-[5px]"
           />
         )}
       </div>

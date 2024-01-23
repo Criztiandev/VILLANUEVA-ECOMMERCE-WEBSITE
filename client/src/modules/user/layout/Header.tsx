@@ -2,6 +2,7 @@ import { clearCredentials } from "@/service/store/slice/auth.slice";
 import { toggleCart } from "@/service/store/slice/cart.slice";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import CartIcon from "@/assets/icons/cart_light_icon.svg";
 
 interface Props {
   isStatic?: boolean;
@@ -80,19 +81,14 @@ const Header = ({ isStatic }: Props) => {
           htmlFor="add-to-cart"
           className="btn btn-circle text-[24px]"
           onClick={handleToggleCart}>
-          <i className="bx bx-shopping-bag"></i>
+          <img src={CartIcon} loading="lazy" alt="alter" />
         </label>
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
             role="button"
             className="btn btn-ghost btn-circle avatar">
-            <div className="w-10 rounded-full">
-              <img
-                alt="Tailwind CSS Navbar component"
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-              />
-            </div>
+            <div className="w-10 rounded-full"></div>
           </div>
           <ul
             tabIndex={0}

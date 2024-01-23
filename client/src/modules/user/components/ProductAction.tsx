@@ -4,6 +4,7 @@ import { cartPayloadSchema } from "../validation/cart.validation";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import Field from "@/components/Field";
+import { toast } from "react-toastify";
 
 interface Props {
   _id: string;
@@ -22,19 +23,23 @@ const ProductAction = (props: Props) => {
   };
 
   const handleSubmit = (payload: CartPayload) => {
-    setCount(payload.quantity);
-    dispatch(addToCart(payload));
+    if (payload.quantity === 0)
+      return toast.error("Quantity must be greater than 0");
+
+    setCount(0);
+    toast.success("Added to cart");
+    dispatch(addToCart({ price: props.price, ...payload }));
   };
 
   return (
     <Form<CartPayload> onSubmit={handleSubmit} validation={cartPayloadSchema}>
       <div className="flex justify-between items-end">
-        <div className="join">
+        <div className="flex gap-2">
           <button
             type="button"
-            className="join-item btn"
+            className="btn border-2 border-primary bg-white"
             onClick={handleDecrease}>
-            -
+            <i className="bx bx-minus text-[18px] text-primary"></i>
           </button>
           <div className="w-[64px]">
             <Field type="text" name="_id" default={props?._id} hidden />
@@ -42,15 +47,15 @@ const ProductAction = (props: Props) => {
               type="number"
               name="quantity"
               default={count || "0"}
-              className="join-item  text-center"
+              className=" text-center text-[18px] input-ghost"
             />
           </div>
 
           <button
             type="button"
-            className="join-item btn"
+            className="btn border-2 border-primary bg-white"
             onClick={handleIncrease}>
-            +
+            <i className="bx bx-plus  text-[18px] text-primary"></i>
           </button>
         </div>
         <h4 className="text-[28px] font-semibold">P{props.price}</h4>
