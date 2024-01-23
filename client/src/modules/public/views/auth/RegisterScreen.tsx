@@ -10,6 +10,8 @@ import Button from "@/components/Button";
 import Heading from "@/components/Heading";
 import Text from "@/components/Text";
 import { LoginData } from "@/interface/auth";
+import Logo from "@/assets/images/Logo.png";
+import Background from "@/assets/images/background-2.jpg";
 
 const RegisterScreen = () => {
   const navigate = useNavigate();
@@ -32,11 +34,14 @@ const RegisterScreen = () => {
   };
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 h-[100vh]">
+    <div className="grid grid-cols-1 md:grid-cols-2 h-[100vh] bg-white">
       <div className="relative flex justify-center items-center flex-col">
-        <div className="absolute top-0 md:left-0  p-4 text-3xl font-bold">
-          Logo
-        </div>
+        <Link to={"/"}>
+          <div className=" flex gap-2  items-center absolute top-0 md:left-0  p-4 text-[22px] font-semibold">
+            <img src={Logo} className="w-[100px] h-[100px] object-cover" />
+            <span className="capitalize">villanueva gardens</span>
+          </div>
+        </Link>
         <Heading level={1}>Register</Heading>
         <Text as="span">Lorem ipsum dolor sit amet adipiscing elit.</Text>
         <span className="my-4 mb-8"></span>
@@ -60,23 +65,25 @@ const RegisterScreen = () => {
               autoComplete="current-password"
             />
           </Stack>
-
-          <Stack dir="row" justifyContent="end" className="py-4">
-            <Link to={"#"}>Forgot Password</Link>
-          </Stack>
-
           <hr className="border border-black mb-4" />
 
-          <Button title="Login" disabled={mutation.isPending} />
+          <Button title="Register" disabled={mutation.isPending} />
         </Form>
         <span className="my-4">
-          Don't have an account?
-          <Link to={"/register"} className="border-b border-black">
-            Register
+          Do have an account?
+          <Link to={"/login"} className="border-b border-black">
+            Login
           </Link>
         </span>
       </div>
-      <div className="bg-slate-300"></div>
+      <div className="bg-slate-300 relative">
+        <div className="bg-[#00000063] w-screen h-screen absolute z-10"></div>
+        <img
+          src={Background}
+          className="object-cover w-screen h-screen"
+          loading="lazy"
+        />
+      </div>
     </div>
   );
 };
