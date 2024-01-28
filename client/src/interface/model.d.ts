@@ -119,3 +119,37 @@ export interface ConvoModel {
   participants: Array<string>;
   messages: Array<MessageModel>;
 }
+
+interface ProductsOrder {
+  _id?: string;
+  quantity: number;
+}
+
+export interface OrderModel {
+  refID?: string;
+  _id?: string;
+  UID?: string;
+  products: Array<ProductsOrder>;
+  fullName: string;
+  address: string;
+  contact: string;
+  tax: number;
+  shippingFee: number;
+  total: number;
+  medthod: "COD";
+  status: "Pending" | "Processing" | "Delivered" | "Cancel";
+  createdAt?: string;
+}
+
+export interface OrderPayload {
+  _id?: string;
+  refID: string;
+  productName: string;
+  quantity: number;
+  price: number;
+  fullName: string;
+  purchasedDate: string;
+  status: string;
+  total: number;
+  method: string;
+}

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/service/store";
@@ -7,12 +8,14 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import userApi from "../api/user.api";
 import LoadingScreen from "@/containers/LoadingScreen";
-import { UserModel } from "@/interface/model";
+import { OrderModel, UserModel } from "@/interface/model";
 import FieldDisplay from "@/components/FieldDisplay";
 import productApi from "../api/product.api";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import queryUtils from "@/utils/query.utils";
+import orderApi from "../api/order.api";
 
 const CheckoutScreen = () => {
   const { UID } = useSelector((state: RootReducer) => state.auth);
@@ -42,6 +45,12 @@ const CheckoutScreen = () => {
     queryKey: ["products"],
   });
 
+  const productMutation = queryUtils.mutation({
+    mutationFn: async (payload: OrderModel) => orderApi.create(payload),
+    invalidateKey: ["orders"],
+    toast: "Order has been placed",
+  });
+
   useEffect(() => {
     if (products.length <= 0 || !UID) {
       navigate("/");
@@ -50,8 +59,6 @@ const CheckoutScreen = () => {
   }, [products, UID]);
 
   if (userQuery.isLoading || productQuery?.isLoading) return <LoadingScreen />;
-
-  const handleSubmit = () => {};
 
   const totalValue = () => {
     const subtotal = [];
@@ -63,10 +70,28 @@ const CheckoutScreen = () => {
   };
 
   const total = totalValue() + 40;
-  const payload: UserModel = userQuery.data?.payload;
+  const userPayload: UserModel = userQuery.data?.payload;
   const productaPayload = productQuery?.data;
 
-  const currentAddress = payload?.address.split(",");
+  const currentAddress = userPayload?.address.split(",");
+
+  const handleSubmit = () => {
+    const result: OrderModel = {
+      UID: UID || "",
+      products: products,
+      fullName: userPayload?.fullName as any,
+      address: userPayload?.address,
+      contact: userPayload?.contact as any,
+      total: total,
+      shippingFee: 40,
+      tax: 0,
+      medthod: "COD",
+      status: "Pending",
+    };
+
+    productMutation.mutate(result as any);
+  };
+
   return (
     <>
       <div className="px-[24px]">
@@ -92,7 +117,7 @@ const CheckoutScreen = () => {
                 </GridStack>
                 <FieldDisplay
                   title="Postal Code"
-                  payload={payload.postalCode}
+                  payload={userPayload.postalCode}
                 />
               </div>
             </div>
@@ -102,16 +127,16 @@ const CheckoutScreen = () => {
                 Payment Details
               </h1>
               <FieldDisplay
-                payload={payload?.fullName as string}
+                payload={userPayload?.fullName as string}
                 title="Full Name"
               />
               <GridStack columns={2} gap={24} className="my-4">
                 <FieldDisplay
-                  payload={payload?.email as string}
+                  payload={userPayload?.email as string}
                   title="Email"
                 />
                 <FieldDisplay
-                  payload={payload?.contact as string}
+                  payload={userPayload?.contact as string}
                   title="Contact"
                 />
               </GridStack>
@@ -145,7 +170,7 @@ const CheckoutScreen = () => {
             <h1 className="text-[24px] font-semibold">Your order</h1>
 
             <div className="flex flex-col gap-4 my-4 border-b py-4 border-gray-300">
-              {products.map((items: any, index: number) => (
+              {products?.map((items: any, index: number) => (
                 <div className="flex justify-between items-center" key={index}>
                   <span>
                     {items.quantity} x{" "}

@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
 import model from "../../../models/order.model.ts";
+import { OrderModel } from "../../../interfaces/model.js";
+import productModel from "../../../models/product.model.ts";
 
 const handleError = (message: string) => {
   throw new Error(message);
@@ -15,15 +17,28 @@ const handleDeleteSuccess = (res: Response, payload: any) => {
   res.status(201).json({ payload });
 };
 
+const generateRandomReferenceNumber = (): string => {
+  const baseField = "#";
+  const randomPart = Math.random().toString(36).substring(2, 10); // Generate a random alphanumeric string
+
+  return `${baseField}${randomPart}`;
+};
+
 export default {
   // Create User
   // POST /api/user/create (Private, Admin)
   create: asyncHandler(async (req: Request, res: Response) => {
-    const payload = req.body;
-    const credentials = await model.create(payload);
-    if (!credentials)
-      handleError("Something went wrong, Please Try again later");
-    handleSuccess(res, payload);
+    const payload: OrderModel = req.body;
+
+    //generate a random referene number
+    const productRef = generateRandomReferenceNumber();
+
+    const updatedPayload = { ...payload, refID: productRef };
+
+    const credentials = await model.create(updatedPayload);
+    if (!credentials) handleError("Something went wrong, Please Try again");
+
+    handleSuccess(res, credentials);
   }),
 
   // Update User By Id
@@ -78,11 +93,44 @@ export default {
   // Get All Users
   // GET /api/user (Private, Admin)
   getAll: asyncHandler(async (req: Request, res: Response) => {
+    const query = req.query || {};
     const exception = "-password -__v";
-    const credentials = await model.find({}).lean().select(exception);
+
+    const credentials = await model.find(query).lean().select(exception);
     if (!credentials) handleError("Something went wrong, Please Try again");
 
-    handleSuccess(res, credentials);
+    const productsPayload = credentials
+      .map((item, index) => item.products)
+      .flat();
+
+    const result = productsPayload.map(async (item, index) => {
+      const product = await productModel
+        .findById(item)
+        .lean()
+        .select("name price");
+
+      return {
+        ...product,
+        quantity: item.quantity,
+      };
+    });
+
+    const promisedResult = await Promise.all(result);
+
+    const transformedPayload = promisedResult.map((items, index) => ({
+      _id: credentials[index]._id,
+      refID: credentials[index].refID,
+      productName: items.name,
+      quantity: items.quantity,
+      price: items.price,
+      fullName: credentials[index].fullName,
+      purchasedDate: credentials[index].createdAt as any,
+      status: credentials[index].status,
+      total: credentials[index].total,
+      method: credentials[index].medthod,
+    }));
+
+    handleSuccess(res, transformedPayload);
   }),
 
   // Get All Users by Filter

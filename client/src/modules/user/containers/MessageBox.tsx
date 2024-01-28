@@ -94,7 +94,7 @@ const MessageBox = () => {
               })}
             </div>
 
-            <div>
+            <div className="px-2">
               <Form<Message>
                 onSubmit={handleMessage}
                 validation={messageValidation}>

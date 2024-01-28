@@ -15,7 +15,7 @@ import {
   getFilteredRowModel,
   flexRender,
   ColumnDef,
-  PaginationState,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import { useDispatch, useSelector } from "react-redux";
 import SortingIndicator from "./parts/SortingIndicator";
@@ -27,10 +27,6 @@ const Table = <T,>({ columns, ...props }: TableProps<T>) => {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnsFilter] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
-  const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 0,
-  });
 
   const dispatch = useDispatch();
   const selection = useSelector((state: RootReducer) => state.table[props.id]);
@@ -52,10 +48,9 @@ const Table = <T,>({ columns, ...props }: TableProps<T>) => {
   const table = useReactTable<T>({
     data: memoizedData,
     columns: _columns,
-    pageCount: selection?.pagination?.size,
+    pageCount: 10,
 
     state: {
-      pagination,
       sorting,
       columnFilters,
       globalFilter,
@@ -63,16 +58,16 @@ const Table = <T,>({ columns, ...props }: TableProps<T>) => {
     },
 
     enableRowSelection: true,
-    manualPagination: true,
+    manualPagination: false,
     onGlobalFilterChange: setGlobalFilter,
     onColumnFiltersChange: setColumnsFilter,
     onSortingChange: setSorting,
     onRowSelectionChange: setRowSelection,
-    onPaginationChange: setPagination,
 
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
   });
 
   useEffect(() => {
@@ -87,24 +82,13 @@ const Table = <T,>({ columns, ...props }: TableProps<T>) => {
     if (selection?.columnFilters) {
       setColumnsFilter(selection?.columnFilters);
     }
-    if (selection?.pagination) {
-      setPagination({
-        pageIndex: selection?.pagination.index,
-        pageSize: selection?.pagination.size,
-      });
-    }
 
     // clean up when the component unmout
     return () => {
       setGlobalFilter("");
       setColumnsFilter([]);
     };
-  }, [
-    selection?.payload,
-    selection?.columnFilters,
-    selection?.globalFilter,
-    selection?.pagination,
-  ]);
+  }, [selection?.payload, selection?.columnFilters, selection?.globalFilter]);
 
   return (
     <>

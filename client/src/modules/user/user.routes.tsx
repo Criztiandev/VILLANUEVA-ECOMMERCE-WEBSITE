@@ -8,7 +8,16 @@ import ProductShopScreen from "./pages/ProductShopScreen";
 import ServiceShopScreen from "./pages/ServiceShopScreen";
 import SettingsScreen from "./pages/SettingsScreen";
 import CheckoutScreen from "./pages/CheckoutScreen";
-import ProductDetails from "./pages/ProductDetails";
+import ProductDetails from "./containers/ProductDetails";
+import withTableFetching from "@/hoc/withTableFetching.hoc";
+import tableConfig from "./config/table.config";
+import orderApi from "./api/order.api";
+import OrderDetails from "./containers/OrderDetails";
+
+const FetchOrderTable = withTableFetching(OrderScreen, tableConfig.orderTable);
+const UID = JSON.parse(localStorage.getItem("info") || "");
+
+console.log(UID);
 
 export const userRoutes = createBrowserRouter([
   {
@@ -16,7 +25,13 @@ export const userRoutes = createBrowserRouter([
     element: <RootScreen />,
     children: [
       { path: "/", element: <HomeScreen /> },
-      { path: "/order", element: <OrderScreen /> },
+      {
+        path: "/order",
+        element: (
+          <FetchOrderTable fetchFn={() => orderApi.fetchAll({ UID: UID })} />
+        ),
+      },
+      { path: "/order/:id", element: <OrderDetails /> },
       { path: "/service", element: <ServiceScreen /> },
       { path: "/product/shop", element: <ProductShopScreen /> },
       { path: "/product/shop/:id", element: <ProductDetails /> },

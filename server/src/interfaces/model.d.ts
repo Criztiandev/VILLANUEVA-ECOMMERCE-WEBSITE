@@ -47,16 +47,6 @@ export interface CartModel {
   total: number;
 }
 
-export interface OrderModel {
-  _id: string;
-  user: UserModel;
-  cart: CartModel[];
-  total: number;
-  status: "pending" | "paid" | "delivered";
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 export interface CategoryModel {
   _id?: string;
   name: string;
@@ -89,4 +79,37 @@ export interface ServiceModel {
   isPublished: boolean;
   isFeatured: boolean;
   status: string;
+}
+
+interface ProductsOrder {
+  _id?: string;
+  quantity: number;
+}
+
+export interface OrderModel {
+  _id?: string;
+  refID: string;
+  UID?: string;
+  products: Array<ProductsOrder>;
+  fullName: string;
+  address: string;
+  contact: string;
+  tax: number;
+  shippingFee: number;
+  total: number;
+  medthod: "COD";
+  status: "Pending" | "Processing" | "Delivered" | "Cancel";
+  createdAt?: string;
+}
+
+export interface OrderPayload {
+  refID: string;
+  productName: string;
+  quantity: number;
+  price: number;
+  fullName: string;
+  purchasedDate: string;
+  status: string;
+  total: number;
+  method: string;
 }

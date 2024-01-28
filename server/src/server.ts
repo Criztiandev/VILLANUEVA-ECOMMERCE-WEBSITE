@@ -15,6 +15,7 @@ import customerRoutes from "./modules/admin/customer/customer.routes.ts";
 import messageRoutes from "./modules/admin/message/message.routes.ts";
 import serviceRoutes from "./modules/admin/service/service.routes.ts";
 import userRoutes from "./modules/users/users.routes.ts";
+import orderRoutes from "./modules/admin/order/order.routes.ts";
 
 // Init
 dotnevn.config();
@@ -41,6 +42,7 @@ app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/customer", customerRoutes);
 app.use("/api/v1/message", messageRoutes);
 app.use("/api/v1/service", serviceRoutes);
+app.use("/api/v1/orders", orderRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
