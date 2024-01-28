@@ -19,7 +19,7 @@ const Panel = ({ name, title, ...props }: Props) => {
 
       <div className="flex gap-2">
         <input
-          className="input input-bordered input-md w-[300px]"
+          className="input input-bordered input-md w-[250px]"
           placeholder="Search Category here"
           value={selector?.globalFilter}
           onChange={(e) =>

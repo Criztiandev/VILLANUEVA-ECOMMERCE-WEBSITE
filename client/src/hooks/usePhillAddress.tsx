@@ -11,7 +11,7 @@ const usePhillAddress = () => {
   const [citiesCode, setCitiesCode] = useState("");
   const [municipalitiesCode, setMunicipalitiesCode] = useState("");
 
-  const fetchBasePayload = async () => {
+  const fetchRegion = async () => {
     const result = await axios.get(`${BASE_API}/regions`);
     return result.data;
   };
@@ -20,13 +20,13 @@ const usePhillAddress = () => {
     endpoint: string,
     code: string
   ) => {
-    const res = await axios.get(`${BASE_API}/${root}/${code}/${endpoint}`);
-
-    return res.data;
+    if (!code) return;
+    const result = await axios.get(`${BASE_API}/${root}/${code}/${endpoint}`);
+    return result.data;
   };
 
   const regionQuery = useQuery({
-    queryFn: async () => fetchBasePayload(),
+    queryFn: fetchRegion,
     queryKey: ["regions"],
   });
 
@@ -56,8 +56,9 @@ const usePhillAddress = () => {
   });
 
   const handleSelectRegion = (event: ChangeEvent<HTMLSelectElement>) => {
-    const payload = event.currentTarget.value;
-    const [region, code] = payload.split("-");
+    const target = event.currentTarget;
+    const [region, code] = target.value.split("-");
+
     setFinalAddress(region);
     setRegionCode(code);
   };

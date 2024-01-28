@@ -9,7 +9,7 @@ body,
   font-family: "Poppins", sans-serif;
   line-height: 1.5;
   min-height: 100vh;
-  background: #f6f8ff;
+  background: #ebedf2;
   /* background: #3578ff80; */
 }
 
@@ -21,4 +21,20 @@ input::-webkit-inner-spin-button {
 
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+::-webkit-scrollbar {
+  /* Customize the scrollbar with your own */
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  /* Customize the scrollbar track */
+  background: inherit;
+}
+
+::-webkit-scrollbar-thumb {
+  /* Customize the scrollbar thumb */
+  background: #bbbbbb80;
+  border-radius: 100px;
 }

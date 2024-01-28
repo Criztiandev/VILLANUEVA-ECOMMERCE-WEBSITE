@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
-import messageApi from "../message.api";
+import messageApi from "../../../api/message.api";
 import LoadingScreen from "@/containers/LoadingScreen";
 import { MessageModel } from "@/interface/model";
 import Form from "@/components/Form";
 import Field from "@/components/Field";
 import Button from "@/components/Button";
-import { singleMessage } from "../message.validation";
+import { singleMessage } from "../../../validation/message.validation";
 import queryUtils from "@/utils/query.utils";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/service/store";
@@ -72,7 +72,7 @@ const MessagePanel = (props: Props) => {
 
           {props?.chatID && (
             <Modal.Button
-              target="delete-convo"
+              target={`delete-${props?.chatID}`}
               title="Delete"
               className="btn bg-primary text-white"
             />
@@ -117,7 +117,7 @@ const MessagePanel = (props: Props) => {
       </div>
 
       <DeleteModal
-        id="delete-convo"
+        id={`delete-${props?.chatID}`}
         onSubmit={() => deleteMutation.mutate({})}
       />
     </>

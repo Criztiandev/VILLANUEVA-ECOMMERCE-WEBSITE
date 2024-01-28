@@ -34,7 +34,9 @@ const ProductItems = (props: ProductModel) => {
           <h3 className="text-[18px] font-semibold">{props.name}</h3>
           <span className="text-gray-400">{props.category}</span>
         </div>
-        <div className="badge p-4 capitalize">{props.status}</div>
+        <div className="badge border-2 p-4 capitalize bg-[#ff65657e] border-red-300 text-[#792929]">
+          {props.status}
+        </div>
       </div>
 
       <div className="h-[250px]  w-full my-4">
@@ -43,7 +45,7 @@ const ProductItems = (props: ProductModel) => {
           <img
             src={image as string}
             alt={props.name}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover rounded-[5px]"
           />
         )}
       </div>

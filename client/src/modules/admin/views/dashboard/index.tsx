@@ -8,7 +8,7 @@ import Table from "@/components/Table";
 import tableConfig from "../../config/table.config";
 import { ProductModel, RecentModel } from "@/interface/model";
 import { useQuery } from "@tanstack/react-query";
-import productApi from "../products/product.api";
+import productApi from "../../api/product.api";
 import LoadingScreen from "@/containers/LoadingScreen";
 import ProductBlob from "./components/ProductBlob";
 

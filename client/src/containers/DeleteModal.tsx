@@ -1,4 +1,3 @@
-import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import Stack from "@/components/FlexStack";
 
@@ -9,7 +8,7 @@ interface Props {
   onSuccess?: () => void;
 }
 
-const DeleteModal = ({ id, onSubmit, ...props }: Props) => {
+const DeleteModal = ({ id, onSubmit }: Props) => {
   return (
     <Modal id={id}>
       <h2 className="text-[24px] font-bold">
@@ -23,12 +22,12 @@ const DeleteModal = ({ id, onSubmit, ...props }: Props) => {
 
       <Stack gap={8}>
         <label htmlFor={id} className="w-full">
-          <Button
-            disabled={props.isPending}
-            title="Confirm"
-            className="w-full"
+          <label
             onClick={onSubmit}
-          />
+            className="btn w-full text-balance bg-primary text-white"
+            htmlFor={id}>
+            Confirm
+          </label>
         </label>
 
         <label className="btn w-full text-balance" htmlFor={id}>

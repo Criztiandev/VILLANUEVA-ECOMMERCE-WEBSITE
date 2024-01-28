@@ -15,6 +15,8 @@ export default {
   login: asyncHandler(async (req: Request, res: Response) => {
     const { email, password: currentPassword } = req.body;
 
+    console.log("hi");
+
     const existance = await userModel.findOne({ email });
 
     if (existance && (await existance.matchPassword(currentPassword))) {

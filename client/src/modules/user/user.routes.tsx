@@ -1,22 +1,26 @@
 /* eslint-disable react-refresh/only-export-components */
 import RootScreen from ".";
 import { createBrowserRouter } from "react-router-dom";
-import LandingPage from "./pages/LandingPage";
-import Shop from "./pages/Shop";
-import Checkout from "./pages/Checkout";
-import ProductDetails from "./pages/ProductDetails";
-import CartScreen from "./pages/CartScreen";
+import HomeScreen from "./pages/HomeScreen";
+import OrderScreen from "./pages/OrderScreen";
+import ServiceScreen from "./pages/ServiceScreen";
+import ProductShopScreen from "./pages/ProductShopScreen";
+import ServiceShopScreen from "./pages/ServiceShopScreen";
+import SettingsScreen from "./pages/SettingsScreen";
+import CheckoutScreen from "./pages/CheckoutScreen";
 
 export const userRoutes = createBrowserRouter([
   {
     path: "/",
     element: <RootScreen />,
     children: [
-      { path: "/", element: <LandingPage /> },
-      { path: "/shop", element: <Shop /> },
-      { path: "/cart", element: <CartScreen /> },
-      { path: "/shop/:id", element: <ProductDetails /> },
-      { path: "/checkout", element: <Checkout /> },
+      { path: "/", element: <HomeScreen /> },
+      { path: "/order", element: <OrderScreen /> },
+      { path: "/service", element: <ServiceScreen /> },
+      { path: "/product/shop", element: <ProductShopScreen /> },
+      { path: "/service/shop", element: <ServiceShopScreen /> },
+      { path: "/checkout", element: <CheckoutScreen /> },
+      { path: "/settings", element: <SettingsScreen /> },
     ],
   },
 ]);

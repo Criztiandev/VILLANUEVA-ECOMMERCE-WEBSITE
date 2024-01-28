@@ -5,14 +5,16 @@ import {
   OrderModel,
   ProductModel,
   RecentModel,
+  ServiceModel,
   UserModel,
 } from "@/interface/model";
 import tableUtils from "@/utils/table.utils";
-import productApi from "../views/products/product.api";
-import categoriesApi from "../views/categories/categories.api";
-import customerApi from "../views/customer/customer.api";
-import orderApi from "../views/orders/order.api";
-import userApi from "../views/users/user.api";
+import productApi from "../api/product.api";
+import categoriesApi from "../api/categories.api";
+import customerApi from "../api/customer.api";
+import orderApi from "../api/order.api";
+import userApi from "../api/user.api";
+import serviceApi from "../api/service.api";
 
 const productTable: TableStructProps<ProductModel> = {
   base: "products",
@@ -139,6 +141,23 @@ const userTable: TableStructProps<UserModel> = {
   }),
 };
 
+const serviceTable: TableStructProps<ServiceModel> = {
+  base: "service",
+  name: "service-table",
+  columns: tableUtils.columnGenerator<ServiceModel>({
+    updateFn: serviceApi.updateById,
+    deleteFn: serviceApi.deleteById,
+    invalidateKey: ["service"],
+    options: [
+      { name: "name", header: "Name", isFirst: true },
+      { name: "category", header: "Category" },
+      { name: "status", header: "Status" },
+      { name: "isPublished", header: "Published", isToggle: true },
+      { name: "_id", header: "Action", isLast: true },
+    ],
+  }),
+};
+
 export default {
   productTable,
   categoryTable,
@@ -147,4 +166,5 @@ export default {
   recentTable,
   messageTable,
   userTable,
+  serviceTable,
 };

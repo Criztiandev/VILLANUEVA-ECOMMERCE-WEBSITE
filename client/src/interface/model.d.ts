@@ -41,6 +41,27 @@ export interface ProductModel {
   isFeatured: boolean;
 }
 
+export interface ServiceModel {
+  _id?: string;
+  images?: Array<string>;
+  name: string;
+  category: string;
+  status: string;
+  summary?: string;
+  description?: string;
+  isPublished: boolean;
+  isFeatured: boolean;
+}
+
+export interface ServiceSchedule {
+  _id?: string;
+  service: string;
+  schedule: string;
+  completionDate: string;
+  customer: string;
+  status: string;
+}
+
 export interface RecentModel {
   no: string;
   customer: string;
@@ -65,35 +86,23 @@ export interface CartModel {
   total: number;
 }
 
-export interface OrderModel {
+interface RecentOrderModel {
   _id?: string;
-  UID?: string;
-  OID: string;
-  quantity: number;
-  ammount: number;
-  address: string;
-  status: "pending" | "paid" | "delivered";
-  purchasedAt: Date;
+  refID: string;
+  status: string;
+  date: string;
+  price: string;
+}
+
+interface RecentService {
+  _id?: string;
+  name: string;
 }
 
 export interface CategoryModel {
   _id?: string;
   name: string;
   count?: number;
-}
-
-export interface ServiceModel {
-  images?: Array<string>;
-  name: string;
-  price: number;
-
-  scheduleStart: string;
-  scheduleEnd: string;
-
-  description?: string;
-  isPublished: boolean;
-  isFeatured: boolean;
-  status: string;
 }
 
 export interface MessageModel {

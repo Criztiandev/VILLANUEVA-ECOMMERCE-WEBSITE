@@ -3,10 +3,10 @@
 import Container from "@/components/Container";
 import ProductItems from "../components/ProductItems";
 import { useQuery } from "@tanstack/react-query";
-import productApi from "../product.api";
+import productApi from "../../../api/product.api";
 import { CategoryModel, ProductModel } from "@/interface/model";
 import LoadingScreen from "@/containers/LoadingScreen";
-import categoriesApi from "../../categories/categories.api";
+import categoriesApi from "../../../api/categories.api";
 import Table from "@/components/Table";
 import tableConfig from "@/modules/admin/config/table.config";
 import GridViewAction from "../components/GridViewAction";
@@ -102,10 +102,9 @@ const CurrentTable = ({ name, columns, onToggleTable }: Props) => {
     <Container>
       <Table.Panel title="Products" name={name}>
         <div className="flex gap-2">
-          <Modal.Button target="import-modal" title="import" className="btn" />
           <Button
             title="Create"
-            className=""
+            className="btn"
             onClick={() => navigate("create")}
           />
           <Button title="T" className="btn-circle" onClick={onToggleTable} />

@@ -8,21 +8,11 @@ import NaviIcon from "@/assets/icons/service_light_icon.svg";
 import MessageIcon from "@/assets/icons/chat_light_icon.svg";
 import UserIcon from "@/assets/icons/user_light_icon.svg";
 import SettingsIcon from "@/assets/icons/settings_light_icon.svg";
-import Logo from "@/assets/images/Logo.png";
+import Logo from "@/components/Logo";
 const Sidebar = () => {
   return (
-    <aside className="border h-screen w-[400px] p-4 sticky top-0 bg-white">
-      <div className="  flex justify-center items-center flex-col gap-2">
-        <img
-          src={Logo}
-          alt="img"
-          className="object-cover w-[120px] h-[120px]"
-          loading="lazy"
-        />
-        <span className="font-semibold text-[22px] capitalize">
-          villanueva gardens
-        </span>
-      </div>
+    <aside className="border h-screen w-[350px] p-4 sticky top-0 bg-white overflow-y-scroll">
+      <Logo />
       <ul className="menu mt-8">
         <NavLink title="Dashboard" path="/" icon={DashboardIcon} />
 

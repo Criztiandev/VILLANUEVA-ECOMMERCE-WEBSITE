@@ -7,10 +7,12 @@ const MainEntryPoint = () => {
   return (
     <>
       <main className="flex">
-        <Sidebar />
+        <div>
+          <Sidebar />
+        </div>
         <section className=" flex flex-col w-screen overflow-x-hidden">
           <Topbar />
-          <div className="px-[32px]">
+          <div className="px-[24px]">
             <Outlet />
           </div>
         </section>

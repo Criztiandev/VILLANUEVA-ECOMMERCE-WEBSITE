@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
-import productApi from "../product.api";
+import productApi from "../../../api/product.api";
 import LoadingScreen from "@/containers/LoadingScreen";
 import { ProductModel } from "@/interface/model";
 import fileApi from "@/service/api/file.api";

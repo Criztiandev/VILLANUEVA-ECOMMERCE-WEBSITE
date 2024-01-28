@@ -14,6 +14,7 @@ import categoryRoutes from "./modules/admin/category/category.routes.ts";
 import customerRoutes from "./modules/admin/customer/customer.routes.ts";
 import messageRoutes from "./modules/admin/message/message.routes.ts";
 import serviceRoutes from "./modules/admin/service/service.routes.ts";
+import userRoutes from "./modules/users/users.routes.ts";
 
 // Init
 dotnevn.config();
@@ -35,6 +36,7 @@ app.use("/api/v1/upload", express.static("public"));
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/products", productRoutes);
+app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/category", categoryRoutes);
 app.use("/api/v1/customer", customerRoutes);
 app.use("/api/v1/message", messageRoutes);

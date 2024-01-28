@@ -3,18 +3,16 @@ import cartReducer from "../reducer/cart.reducer";
 
 export interface CartState {
   isActive: boolean;
-  count: number;
-  products: CartPayload[];
+  products: ProductPayload[];
 }
 
-export interface CartPayload {
+export interface ProductPayload {
   _id: string;
   quantity: number;
   price?: number;
 }
 const CartState: CartState = {
   isActive: false,
-  count: 0,
   products: [],
 };
 
@@ -31,6 +29,12 @@ const cartSlice = createSlice({
   },
 });
 
-export const { toggleCart, addToCart, removeToCart, clearCart } =
-  cartSlice.actions;
+export const {
+  toggleCart,
+  addToCart,
+  removeToCart,
+  clearCart,
+  increaseQuantity,
+  decreaseQuantity,
+} = cartSlice.actions;
 export default cartSlice.reducer;

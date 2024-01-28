@@ -7,7 +7,7 @@ import { UserModel } from "@/interface/model";
 
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import customerApi from "../user.api";
+import customerApi from "../../../api/user.api";
 import LoadingScreen from "@/containers/LoadingScreen";
 import FieldDisplay from "@/components/FieldDisplay";
 import Modal from "@/components/Modal";

@@ -107,76 +107,102 @@ const Table = <T,>({ columns, ...props }: TableProps<T>) => {
   ]);
 
   return (
-    <div
-      className="overflow-x-auto  bg-white"
-      style={{ height: "calc(100vh - 250px)" }}>
-      {memoizedData && (
-        <table className="table table-md  rounded-[5px] bg-white">
-          <thead>
-            {table.getHeaderGroups().map((row) => (
-              <tr
-                key={row.id}
-                className="rounded-t-[10px] border-b overflow-hidden">
-                {row.headers.map((header, index) => (
-                  <th key={header.id} className=" text-gray-400 font-semibold">
-                    {header.isPlaceholder ? null : (
-                      <div
-                        className={`flex items-center ${
-                          row.headers.length - 1 === index
-                            ? "justify-center"
-                            : ""
-                        }`}>
-                        {index === 0 && (
-                          <CheckBox
-                            {...{
-                              checked: table.getIsAllRowsSelected(),
-                              indeterminate: table.getIsSomeRowsSelected(),
-                              onChange: table.getToggleAllRowsSelectedHandler(),
-                            }}
-                            className="mr-4 border-white"
-                          />
-                        )}
-
+    <>
+      <div
+        className="overflow-x-auto  bg-white"
+        style={{ height: "calc(100vh - 230px)" }}>
+        {memoizedData && (
+          <table className="table table-md  rounded-[5px] bg-white">
+            <thead>
+              {table.getHeaderGroups().map((row) => (
+                <tr
+                  key={row.id}
+                  className="rounded-t-[10px] border-b overflow-hidden">
+                  {row.headers.map((header, index) => (
+                    <th
+                      key={header.id}
+                      className=" text-gray-400 font-semibold">
+                      {header.isPlaceholder ? null : (
                         <div
-                          {...{
-                            className: header.column.getCanSort()
-                              ? "cursor-pointer select-none flex"
-                              : "",
-                            onClick: header.column.getToggleSortingHandler(),
-                          }}>
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
+                          className={`flex items-center ${
+                            row.headers.length - 1 === index
+                              ? "justify-center"
+                              : ""
+                          }`}>
+                          {index === 0 && (
+                            <CheckBox
+                              {...{
+                                checked: table.getIsAllRowsSelected(),
+                                indeterminate: table.getIsSomeRowsSelected(),
+                                onChange:
+                                  table.getToggleAllRowsSelectedHandler(),
+                              }}
+                              className="mr-4 border-white"
+                            />
                           )}
 
-                          {/* // Sorting Indicator */}
-                          <SortingIndicator
-                            ascIcon="Asc"
-                            descIcon="Desc"
-                            isSorted={header.column.getIsSorted() as string}
-                          />
+                          <div
+                            {...{
+                              className: header.column.getCanSort()
+                                ? "cursor-pointer select-none flex"
+                                : "",
+                              onClick: header.column.getToggleSortingHandler(),
+                            }}>
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+
+                            {/* // Sorting Indicator */}
+                            <SortingIndicator
+                              ascIcon="Asc"
+                              descIcon="Desc"
+                              isSorted={header.column.getIsSorted() as string}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </th>
-                ))}
-              </tr>
-            ))}
-          </thead>
-          <tbody>
-            {table.getRowModel().rows.map((rows) => (
-              <tr key={rows.id}>
-                {rows.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+                      )}
+                    </th>
+                  ))}
+                </tr>
+              ))}
+            </thead>
+            <tbody>
+              {table.getRowModel().rows.map((rows) => (
+                <tr key={rows.id}>
+                  {rows.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
+
+      <div className="flex gap-4 justify-end py-4">
+        <button
+          className="btn"
+          onClick={() => table.getCanPreviousPage()}
+          disabled={!table.getCanPreviousPage()}>
+          Previous
+        </button>
+        <button className="w-[48px] h-[48px] rounded-[5px] bg-primary text-white">
+          0
+        </button>
+        <button
+          className="btn bg-primary text-white"
+          onClick={() => table.getCanNextPage()}
+          disabled={!table.getCanNextPage()}>
+          Next
+        </button>
+      </div>
+    </>
   );
 };
 

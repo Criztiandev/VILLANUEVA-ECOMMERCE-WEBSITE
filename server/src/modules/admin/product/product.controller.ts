@@ -88,7 +88,6 @@ export default {
       `../../../../public/products/${productName}`
     );
 
-    console.log(productPath);
     if (fs.existsSync(productPath)) {
       fs.rmdirSync(productPath, { recursive: true });
     }

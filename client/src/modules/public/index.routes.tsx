@@ -2,11 +2,8 @@
 import RootScreen from ".";
 import { createBrowserRouter } from "react-router-dom";
 import LandingPage from "./views/static/LandingPage";
-import LoginScreen from "./views/auth/LoginScreen";
-import Shop from "./views/static/pages/Shop";
-import Checkout from "./views/static/pages/Checkout";
-import RegisterScreen from "./views/auth/RegisterScreen";
-import ProductDetails from "./views/static/pages/ProductDetails";
+import authRoutes from "./routes/auth.routes";
+import shopRoutes from "./routes/shop.routes";
 
 export const publicRoutes = createBrowserRouter([
   {
@@ -14,12 +11,8 @@ export const publicRoutes = createBrowserRouter([
     element: <RootScreen />,
     children: [
       { path: "/", element: <LandingPage /> },
-      { path: "/shop", element: <Shop /> },
-      { path: "/shop/:id", element: <ProductDetails /> },
-      { path: "/checkout", element: <Checkout /> },
-      { path: "/login", element: <LoginScreen /> },
-      { path: "/register", element: <RegisterScreen /> },
-      { path: "/forgot-password/:id", element: <div>Forgot Password</div> },
+      ...authRoutes,
+      ...shopRoutes,
     ],
   },
 ]);

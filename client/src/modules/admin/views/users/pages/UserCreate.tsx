@@ -6,9 +6,9 @@ import Form from "@/components/Form";
 import GridStack from "@/components/GridStack";
 
 import { UserModel } from "@/interface/model";
-import customerValidationSchema from "../user.validation";
+import customerValidationSchema from "../../../validation/user.validation";
 import queryUtils from "@/utils/query.utils";
-import customerApi from "../user.api";
+import customerApi from "../../../api/user.api";
 import Select from "@/components/Select";
 
 import LoadingScreen from "@/containers/LoadingScreen";

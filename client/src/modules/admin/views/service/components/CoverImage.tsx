@@ -7,7 +7,7 @@ interface Props {
 
 const CoverImage = forwardRef<HTMLInputElement, Props>((props, ref) => {
   return (
-    <label className="relative w-full border-[4px] border-gray-400 border-dashed rounded-[5px] p-4 flex justify-center items-center h-[400px]">
+    <label className="relative w-full border-[4px] border-gray-400 border-dashed rounded-[5px] p-4 flex justify-center items-center h-[400px] bg-white">
       <input
         ref={ref}
         type="file"

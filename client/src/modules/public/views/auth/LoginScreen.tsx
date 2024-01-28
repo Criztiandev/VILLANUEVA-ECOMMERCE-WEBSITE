@@ -2,9 +2,8 @@ import crypto from "crypto-js";
 import Field from "@/components/Field";
 import Form from "@/components/Form";
 import Stack from "@/components/FlexStack";
-import { loginSchema } from "@/service/validation/auth.validation";
 import { Link, useNavigate } from "react-router-dom";
-import authApi from "@/service/api/auth.api";
+
 import queryUtils from "@/utils/query.utils";
 import Button from "@/components/Button";
 import { useDispatch } from "react-redux";
@@ -14,6 +13,8 @@ import Text from "@/components/Text";
 import { LoginData } from "@/interface/auth";
 import Background from "@/assets/images/background.jpg";
 import Logo from "@/assets/images/Logo.png";
+import authApi from "../../api/auth.api";
+import { loginValidationSchema } from "../../validation/auth.validation";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -53,7 +54,7 @@ const LoginScreen = () => {
         <span className="my-4 mb-8"></span>
 
         <Form<LoginData>
-          validation={loginSchema}
+          validation={loginValidationSchema}
           onSubmit={onSubmit}
           className="flex flex-col w-96 ">
           <Stack dir="col">
@@ -71,7 +72,9 @@ const LoginScreen = () => {
               autoComplete="current-password"
             />
           </Stack>
-
+          <div className="py-4 flex justify-end">
+            <Link to={"/forgot-password"}>Forgot Password</Link>
+          </div>
           <hr className="border border-black mb-4" />
 
           <Button title="Login" disabled={mutation.isPending} />

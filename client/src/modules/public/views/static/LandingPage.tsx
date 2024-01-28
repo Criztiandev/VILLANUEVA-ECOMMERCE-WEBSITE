@@ -1,18 +1,16 @@
-import AddToCart from "./containers/AddToCart";
-import Header from "./containers/Header";
 import HeroSection from "./containers/HeroSection";
 import FeatureSection from "./containers/FeatureSection";
-import Footer from "./containers/Footer";
 import CategorySection from "./containers/CategorySection";
 import ServiceSection from "./containers/ServiceSection";
 import CallToAction from "./containers/CallToAction";
 import Chatbot from "./containers/Chatbot";
+import Topbar from "../../layout/Topbar";
+import Footer from "../../layout/Footer";
 
 const LandingPage = () => {
   return (
     <div className="bg-white">
-      <Header />
-      <AddToCart />
+      <Topbar />
       <main className="overflow-hidden pb-4">
         <HeroSection />
         <FeatureSection />

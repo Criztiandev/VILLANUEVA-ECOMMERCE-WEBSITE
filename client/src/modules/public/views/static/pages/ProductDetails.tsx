@@ -4,9 +4,9 @@ import LoadingScreen from "@/containers/LoadingScreen";
 import { CategoryModel, ProductModel } from "@/interface/model";
 import fileApi from "@/service/api/file.api";
 import Button from "@/components/Button";
-import productApi from "@/modules/admin/views/products/product.api";
+import productApi from "@/modules/admin/api/product.api";
 import Header from "../containers/Header";
-import categoriesApi from "@/modules/admin/views/categories/categories.api";
+import categoriesApi from "@/modules/admin/api/categories.api";
 
 const ProductDetails = () => {
   const { id } = useParams();

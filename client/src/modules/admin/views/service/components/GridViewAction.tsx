@@ -10,7 +10,6 @@ interface Props<T> {
   onFilter: (event: ChangeEvent<HTMLInputElement>) => void;
   onCategoryFilter: (event: ChangeEvent<HTMLSelectElement>) => void;
   toggleTable: () => void;
-  path: string;
 }
 
 const GridViewAction = <T,>(props: Props<T>) => {
@@ -49,7 +48,7 @@ const GridViewAction = <T,>(props: Props<T>) => {
       </div>
 
       <div className="flex gap-4">
-        <Link to={props.path}>
+        <Link to={"/products/create"}>
           <Button title="Create" />
         </Link>
         <Button

@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
 import Header from "../containers/Header";
-import categoriesApi from "@/modules/admin/views/categories/categories.api";
+import categoriesApi from "@/modules/admin/api/categories.api";
 import { CategoryModel, ProductModel } from "@/interface/model";
 import LoadingScreen from "@/containers/LoadingScreen";
-import productApi from "@/modules/admin/views/products/product.api";
+import productApi from "@/modules/admin/api/product.api";
 import ProductItem from "../components/ProductItem";
 import { useState } from "react";
-import AddToCart from "../containers/AddToCart";
+import AddToCart from "../../../containers/AddToCart";
 
 const Shop = () => {
   const [filter, setFilter] = useState("");

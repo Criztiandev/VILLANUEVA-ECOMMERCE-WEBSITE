@@ -9,6 +9,7 @@ interface Button extends BaseProps {
   dir?: "left" | "right" | undefined;
   title?: string;
   icon?: string;
+  disabled?: boolean;
   onClick?: () => void;
 }
 

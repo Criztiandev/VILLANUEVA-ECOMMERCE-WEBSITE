@@ -10,7 +10,7 @@ interface Props {
 }
 const AddressSelect = (props: Props) => {
   return (
-    <label className="flex flex-col gap-2 w-[280px] ">
+    <label className="flex flex-col gap-2 ">
       <h3 className="text-[18px] font-bold">{props.title}</h3>
       <select
         className="select select-bordered"
