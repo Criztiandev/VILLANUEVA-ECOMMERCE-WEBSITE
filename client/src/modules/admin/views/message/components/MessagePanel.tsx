@@ -10,7 +10,6 @@ import { singleMessage } from "../../../validation/message.validation";
 import queryUtils from "@/utils/query.utils";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/service/store";
-import { motion } from "framer-motion";
 import Modal from "@/components/Modal";
 import DeleteModal from "@/containers/DeleteModal";
 
@@ -25,10 +24,10 @@ interface Message {
 
 const MessagePanel = (props: Props) => {
   const { UID } = useSelector((state: RootReducer) => state.auth);
+
   const convoQuery = useQuery({
     queryFn: async () => messageApi.fetchById(props?.chatID || ""),
     queryKey: [`convo-${props?.chatID}`],
-    enabled: !!props.chatID,
   });
 
   const deleteMutation = queryUtils.mutation({
@@ -63,9 +62,9 @@ const MessagePanel = (props: Props) => {
   return (
     <>
       <div
-        className="w-full bg-white p-4 rounded-10px] rounded-[5px] shadow-md"
+        className="w-full bg-white p-4 rounded-10px] flex flex-col  justify-between  rounded-[5px] shadow-md p-4"
         style={{ height: "calc(100vh - 120px)" }}>
-        <div className="flex justify-between border-b pb-2">
+        <div className="flex  justify-between pb-2">
           <h2 className="text-[24px] font-semibold">
             {convoQuery?.data?.payload?.title || "New Convo"}
           </h2>
@@ -78,42 +77,36 @@ const MessagePanel = (props: Props) => {
             />
           )}
         </div>
-        {props.chatID && (
-          <div className="h-[93%] flex flex-col justify-end">
-            <motion.div className="h-[100vh]  my-4 flex justify-start flex-col gap-4 pb-4 px-2 overflow-y-scroll">
-              {/* Your chat messages rendering code */}
-              {convoQuery?.data?.payload?.messages.map(
-                (message: MessageModel) => {
-                  if (message?.sender === UID) {
-                    return (
-                      <div className="chat chat-end" key={message?._id}>
-                        <div className="chat-bubble">{message.content}</div>
-                      </div>
-                    );
-                  }
 
-                  return (
-                    <div className="chat chat-start" key={message?._id}>
-                      <div className="chat-bubble">{message.content}</div>
-                    </div>
-                  );
-                }
-              )}
-            </motion.div>
+        <div className="h-full flex flex-col overflow-y-scroll px-4">
+          {convoQuery?.data?.payload?.messages?.map((message: MessageModel) => {
+            if (message?.sender === UID) {
+              return (
+                <div className="chat chat-end" key={message?._id}>
+                  <div className="chat-bubble">{message.content}</div>
+                </div>
+              );
+            }
 
-            <Form<Message>
-              onSubmit={handleSubmit}
-              validation={singleMessage}
-              className="flex gap-4">
-              <Field
-                name="content"
-                placeholder="Enter message"
-                className="input-lg"
-              />
-              <Button title="Send" className="btn-lg" />
-            </Form>
-          </div>
-        )}
+            return (
+              <div className="chat chat-start" key={message?._id}>
+                <div className="chat-bubble">{message.content}</div>
+              </div>
+            );
+          })}
+        </div>
+
+        <Form<Message>
+          onSubmit={handleSubmit}
+          validation={singleMessage}
+          className="flex gap-4 mt-4">
+          <Field
+            name="content"
+            placeholder="Enter message"
+            className="input-lg"
+          />
+          <Button title="Send" className="btn-lg" />
+        </Form>
       </div>
 
       <DeleteModal

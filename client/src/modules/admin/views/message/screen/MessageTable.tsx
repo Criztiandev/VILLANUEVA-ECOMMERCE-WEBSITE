@@ -50,10 +50,10 @@ const MessageTable = () => {
   const handleSubmit = (payload: MessageModel) => {
     mutation.mutate({ sender: UID || "", ...payload });
   };
-
   const handleClear = () => setSelectedConvo("");
-
   const { payload: result } = convoQuery.data as { payload: ConvoModel[] };
+
+  console.log(result);
 
   return (
     <>

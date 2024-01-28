@@ -1,6 +1,6 @@
 import Container from "@/components/Container";
 import Table from "@/components/Table";
-import { OrderModel } from "@/interface/model";
+import { OrderPayload } from "@/interface/model";
 import tableConfig from "@/modules/admin/config/table.config";
 
 const OrderTable = () => {
@@ -10,7 +10,7 @@ const OrderTable = () => {
     <>
       <Container>
         <Table.Panel title="Order" name={name} />
-        <Table<OrderModel> id={name} columns={columns} />
+        <Table<OrderPayload> id={name} columns={columns} />
       </Container>
     </>
   );

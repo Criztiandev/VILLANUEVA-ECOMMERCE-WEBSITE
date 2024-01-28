@@ -20,7 +20,7 @@ const Topbar = () => {
     dispatch(clearCredentials());
     setTimeout(() => {
       navigate("/");
-    }, 800);
+    }, 1000);
   };
 
   const handleToggleCart = () => {

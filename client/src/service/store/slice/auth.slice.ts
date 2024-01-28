@@ -10,6 +10,7 @@ const BASE_KEY_ROLE = import.meta.env.VITE_LOCAL_STORAGE_KEY + "_role";
 
 const storedUID = localStorage.getItem(BASE_KEY_ID);
 const storedRole = localStorage.getItem(BASE_KEY_ROLE);
+console.log(storedUID, storedRole);
 
 const initialState: AuthState = {
   UID: storedUID ? JSON.parse(storedUID) : null,

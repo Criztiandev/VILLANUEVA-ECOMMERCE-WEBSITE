@@ -135,13 +135,11 @@ export default {
   getById: asyncHandler(async (req: Request, res: Response) => {
     const UID = req.params.id;
 
-    const existance = await model.findOne({
-      participants: UID,
-    });
+    console.log(UID);
 
-    if (!existance) {
-      handleSuccess(res, []);
-    }
+    const existance = await model
+      .findOne({ $or: [{ _id: UID }, { participants: UID }] })
+      .lean();
 
     handleSuccess(res, existance);
   }),

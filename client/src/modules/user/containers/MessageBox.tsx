@@ -68,7 +68,7 @@ const MessageBox = () => {
       {state.isActive && (
         <div className="fixed top-0 left-0 grid grid-cols-[auto_500px] w-full z-50">
           <div className="bg-black opacity-30" onClick={toggleMessage}></div>
-          <div className="h-screen border bg-white flex flex-col justify-between ">
+          <div className="h-screen border bg-white flex flex-col justify-between p-4">
             <div className="flex gap-4 items-center border-y border-gray-300 p-4">
               <div className="w-[24px] h-[24px] rounded-full bg-green-400"></div>
               <h1 className="capitalize text-[22px] font-semibold">
@@ -76,7 +76,7 @@ const MessageBox = () => {
               </h1>
             </div>
 
-            <div className="h-full flex flex-col-reverse overflow-y-scroll px-4">
+            <div className="h-full flex flex-col  overflow-scroll p-4">
               {payload?.messages.map((message: MessageModel) => {
                 if (message?.sender === UID) {
                   return (

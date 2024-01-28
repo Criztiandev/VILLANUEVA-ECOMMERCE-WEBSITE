@@ -15,7 +15,9 @@ import orderApi from "./api/order.api";
 import OrderDetails from "./containers/OrderDetails";
 
 const FetchOrderTable = withTableFetching(OrderScreen, tableConfig.orderTable);
-const UID = JSON.parse(localStorage.getItem("info") || "");
+const UID = localStorage.getItem("info")
+  ? JSON.parse(localStorage.getItem("info") || "")
+  : null;
 
 console.log(UID);
 

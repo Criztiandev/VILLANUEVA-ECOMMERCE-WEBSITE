@@ -24,6 +24,14 @@ export default {
       return e;
     }
   },
+  fetchByIdFromUser: async (UID: string) => {
+    try {
+      const res = await apiUtils.privateAxios().get(`/${base}/${UID}`);
+      return res.data;
+    } catch (e) {
+      return e;
+    }
+  },
 
   updateById: async (UID: string, payload: any) =>
     await apiUtils.privateAxios().put(`${base}/${UID}`, payload),
