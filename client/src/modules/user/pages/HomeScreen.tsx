@@ -7,7 +7,6 @@ import userApi from "../api/user.api";
 import { useDispatch, useSelector } from "react-redux";
 import { RootReducer } from "@/service/store";
 import LoadingScreen from "@/containers/LoadingScreen";
-import { toast } from "react-toastify";
 import { clearCredentials } from "@/service/store/slice/auth.slice";
 
 interface RecentOrder {
@@ -25,7 +24,7 @@ const HomeScreen = () => {
   }
 
   const userQuery = useQuery({
-    queryFn: async () => userApi.fetchById(UID),
+    queryFn: async () => userApi.fetchById(UID || ""),
     queryKey: [`${UID}`],
   });
 

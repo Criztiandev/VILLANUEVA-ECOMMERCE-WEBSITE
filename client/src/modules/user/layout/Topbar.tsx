@@ -7,12 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toggleCart } from "@/service/store/slice/cart.slice";
 import { RootReducer } from "@/service/store";
-
-interface Props {
-  isSticky?: boolean;
-}
+import { useMessageContext } from "../context/MessageContext";
 
 const Topbar = () => {
+  const { toggleMessage } = useMessageContext();
   const { products } = useSelector((state: RootReducer) => state.cart);
 
   const navigate = useNavigate();
@@ -47,11 +45,11 @@ const Topbar = () => {
         </button>
 
         <div className="tooltip tooltip-bottom" data-tip="Message">
-          <label
-            htmlFor="notification-drawer"
-            className="btn btn-ghost btn-md btn-circle">
+          <button
+            className="btn btn-ghost btn-md btn-circle"
+            onClick={toggleMessage}>
             <img src={messageIcon} alt="bell" loading="lazy" />
-          </label>
+          </button>
         </div>
         <div className="tooltip tooltip-bottom" data-tip="Notification">
           <label

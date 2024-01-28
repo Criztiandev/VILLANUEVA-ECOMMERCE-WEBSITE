@@ -12,8 +12,6 @@ export default {
   create: asyncHandler(async (req: Request, res: Response) => {
     const { sender, content, target } = req.body as MessageModel;
 
-    console.log(req.body);
-
     // Check if the target exists
     const targetExistence = await userModel
       .findById(target)
@@ -137,13 +135,15 @@ export default {
   getById: asyncHandler(async (req: Request, res: Response) => {
     const UID = req.params.id;
 
-    const credentials = await model
-      .findById(UID)
-      .lean()
-      .select("-password -__v");
-    if (!credentials) handleError("Something went wrong, Please Try again");
+    const existance = await model.findOne({
+      participants: UID,
+    });
 
-    handleSuccess(res, credentials);
+    if (!existance) {
+      handleSuccess(res, []);
+    }
+
+    handleSuccess(res, existance);
   }),
 };
 
