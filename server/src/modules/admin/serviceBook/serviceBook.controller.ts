@@ -11,8 +11,6 @@ export default {
   create: asyncHandler(async (req: Request, res: Response) => {
     const payload: ServiceScheduleModel = req.body;
 
-    console.log(payload);
-
     // check the schedule if exist
     const existance = await model.findOne({
       $or: [{ schedule: payload.schedule }],
@@ -81,8 +79,9 @@ export default {
   // Get All Users
   // GET /api/user (Private, Admin)
   getAll: asyncHandler(async (req: Request, res: Response) => {
-    const exception = "-password -__v";
-    const credentials = await model.find({}).lean().select(exception);
+    const query = req.query || {};
+
+    const credentials = await model.find(query).lean();
     if (!credentials) handleError("Something went wrong, Please Try again");
 
     handleSuccess(res, credentials);

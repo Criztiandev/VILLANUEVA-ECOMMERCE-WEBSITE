@@ -26,6 +26,8 @@ const UID = localStorage.getItem("info")
   ? JSON.parse(localStorage.getItem("info") || "")
   : null;
 
+console.log(UID);
+
 export const userRoutes = createBrowserRouter([
   {
     path: "/",
@@ -42,7 +44,9 @@ export const userRoutes = createBrowserRouter([
       {
         path: "/service",
         element: (
-          <FetchServiceTable fetchFn={() => serviceBookApi.fetchAll()} />
+          <FetchServiceTable
+            fetchFn={() => serviceBookApi.fetchAll({ customer: UID })}
+          />
         ),
       },
       { path: "/product/shop", element: <ProductShopScreen /> },

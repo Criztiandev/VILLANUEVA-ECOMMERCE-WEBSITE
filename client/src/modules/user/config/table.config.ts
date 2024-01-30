@@ -66,12 +66,12 @@ const orderTable: TableStructProps<OrderPayload> = {
 };
 
 const serviceSchedule: TableStructProps<ServiceScheduleModel> = {
-  base: "service",
-  name: "service-table",
+  base: "service-schedule",
+  name: "service-schedule-table",
   columns: tableUtils.columnGenerator<ServiceScheduleModel>({
     updateFn: () => {},
     deleteFn: () => {},
-    invalidateKey: ["service-scheudle"],
+    invalidateKey: ["service-schedule-table"],
     options: [
       { name: "serviceId", header: "Service ID", isFirst: true },
       { name: "customer", header: "Customer" },

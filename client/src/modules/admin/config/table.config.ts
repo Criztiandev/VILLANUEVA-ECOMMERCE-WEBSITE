@@ -188,7 +188,7 @@ const serviceSchedule: TableStructProps<ServiceScheduleModel> = {
   columns: tableUtils.columnGenerator<ServiceScheduleModel>({
     updateFn: () => {},
     deleteFn: () => {},
-    invalidateKey: ["service-schedule"],
+    invalidateKey: ["service-schedule-table"],
     options: [
       { name: "serviceId", header: "Service ID", isFirst: true },
       { name: "customer", header: "Customer" },

@@ -7,9 +7,16 @@ export default {
   create: async (payload: ServiceScheduleModel) =>
     await apiUtils.privateAxios().post(`/${base}/create`, payload),
 
-  fetchAll: async () => {
+  fetchAll: async (filter: any) => {
     try {
-      const res = await apiUtils.privateAxios().get(`/${base}`);
+      const queryString = Object.entries(filter)
+        .map(
+          ([key, value]) =>
+            `${encodeURIComponent(key)}=${encodeURIComponent(value as any)}`
+        )
+        .join("&");
+
+      const res = await apiUtils.privateAxios().get(`/${base}?${queryString}`);
       return res.data;
     } catch (e) {
       return e;

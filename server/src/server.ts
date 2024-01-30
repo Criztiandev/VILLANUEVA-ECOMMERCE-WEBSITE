@@ -15,7 +15,7 @@ import messageRoutes from "./modules/admin/message/message.routes.ts";
 import serviceRoutes from "./modules/admin/service/service.routes.ts";
 import userRoutes from "./modules/users/users.routes.ts";
 import orderRoutes from "./modules/admin/order/order.routes.ts";
-import serviceBookRoutes from "./modules/user/serviceBook/serviceBook.routes.ts";
+import serviceBookRoutes from "./modules/admin/serviceBook/serviceBook.routes.ts";
 import productCategoriesRoutes from "./modules/admin/productCategories/category.routes.ts";
 import serviceCategoriesRoutes from "./modules/admin/serviceCategories/category.routes.ts";
 
