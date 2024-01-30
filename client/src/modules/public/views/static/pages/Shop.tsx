@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useQuery } from "@tanstack/react-query";
 import Header from "../containers/Header";
-import categoriesApi from "@/modules/admin/api/categories.api";
+import categoriesApi from "@/modules/admin/api/productCategories.api";
 import { CategoryModel, ProductModel } from "@/interface/model";
 import LoadingScreen from "@/containers/LoadingScreen";
 import productApi from "@/modules/admin/api/product.api";

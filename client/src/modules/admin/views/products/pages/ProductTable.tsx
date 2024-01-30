@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import productApi from "../../../api/product.api";
 import { CategoryModel, ProductModel } from "@/interface/model";
 import LoadingScreen from "@/containers/LoadingScreen";
-import categoriesApi from "../../../api/categories.api";
+import categoriesApi from "../../../api/productCategories.api";
 import Table from "@/components/Table";
 import tableConfig from "@/modules/admin/config/table.config";
 import GridViewAction from "../components/GridViewAction";

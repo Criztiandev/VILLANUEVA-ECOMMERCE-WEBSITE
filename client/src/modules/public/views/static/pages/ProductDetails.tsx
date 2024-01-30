@@ -6,7 +6,7 @@ import fileApi from "@/service/api/file.api";
 import Button from "@/components/Button";
 import productApi from "@/modules/admin/api/product.api";
 import Header from "../containers/Header";
-import categoriesApi from "@/modules/admin/api/categories.api";
+import categoriesApi from "@/modules/admin/api/productCategories.api";
 
 const ProductDetails = () => {
   const { id } = useParams();

@@ -18,9 +18,7 @@ const Topbar = () => {
 
   const handleLogOut = () => {
     dispatch(clearCredentials());
-    setTimeout(() => {
-      navigate("/");
-    }, 1000);
+    navigate("/");
   };
 
   const handleToggleCart = () => {

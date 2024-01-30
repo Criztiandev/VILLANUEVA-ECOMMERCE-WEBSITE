@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface UserModel {
   _id?: string;
 
@@ -46,19 +47,25 @@ export interface ServiceModel {
   images?: Array<string>;
   name: string;
   category: string;
-  status: string;
-  summary?: string;
-  description?: string;
+
+  slots: number;
+  rate: number;
+  startingPrice: number;
+  description: string;
+  services?: Array<string>;
+
   isPublished: boolean;
   isFeatured: boolean;
+  status?: string;
 }
 
-export interface ServiceSchedule {
+export interface ServiceScheduleModel {
   _id?: string;
-  service: string;
+  serviceId: any;
   schedule: string;
   completionDate: string;
   customer: string;
+  budget: number;
   status: string;
 }
 

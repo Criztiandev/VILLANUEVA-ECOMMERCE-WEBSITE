@@ -25,19 +25,17 @@ const Sidebar = () => {
             </ul>
           </details>
         </li>
-
-        <NavLink title="Category" path="/category" icon={CategoryIcon} />
-
         <li>
           <details>
-            <NavTitle title="Order" icon={OrderIcon} />
+            <NavTitle icon={CategoryIcon} title="Category" />
             <ul>
-              <NavLink title="Order List" path="/order" />
-              <NavLink title="Order Details" path="/order/details" />
+              <NavLink title="Product Category" path="/category/products" />
+              <NavLink title="Service Category" path="/category/service" />
             </ul>
           </details>
         </li>
 
+        <NavLink title="Order List" path="/order" icon={OrderIcon} />
         <li>
           <details>
             <NavTitle title="Customer" icon={CustomerIcon} />

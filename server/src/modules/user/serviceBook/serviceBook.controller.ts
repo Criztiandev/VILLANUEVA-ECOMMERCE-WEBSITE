@@ -2,20 +2,28 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
 // chage this
-import model from "../../../models/category.model.ts";
+import model from "../../../models/serviceBook.model.ts";
+import { ServiceScheduleModel } from "../../../interfaces/model.js";
 
 export default {
   // Create User
   // POST /api/user/create (Private, Admin)
   create: asyncHandler(async (req: Request, res: Response) => {
-    const payload = req.body;
+    const payload: ServiceScheduleModel = req.body;
 
-    // Add Logic to create
+    console.log(payload);
+
+    // check the schedule if exist
+    const existance = await model.findOne({
+      $or: [{ schedule: payload.schedule }],
+    });
+
+    if (existance) handleError("Schedule already exist");
+
     const credentials = await model.create(payload);
+    if (!credentials) handleError("Something went wrong, Please Try again");
 
-    if (!credentials)
-      handleError("Something went wrong, Please Try again later");
-    handleSuccess(res, payload);
+    handleSuccess(res, credentials);
   }),
 
   // Update User By Id
@@ -40,8 +48,11 @@ export default {
   // DELETE /api/user/delete/:id (Private, Admin)
   deleteById: asyncHandler(async (req: Request, res: Response) => {
     const UID = req.params.id;
+    const existance = await model
+      .findById({ _id: UID })
+      .lean()
+      .select("_id category");
 
-    const existance = await model.findById(UID).lean().select("_id");
     if (!existance) handleError("Not Found, Please Try again");
 
     const credentials = await model
@@ -77,13 +88,15 @@ export default {
     handleSuccess(res, credentials);
   }),
 
-  // Get All Users by Filter
-  // GET /api/user/:filter (Private, Admin)
-  getAllByFilter: asyncHandler(async (req: Request, res: Response) => {
-    const filter = req.params.filter || {};
-    const exception = "-password -__v";
+  // Get User By Filter query
+  // GET /api/user/:id (Private, Admin)
+  getByFilter: asyncHandler(async (req: Request, res: Response) => {
+    const filter = req.query.filter;
 
-    const credentials = await model.find(filter).lean().select(exception);
+    const credentials = await model
+      .findById(filter)
+      .lean()
+      .select("-password -__v");
     if (!credentials) handleError("Something went wrong, Please Try again");
 
     handleSuccess(res, credentials);

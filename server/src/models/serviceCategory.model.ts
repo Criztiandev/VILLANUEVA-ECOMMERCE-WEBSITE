@@ -1,4 +1,4 @@
-import { CategoryModel } from "../interfaces/model.ts";
+import { CategoryModel } from "../interfaces/model.js";
 import { Schema, model } from "mongoose";
 
 const modelSchema = new Schema<CategoryModel>({
@@ -6,4 +6,4 @@ const modelSchema = new Schema<CategoryModel>({
   count: { type: Number, require: true, default: 0 },
 });
 
-export default model<CategoryModel>("category", modelSchema);
+export default model<CategoryModel>("service-category", modelSchema);

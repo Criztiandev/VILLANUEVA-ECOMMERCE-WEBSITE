@@ -96,76 +96,91 @@ const Table = <T,>({ columns, ...props }: TableProps<T>) => {
         className="overflow-x-auto  bg-white"
         style={{ height: "calc(100vh - 230px)" }}>
         {memoizedData && (
-          <table className="table table-md  rounded-[5px] bg-white">
-            <thead>
-              {table.getHeaderGroups().map((row) => (
-                <tr
-                  key={row.id}
-                  className="rounded-t-[10px] border-b overflow-hidden">
-                  {row.headers.map((header, index) => (
-                    <th
-                      key={header.id}
-                      className=" text-gray-400 font-semibold">
-                      {header.isPlaceholder ? null : (
-                        <div
-                          className={`flex items-center ${
-                            row.headers.length - 1 === index
-                              ? "justify-center"
-                              : ""
-                          }`}>
-                          {index === 0 && (
-                            <CheckBox
-                              {...{
-                                checked: table.getIsAllRowsSelected(),
-                                indeterminate: table.getIsSomeRowsSelected(),
-                                onChange:
-                                  table.getToggleAllRowsSelectedHandler(),
-                              }}
-                              className="mr-4 border-white"
-                            />
+          <>
+            {memoizedData?.length > 0 ? (
+              <table className="table table-md  rounded-[5px] bg-white">
+                <thead>
+                  {table.getHeaderGroups().map((row) => (
+                    <tr
+                      key={row.id}
+                      className="rounded-t-[10px] border-b overflow-hidden">
+                      {row.headers.map((header, index) => (
+                        <th
+                          key={header.id}
+                          className=" text-gray-400 font-semibold">
+                          {header.isPlaceholder ? null : (
+                            <div
+                              className={`flex items-center ${
+                                row.headers.length - 1 === index
+                                  ? "justify-center"
+                                  : ""
+                              }`}>
+                              {index === 0 && (
+                                <CheckBox
+                                  {...{
+                                    checked: table.getIsAllRowsSelected(),
+                                    indeterminate:
+                                      table.getIsSomeRowsSelected(),
+                                    onChange:
+                                      table.getToggleAllRowsSelectedHandler(),
+                                  }}
+                                  className="mr-4 border-white"
+                                />
+                              )}
+
+                              <div
+                                {...{
+                                  className: header.column.getCanSort()
+                                    ? "cursor-pointer select-none flex"
+                                    : "",
+                                  onClick:
+                                    header.column.getToggleSortingHandler(),
+                                }}>
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+
+                                {/* // Sorting Indicator */}
+                                <SortingIndicator
+                                  ascIcon="Asc"
+                                  descIcon="Desc"
+                                  isSorted={
+                                    header.column.getIsSorted() as string
+                                  }
+                                />
+                              </div>
+                            </div>
                           )}
-
-                          <div
-                            {...{
-                              className: header.column.getCanSort()
-                                ? "cursor-pointer select-none flex"
-                                : "",
-                              onClick: header.column.getToggleSortingHandler(),
-                            }}>
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
-
-                            {/* // Sorting Indicator */}
-                            <SortingIndicator
-                              ascIcon="Asc"
-                              descIcon="Desc"
-                              isSorted={header.column.getIsSorted() as string}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </th>
+                        </th>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </thead>
-            <tbody>
-              {table.getRowModel().rows.map((rows) => (
-                <tr key={rows.id}>
-                  {rows.getVisibleCells().map((cell) => (
-                    <td key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </td>
+                </thead>
+                <tbody>
+                  {table.getRowModel().rows.map((rows) => (
+                    <tr key={rows.id}>
+                      {rows.getVisibleCells().map((cell) => (
+                        <td key={cell.id}>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      ))}
+                    </tr>
                   ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </tbody>
+              </table>
+            ) : (
+              <div className="flex justify-center items-center h-full flex-col gap-2">
+                <div className="text-2xl font-semibold">No data found</div>
+                <div className="text-gray-400 text-center">
+                  Try reload the page or check your connection
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 

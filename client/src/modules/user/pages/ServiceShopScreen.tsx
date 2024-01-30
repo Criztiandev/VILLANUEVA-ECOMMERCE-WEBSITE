@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { CategoryModel, ProductModel } from "@/interface/model";
-import ProductItems from "@/modules/public/components/ProductItem";
 import categoryApi from "../api/category.api";
 import productApi from "../api/product.api";
+import ServiceItem from "@/modules/public/components/ServiceItem";
 
 interface Category {
   title: string;
@@ -92,7 +92,7 @@ const ServiceShopScreen = () => {
 
       <div className="grid grid-cols-3 gap-4 py-12">
         {displayProducts()?.map((items: ProductModel) => (
-          <ProductItems
+          <ServiceItem
             key={items._id}
             {...items}
             path={`${items._id}`}

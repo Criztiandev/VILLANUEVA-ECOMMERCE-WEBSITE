@@ -14,7 +14,6 @@ import serviceValidationSchema from "../../../validation/service.validation";
 import queryUtils from "@/utils/query.utils";
 import productApi from "../../../api/service.api";
 import { useQuery } from "@tanstack/react-query";
-import categoriesApi from "../../../api/categories.api";
 import useMutipleImage from "@/hooks/useMutipleImage";
 import MiniInput from "../components/MiniInput";
 import { useState } from "react";
@@ -23,6 +22,16 @@ import OtherImage from "../components/OtherImage";
 import CoverAction from "../components/CoverAction";
 import LoadingScreen from "@/containers/LoadingScreen";
 import componentsUtils from "@/utils/components.utils";
+import serviceCategoriesApi from "@/modules/admin/api/serviceCategories.api";
+
+interface ServiceExtended
+  extends Omit<ServiceModel, "_id" | "images" | "status" | "services"> {
+  serviceOne: string;
+  serviceTwo: string;
+  serviceThree: string;
+  serviceFour: string;
+  serviceFive: string;
+}
 
 const ServiceCreate = () => {
   const [isDelete, setIsDelete] = useState(false);
@@ -39,7 +48,7 @@ const ServiceCreate = () => {
   } = useMutipleImage();
 
   const categoryQuery = useQuery({
-    queryFn: async () => categoriesApi.fetchAll(),
+    queryFn: async () => serviceCategoriesApi.fetchAll(),
     queryKey: ["category"],
   });
 
@@ -53,29 +62,37 @@ const ServiceCreate = () => {
     },
   });
 
-  const handleSubmit = (payload: ServiceModel) => {
+  const handleSubmit = (payload: ServiceExtended) => {
+    const services = [
+      payload.serviceOne,
+      payload.serviceTwo,
+      payload.serviceThree,
+      payload.serviceFour,
+      payload.serviceFive,
+    ];
+
+    const finalized = {
+      ...payload,
+      services,
+      images: selectedImages,
+    };
+
     const formData = new FormData();
-
     const resultImages = Array.from(selectedImages || []);
-
     const coverIndex = resultImages.findIndex(
       (item: any) => item.name === cover.name
     );
-
     // If the cover image is found, move it to the beginning of the array
     if (coverIndex !== -1) {
       const coverImage = resultImages.splice(coverIndex, 1)[0]; // Remove cover image from its current position
       resultImages.unshift(coverImage); // Add cover image to the beginning of the array
     }
-
     Array.from(resultImages || []).forEach((file) => {
       formData.append(`product`, file as any);
     });
-
-    for (const key in payload) {
-      formData.append(key, (payload as any)[key]);
+    for (const key in finalized) {
+      formData.append(key, (finalized as any)[key]);
     }
-
     mutation.mutate({ name: payload.name, data: formData as any });
   };
 
@@ -99,7 +116,7 @@ const ServiceCreate = () => {
       <h1 className="mt-8 mb-4 text-[32px] font-bold">Service Create</h1>
 
       <Container className="my-8 mx-auto border-t border-gray-300 py-4">
-        <Form<ServiceModel>
+        <Form<ServiceExtended>
           onSubmit={handleSubmit}
           validation={serviceValidationSchema}
           className="flex flex-col gap-[24px]">
@@ -165,7 +182,7 @@ const ServiceCreate = () => {
               <Field
                 title="Name"
                 name="name"
-                placeholder="Enter Product Name"
+                placeholder="Enter Service Name"
                 required
               />
               <GridStack columns={2} gap={16} className="w-full">
@@ -185,14 +202,73 @@ const ServiceCreate = () => {
                     options: { key: "name", value: "name" },
                   })}
                 />
-              </GridStack>
-              <div className="flex justify-between items-center w-full">
-                <Toggle title="Featured" name="isFeatured" />
-                <Toggle title="Published" name="isPublished" />
-              </div>
 
-              <Textarea title="Summary" name="summary" />
+                <Field
+                  type="number"
+                  title="Slots"
+                  name="slots"
+                  placeholder="Enter Available Slots"
+                  required
+                />
+                <Field
+                  type="number"
+                  title="Rating"
+                  name="rate"
+                  placeholder="Enter Rating"
+                  required
+                />
+              </GridStack>
+
+              <Field
+                type="number"
+                title="Starting Price"
+                name="startingPrice"
+                placeholder="Enter Starting Price"
+                required
+              />
+
               <Textarea title="Description" name="description" />
+
+              <div className="w-full border">
+                <h3 className="text-[24px] font-semibold">Services</h3>
+                <FlexStack gap={24} className="my-4">
+                  <Field
+                    name="serviceOne"
+                    placeholder="Enter Service Name"
+                    className="w-full"
+                    required
+                  />
+                  <Field
+                    name="serviceTwo"
+                    placeholder="Enter Service Name"
+                    className="w-full"
+                    required
+                  />
+                  <Field
+                    name="serviceThree"
+                    placeholder="Enter Service Name"
+                    className="w-full"
+                    required
+                  />
+                  <Field
+                    name="serviceFour"
+                    placeholder="Enter Service Name"
+                    className="w-full"
+                    required
+                  />
+                  <Field
+                    name="serviceFive"
+                    placeholder="Enter Service Name"
+                    className="w-full"
+                    required
+                  />
+                </FlexStack>
+
+                <div className="flex justify-between items-center w-full">
+                  <Toggle title="Featured" name="isFeatured" />
+                  <Toggle title="Published" name="isPublished" />
+                </div>
+              </div>
             </FlexStack>
           </GridStack>
 

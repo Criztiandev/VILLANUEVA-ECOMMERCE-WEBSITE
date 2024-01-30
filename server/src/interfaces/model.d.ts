@@ -68,19 +68,31 @@ export interface ConvoModel {
 }
 
 export interface ServiceModel {
+  _id?: string;
   images?: Array<string>;
   name: string;
-  price: number;
+  category: string;
 
-  scheduleStart: string;
-  scheduleEnd: string;
+  slots: number;
+  rate: number;
+  startingPrice: number;
+  description: string;
+  services?: Array<string>;
 
-  description?: string;
   isPublished: boolean;
   isFeatured: boolean;
-  status: string;
+  status?: string;
 }
 
+export interface ServiceScheduleModel {
+  _id?: string;
+  serviceId: any;
+  schedule: string;
+  completionDate: string;
+  customer: string;
+  budget: number;
+  status: string;
+}
 interface ProductsOrder {
   _id?: string;
   quantity: number;

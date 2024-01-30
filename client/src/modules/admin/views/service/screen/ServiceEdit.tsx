@@ -14,7 +14,7 @@ import serviceValidationSchema from "../../../validation/service.validation";
 import queryUtils from "@/utils/query.utils";
 import productApi from "../../../api/service.api";
 import { useQuery } from "@tanstack/react-query";
-import categoriesApi from "../../../api/categories.api";
+import categoriesApi from "../../../api/productCategories.api";
 import useMutipleImage from "@/hooks/useMutipleImage";
 import MiniInput from "../components/MiniInput";
 import { useState } from "react";

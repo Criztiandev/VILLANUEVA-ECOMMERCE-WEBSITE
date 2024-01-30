@@ -10,11 +10,12 @@ import {
 } from "@/interface/model";
 import tableUtils from "@/utils/table.utils";
 import productApi from "../api/product.api";
-import categoriesApi from "../api/categories.api";
+import categoriesApi from "../api/productCategories.api";
 import customerApi from "../api/customer.api";
 import orderApi from "../api/order.api";
 import userApi from "../api/user.api";
 import serviceApi from "../api/service.api";
+import serviceCategoriesApi from "../api/serviceCategories.api";
 
 const productTable: TableStructProps<ProductModel> = {
   base: "products",
@@ -40,12 +41,31 @@ const productTable: TableStructProps<ProductModel> = {
   }),
 };
 
-const categoryTable: TableStructProps<CategoryModel> = {
-  base: "category",
-  name: "category-table",
+const productCategoryTable: TableStructProps<CategoryModel> = {
+  base: "product-category",
+  name: "product-category-table",
   columns: tableUtils.columnGenerator<CategoryModel>({
     deleteFn: categoriesApi.deleteById,
-    invalidateKey: ["category"],
+    invalidateKey: ["product-category"],
+    options: [
+      { name: "name", header: "Name", isFirst: true },
+      { name: "count", header: "Count", isBadge: true },
+      {
+        name: "_id",
+        header: "Action",
+        isLast: true,
+        isView: false,
+        isEdit: false,
+      },
+    ],
+  }),
+};
+const serviceCategoryTable: TableStructProps<CategoryModel> = {
+  base: "service-category",
+  name: "service-category-table",
+  columns: tableUtils.columnGenerator<CategoryModel>({
+    deleteFn: serviceCategoriesApi.deleteById,
+    invalidateKey: ["service-category"],
     options: [
       { name: "name", header: "Name", isFirst: true },
       { name: "count", header: "Count", isBadge: true },
@@ -92,7 +112,7 @@ const orderTable: TableStructProps<OrderPayload> = {
       { name: "total", header: "Ammount" },
       { name: "status", header: "Status" },
       { name: "fullName", header: "Customer" },
-      { name: "_id", header: "Action", isLast: true },
+      { name: "_id", header: "Action", isLast: true, isDelete: false },
     ],
   }),
 };
@@ -151,7 +171,10 @@ const serviceTable: TableStructProps<ServiceModel> = {
     options: [
       { name: "name", header: "Name", isFirst: true },
       { name: "category", header: "Category" },
-      { name: "status", header: "Status" },
+      { name: "slots", header: "Slots" },
+      { name: "rate", header: "Rate" },
+      { name: "startingPrice", header: "Starting Price" },
+      { name: "status", header: "Status", isBadge: true },
       { name: "isPublished", header: "Published", isToggle: true },
       { name: "_id", header: "Action", isLast: true },
     ],
@@ -160,7 +183,8 @@ const serviceTable: TableStructProps<ServiceModel> = {
 
 export default {
   productTable,
-  categoryTable,
+  productCategoryTable,
+  serviceCategoryTable,
   customerTable,
   orderTable,
   recentTable,

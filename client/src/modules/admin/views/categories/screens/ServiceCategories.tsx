@@ -8,14 +8,14 @@ import tableConfig from "@/modules/admin/config/table.config";
 import categorySchema from "../../../validation/categories.validation";
 import Button from "@/components/Button";
 import queryUtils from "@/utils/query.utils";
-import categoriesApi from "../../../api/categories.api";
+import categoriesApi from "../../../api/serviceCategories.api";
 
-const CategoryTable = () => {
-  const { name, columns } = tableConfig.categoryTable;
+const ServiceCategories = () => {
+  const { name, columns } = tableConfig.serviceCategoryTable;
 
   const mutation = queryUtils.mutation({
     mutationFn: async (payload: CategoryModel) => categoriesApi.create(payload),
-    invalidateKey: ["category"],
+    invalidateKey: ["service-category"],
     toast: "Category Created Successfully",
   });
 
@@ -26,11 +26,11 @@ const CategoryTable = () => {
   return (
     <>
       <Container className="my-4">
-        <Table.Panel title="Categories" name={name}>
+        <Table.Panel title="Service Categories" name={name}>
           <Modal.Button
             target="create-modal"
             title="Create"
-            className="btn bg-blue-400 text-white"
+            className="btn bg-primary text-white"
           />
         </Table.Panel>
         <Table<CategoryModel> id={name} columns={columns} />
@@ -57,4 +57,4 @@ const CategoryTable = () => {
   );
 };
 
-export default CategoryTable;
+export default ServiceCategories;

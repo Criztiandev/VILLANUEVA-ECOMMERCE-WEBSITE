@@ -5,17 +5,15 @@ import LoadingScreen from "@/containers/LoadingScreen";
 import { ProductModel, ServiceScheduleModel } from "@/interface/model";
 import fileApi from "@/service/api/file.api";
 import Button from "@/components/Button";
-import productApi from "../../api/product.api";
-import Topbar from "../../layout/Topbar";
 import Form from "@/components/Form";
 import Field from "@/components/Field";
-import { serviceValidation } from "../../validation/service.validation";
 import Textarea from "@/components/Textarea";
 import queryUtils from "@/utils/query.utils";
-import serviceBookApi from "../../api/serviceBook.api";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/service/store";
-import LoginModal from "../../containers/LoginModal";
+import productApi from "../api/product.api";
+import serviceBookApi from "@/modules/public/api/serviceBook.api";
+import { serviceValidation } from "../validation/service.validation";
 
 interface Service {
   schedule: string;
@@ -85,8 +83,6 @@ const ServiceDetails = () => {
   return (
     <>
       <section>
-        <Topbar isStatic />
-
         <div className="px-[48px]">
           <div className="my-4">
             <h1 className="text-[48px] font-bold">{result?.name}</h1>
@@ -266,8 +262,6 @@ const ServiceDetails = () => {
           </div>
         </div>
       </section>
-
-      <LoginModal UID={UID || ""} />
     </>
   );
 };

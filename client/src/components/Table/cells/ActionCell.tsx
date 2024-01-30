@@ -68,7 +68,7 @@ const ActionCell = <T,>({
             className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-[4px] w-[130px] border">
             {ActionItems.map((items: Items) => {
               if (items.title === "Delete") {
-                return <ModalButton UID={UID} />;
+                return items.isActive && <ModalButton UID={UID} />;
               }
 
               return <DropdonItems key={items.title} {...items} />;
