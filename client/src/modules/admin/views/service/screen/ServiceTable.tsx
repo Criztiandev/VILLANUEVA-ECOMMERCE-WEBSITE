@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import Container from "@/components/Container";
-import ProductItems from "../components/ProductItems";
 import { useQuery } from "@tanstack/react-query";
 import productApi from "../../../api/service.api";
 import { CategoryModel, ProductModel } from "@/interface/model";
@@ -14,6 +13,7 @@ import useGridView from "@/hooks/useGridView";
 import Button from "@/components/Button";
 import Modal from "@/components/Modal";
 import { useNavigate } from "react-router-dom";
+import ServiceItems from "../components/ServiceItems";
 
 interface Props {
   name: string;
@@ -120,7 +120,7 @@ const GridView = ({ render }: GridProps) => {
     <div className="" style={{ height: "calc(100vh - 280px)" }}>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4  ">
         {render()?.map((fields: ProductModel) => (
-          <ProductItems key={fields?._id} {...fields} />
+          <ServiceItems key={fields?._id} {...fields} />
         ))}
       </div>
     </div>

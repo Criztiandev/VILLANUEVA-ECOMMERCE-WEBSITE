@@ -74,7 +74,6 @@ const ServiceCreate = () => {
     const finalized = {
       ...payload,
       services,
-      images: selectedImages,
     };
 
     const formData = new FormData();
@@ -85,7 +84,8 @@ const ServiceCreate = () => {
     // If the cover image is found, move it to the beginning of the array
     if (coverIndex !== -1) {
       const coverImage = resultImages.splice(coverIndex, 1)[0]; // Remove cover image from its current position
-      resultImages.unshift(coverImage); // Add cover image to the beginning of the array
+      // put it at the beginning of the array
+      resultImages.unshift(coverImage);
     }
     Array.from(resultImages || []).forEach((file) => {
       formData.append(`product`, file as any);

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { ProductModel } from "@/interface/model";
 import apiUtils from "@/utils/api.utils";
 const base = "service";
 
@@ -6,9 +7,12 @@ export default {
   sendFile: async (title: string, payload: any) =>
     await apiUtils.sendFileAxios().post(`/${base}/upload/${title}`, payload),
 
+  create: async (payload: ProductModel) =>
+    await apiUtils.privateAxios().post(`/${base}/create`, payload),
+
   fetchAll: async () => {
     try {
-      const res: any = await apiUtils.privateAxios().get(`/${base}`);
+      const res = await apiUtils.privateAxios().get(`/${base}`);
       return res.data;
     } catch (e) {
       return e;

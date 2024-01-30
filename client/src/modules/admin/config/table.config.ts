@@ -6,6 +6,7 @@ import {
   ProductModel,
   RecentModel,
   ServiceModel,
+  ServiceScheduleModel,
   UserModel,
 } from "@/interface/model";
 import tableUtils from "@/utils/table.utils";
@@ -181,6 +182,25 @@ const serviceTable: TableStructProps<ServiceModel> = {
   }),
 };
 
+const serviceSchedule: TableStructProps<ServiceScheduleModel> = {
+  base: "service-schedule",
+  name: "service-schedule-table",
+  columns: tableUtils.columnGenerator<ServiceScheduleModel>({
+    updateFn: () => {},
+    deleteFn: () => {},
+    invalidateKey: ["service-schedule"],
+    options: [
+      { name: "serviceId", header: "Service ID", isFirst: true },
+      { name: "customer", header: "Customer" },
+      { name: "schedule", header: "Schedule" },
+      { name: "budget", header: "Budget" },
+      { name: "completionDate", header: "Completion Date" },
+      { name: "status", header: "Status", isBadge: true },
+      { name: "_id", header: "Action", isLast: true, isDelete: false },
+    ],
+  }),
+};
+
 export default {
   productTable,
   productCategoryTable,
@@ -191,4 +211,5 @@ export default {
   messageTable,
   userTable,
   serviceTable,
+  serviceSchedule,
 };

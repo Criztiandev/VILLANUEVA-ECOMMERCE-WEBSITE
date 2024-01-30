@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import LoadingScreen from "@/containers/LoadingScreen";
-import { ProductModel } from "@/interface/model";
+import { ServiceModel } from "@/interface/model";
 import fileApi from "@/service/api/file.api";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-interface Props extends ProductModel {
+interface Props extends ServiceModel {
   path: string;
   action?: boolean;
   isDoubleClick?: boolean;
@@ -27,17 +27,16 @@ const ServiceItem = (props: Props) => {
     enabled: !!props._id && !!coverImage,
   });
 
+  const defaultServices = props.services && props?.services[0].split(",");
+
   if (coverImageQuery.isLoading) return <LoadingScreen />;
   const { data: image } = coverImageQuery;
   return (
     <div className="bg-white w-full border border-gray-300 rounded-[5px] p-4 hover:border-none hover:bg-white hover:drop-shadow-xl">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-[18px] font-semibold">{props.name}</h3>
+          <h3 className="text-[24px] font-semibold">{props.name}</h3>
           <span className="text-gray-400">{props.category}</span>
-        </div>
-        <div className="badge p-4 capitalize bg-red-400 text-white">
-          {props.status}
         </div>
       </div>
 
@@ -52,6 +51,22 @@ const ServiceItem = (props: Props) => {
             className="w-full h-full object-cover"
           />
         )}
+      </div>
+
+      <div>
+        <h3 className="text-[22px] font-semibold capitalize">Description</h3>
+        <p className="text-base">{props.description}</p>
+      </div>
+
+      <div className="mt-4">
+        <h3 className="text-[22px] font-semibold capitalize">Services</h3>
+        <ul className="flex flex-col gap-2 list-disc pl-6 ">
+          {defaultServices?.map((service) => (
+            <li key={service} className="text-base">
+              {service}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

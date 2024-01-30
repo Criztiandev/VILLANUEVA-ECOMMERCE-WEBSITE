@@ -2,20 +2,18 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import LoadingScreen from "@/containers/LoadingScreen";
-import { ProductModel, ServiceScheduleModel } from "@/interface/model";
+import { ServiceModel } from "@/interface/model";
 import fileApi from "@/service/api/file.api";
 import Button from "@/components/Button";
-import productApi from "../../api/product.api";
 import Topbar from "../../layout/Topbar";
 import Form from "@/components/Form";
 import Field from "@/components/Field";
 import { serviceValidation } from "../../validation/service.validation";
 import Textarea from "@/components/Textarea";
-import queryUtils from "@/utils/query.utils";
-import serviceBookApi from "../../api/serviceBook.api";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/service/store";
 import LoginModal from "../../containers/LoginModal";
+import serviceApi from "../../api/service.api";
 
 interface Service {
   schedule: string;
@@ -28,15 +26,15 @@ const ServiceDetails = () => {
   const { id } = useParams();
   const { UID } = useSelector((state: RootReducer) => state.auth);
 
-  const productQuery = useQuery({
-    queryFn: async () => productApi.fetchById(id || ""),
-    queryKey: [`product-${id}`],
+  const serviceQuery = useQuery({
+    queryFn: async () => serviceApi.fetchById(id || ""),
+    queryKey: [`service-${id}`],
     enabled: !!id,
   });
 
   const imagesQuery = useQuery({
     queryFn: async () => {
-      const { payload } = productQuery?.data as { payload: ProductModel };
+      const { payload } = serviceQuery?.data as { payload: ServiceModel };
       const modfiedName = payload?.name.split(" ").join("_").toLowerCase();
       const query = `/products/${modfiedName}`;
       if (!payload.images || payload.images.length === 0) {
@@ -49,38 +47,22 @@ const ServiceDetails = () => {
 
       return Promise.all(imagePromises);
     },
-    queryKey: ["product-images"],
-    enabled: !!productQuery.data,
+    queryKey: ["services-images"],
+    enabled: !!serviceQuery.data,
   });
 
-  const mutation = queryUtils.mutation({
-    mutationFn: async (payload: ServiceScheduleModel) =>
-      await serviceBookApi.create(payload),
-    invalidateKey: ["services"],
-    toast: "Service booked successfully",
-  });
+  if (serviceQuery.isLoading || imagesQuery.isLoading) return <LoadingScreen />;
 
-  if (productQuery.isLoading || imagesQuery.isLoading) return <LoadingScreen />;
-
-  if (productQuery.isError) {
+  if (serviceQuery.isError) {
     return <LoadingScreen />;
   }
   const { data: images } = imagesQuery as { data: string[] };
 
   const [cover, ...remainingImages] = images;
 
-  const { payload: result } = productQuery.data as { payload: ProductModel };
+  const { payload: result } = serviceQuery.data as { payload: ServiceModel };
 
-  const handleSubmit = (payload: Service) => {
-    mutation.mutate({
-      serviceId: result?._id, // Assuming payload has a serviceId property
-      schedule: payload.schedule,
-      completionDate: payload.completionDate,
-      customer: UID || "",
-      budget: payload.budget,
-      status: "pending",
-    });
-  };
+  const defaultServices = result?.services && result?.services[0].split(",");
 
   return (
     <>
@@ -127,31 +109,18 @@ const ServiceDetails = () => {
           <div className="grid grid-cols-[auto_600px] gap-[48px] mt-[64px]">
             <div>
               <h2 className="text-[32px] font-bold mb-4">Details</h2>
-              <p>
-                Reference site about Lorem Ipsum, giving information on its
-                origins, as well as a random Lipsum generator. Reference site
-                about Lorem Ipsum, giving information on its origins, as well as
-                a random Lipsum generator. Reference site about Lorem Ipsum,
-                giving information on its origins, as well as a random Lipsum
-                generator.
-              </p>
+              <p>{result.description}</p>
 
               <div className="my-4">
                 <h3 className="text-[18px] font-medium">Services</h3>
-                <ul className="my-4 flex flex-col gap-2">
-                  <li>Details 1</li>
-                  <li>Details 2</li>
-                  <li>Details 3</li>
-                  <li>Details 4</li>
+                <ul className="my-4 flex flex-col gap-2 list-disc px-[24px]">
+                  {defaultServices?.map((items: any) => (
+                    <li>{items}</li>
+                  ))}
                 </ul>
               </div>
 
               <div className="mt-8 flex flex-col ap-4">
-                <div className="border-t-2 border-b-2 py-2 ">
-                  <h3 className="text-[18px] font-medium mb-4">Details</h3>
-                  <p className="text-base">{result.description}</p>
-                </div>
-
                 <div className="border-b-2 py-2 my-4">
                   <h3 className="text-[18px] font-medium mb-4">Shipping</h3>
                   <p className="text-base">
@@ -215,7 +184,7 @@ const ServiceDetails = () => {
               </div>
 
               <Form<Service>
-                onSubmit={handleSubmit}
+                onSubmit={() => {}}
                 validation={serviceValidation}
                 className="my-4">
                 <div className="my-4">

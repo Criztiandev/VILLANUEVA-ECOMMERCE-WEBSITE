@@ -13,8 +13,14 @@ import withTableFetching from "@/hoc/withTableFetching.hoc";
 import tableConfig from "./config/table.config";
 import orderApi from "./api/order.api";
 import OrderDetails from "./containers/OrderDetails";
+import ServiceDetails from "./containers/ServiceDetails";
+import serviceBookApi from "../public/api/serviceBook.api";
 
 const FetchOrderTable = withTableFetching(OrderScreen, tableConfig.orderTable);
+const FetchServiceTable = withTableFetching(
+  ServiceScreen,
+  tableConfig.serviceSchedule
+);
 
 const UID = localStorage.getItem("info")
   ? JSON.parse(localStorage.getItem("info") || "")
@@ -33,10 +39,16 @@ export const userRoutes = createBrowserRouter([
         ),
       },
       { path: "/order/:id", element: <OrderDetails /> },
-      { path: "/service", element: <ServiceScreen /> },
+      {
+        path: "/service",
+        element: (
+          <FetchServiceTable fetchFn={() => serviceBookApi.fetchAll()} />
+        ),
+      },
       { path: "/product/shop", element: <ProductShopScreen /> },
       { path: "/product/shop/:id", element: <ProductDetails /> },
       { path: "/service/shop", element: <ServiceShopScreen /> },
+      { path: "/service/shop/:id", element: <ServiceDetails /> },
       { path: "/checkout", element: <CheckoutScreen /> },
       { path: "/settings", element: <SettingsScreen /> },
     ],

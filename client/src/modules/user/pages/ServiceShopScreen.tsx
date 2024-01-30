@@ -1,9 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { CategoryModel, ProductModel } from "@/interface/model";
+import { CategoryModel, ServiceModel } from "@/interface/model";
 import categoryApi from "../api/category.api";
-import productApi from "../api/product.api";
 import ServiceItem from "@/modules/public/components/ServiceItem";
+import serviceApi from "../api/service.api";
 
 interface Category {
   title: string;
@@ -14,24 +14,24 @@ const ServiceShopScreen = () => {
   const [filter, setFilter] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
 
-  const productQuery = useQuery({
-    queryFn: async () => productApi.fetchAll(),
+  const serviceQuery = useQuery({
+    queryFn: async () => serviceApi.fetchAll(),
     queryKey: ["products"],
   });
 
   const categoryQuery = useQuery({
     queryFn: async () => categoryApi.fetchAll(),
     queryKey: ["categories"],
-    enabled: !!productQuery?.data,
+    enabled: !!serviceQuery?.data,
   });
 
-  if (productQuery?.isLoading) return <div>Loading</div>;
-  const { payload } = productQuery?.data as { payload: ProductModel[] };
+  if (serviceQuery?.isLoading) return <div>Loading</div>;
+  const { payload } = serviceQuery?.data as { payload: ServiceModel[] };
 
   const displayProducts = () => {
-    if (!productQuery?.data) return;
+    if (!serviceQuery?.data) return;
 
-    return payload?.filter((field: ProductModel) => {
+    return payload?.filter((field: ServiceModel) => {
       if (categoryFilter) {
         return field.category
           .toLocaleLowerCase()
@@ -49,8 +49,6 @@ const ServiceShopScreen = () => {
       title: category.name,
       value: category?.name,
     }));
-
-  console.log(payload);
 
   return (
     <div className="p-[24px]">
@@ -91,7 +89,7 @@ const ServiceShopScreen = () => {
       </div>
 
       <div className="grid grid-cols-3 gap-4 py-12">
-        {displayProducts()?.map((items: ProductModel) => (
+        {displayProducts()?.map((items: ServiceModel) => (
           <ServiceItem
             key={items._id}
             {...items}

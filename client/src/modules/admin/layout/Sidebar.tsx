@@ -7,7 +7,6 @@ import OrderIcon from "@/assets/icons/order_light_icon.svg";
 import NaviIcon from "@/assets/icons/service_light_icon.svg";
 import MessageIcon from "@/assets/icons/chat_light_icon.svg";
 import UserIcon from "@/assets/icons/user_light_icon.svg";
-import SettingsIcon from "@/assets/icons/settings_light_icon.svg";
 import Logo from "@/components/Logo";
 const Sidebar = () => {
   return (
@@ -57,13 +56,7 @@ const Sidebar = () => {
                   Service List
                 </Link>
               </li>
-              <li>
-                <Link
-                  className="hover:bg-[#244d4d] hover:text-white"
-                  to={"/service/schedule"}>
-                  Client Schedule
-                </Link>
-              </li>
+
               <li>
                 <Link
                   className="hover:bg-[#244d4d] hover:text-white"
@@ -78,7 +71,6 @@ const Sidebar = () => {
         <div className="divider"></div>
         <NavLink title="Message" icon={MessageIcon} path="/message" />
         <NavLink title="User" icon={UserIcon} path="/users" />
-        <NavLink title="Settings" icon={SettingsIcon} path="/settings" />
       </ul>
     </aside>
   );

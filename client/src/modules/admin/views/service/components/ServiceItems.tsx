@@ -5,7 +5,7 @@ import fileApi from "@/service/api/file.api";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 
-const ProductItems = (props: ProductModel) => {
+const ServiceItems = (props: ProductModel) => {
   const navigate = useNavigate();
 
   // Ensure that props.images is an array before accessing its elements
@@ -31,10 +31,10 @@ const ProductItems = (props: ProductModel) => {
       className="bg-white w-full border border-gray-300 rounded-[5px] p-4 hover:border-none hover:bg-white hover:drop-shadow-xl">
       <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-[18px] font-semibold">{props.name}</h3>
+          <h3 className="text-[18px] font-semibold capitalize">{props.name}</h3>
           <span className="text-gray-400">{props.category}</span>
         </div>
-        <div className="badge border-2 p-4 capitalize bg-[#ff65657e] border-red-300 text-[#792929]">
+        <div className="badge border-2 p-4 capitalize bg-[#657aff7e] border-blue-300 text-[#293479]">
           {props.status}
         </div>
       </div>
@@ -61,4 +61,4 @@ const ProductItems = (props: ProductModel) => {
   );
 };
 
-export default ProductItems;
+export default ServiceItems;

@@ -2,6 +2,7 @@ import {
   OrderPayload,
   RecentOrderModel,
   RecentService,
+  ServiceScheduleModel,
 } from "@/interface/model";
 import tableUtils from "@/utils/table.utils";
 import { TableStructProps } from "@/interface/component";
@@ -64,4 +65,23 @@ const orderTable: TableStructProps<OrderPayload> = {
   }),
 };
 
-export default { recentOrderTable, recentService, orderTable };
+const serviceSchedule: TableStructProps<ServiceScheduleModel> = {
+  base: "service",
+  name: "service-table",
+  columns: tableUtils.columnGenerator<ServiceScheduleModel>({
+    updateFn: () => {},
+    deleteFn: () => {},
+    invalidateKey: ["service-scheudle"],
+    options: [
+      { name: "serviceId", header: "Service ID", isFirst: true },
+      { name: "customer", header: "Customer" },
+      { name: "schedule", header: "Schedule" },
+      { name: "budget", header: "Budget" },
+      { name: "completionDate", header: "Completion Date" },
+      { name: "status", header: "Status", isBadge: true },
+      { name: "_id", header: "Action", isLast: true, isDelete: false },
+    ],
+  }),
+};
+
+export default { recentOrderTable, recentService, orderTable, serviceSchedule };
