@@ -49,21 +49,9 @@ const Sidebar = () => {
           <details>
             <NavTitle title="Service" icon={NaviIcon} />
             <ul>
-              <li>
-                <Link
-                  className="hover:bg-[#244d4d] hover:text-white"
-                  to={"/service"}>
-                  Service List
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  className="hover:bg-[#244d4d] hover:text-white"
-                  to={"/service/create"}>
-                  Create Service
-                </Link>
-              </li>
+              <NavLink title="Service List" path="/service" />
+              <NavLink title="Service Schedules" path="/service/schedule" />
+              <NavLink title="Create Service" path="/service/create" />
             </ul>
           </details>
         </li>

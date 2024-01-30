@@ -9,11 +9,11 @@ const productValidationSchema = z.object({
   stock: z.coerce
     .number()
     .gte(0, "Stock Required")
-    .max(255, "Stocks Too Large"),
+    .max(5000000, "Stocks Too Large"),
   shippingFee: z.coerce
     .number()
     .gte(0, "Stock Required")
-    .max(255, "Fee Too Large"),
+    .max(500000, "Fee Too Large"),
   category: z.string().min(3, "Please Select Category").max(50),
   status: z.string(),
   description: z.string().min(3).max(50),

@@ -8,16 +8,12 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import LoadingScreen from "@/containers/LoadingScreen";
 import FieldDisplay from "@/components/FieldDisplay";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import productApi from "../../api/product.api";
 import LoginModal from "../../containers/LoginModal";
 
 const CheckoutScreen = () => {
   const { UID } = useSelector((state: RootReducer) => state.auth);
   const { products } = useSelector((state: RootReducer) => state.cart);
-  const navigate = useNavigate();
 
   const productQuery = useQuery({
     queryFn: async () => {
@@ -36,13 +32,6 @@ const CheckoutScreen = () => {
     },
     queryKey: ["products"],
   });
-
-  useEffect(() => {
-    if (products.length <= 0 || !UID) {
-      navigate("/");
-      toast.error("Invalid Routes");
-    }
-  }, [products, UID]);
 
   if (productQuery?.isLoading) return <LoadingScreen />;
 

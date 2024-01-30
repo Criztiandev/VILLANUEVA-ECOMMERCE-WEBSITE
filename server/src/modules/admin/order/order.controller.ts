@@ -96,7 +96,10 @@ export default {
     const query = req.query || {};
     const exception = "-password -__v";
 
-    const credentials = await model.find(query).lean().select(exception);
+    const credentials = await model
+      .find(query || {})
+      .lean()
+      .select(exception);
     if (!credentials) handleError("Something went wrong, Please Try again");
 
     const productsPayload = credentials
@@ -118,7 +121,7 @@ export default {
     const promisedResult = await Promise.all(result);
 
     const transformedPayload = promisedResult.map((items, index) => ({
-      _id: credentials[index]._id,
+      _id: credentials[index]._id || "",
       refID: credentials[index].refID,
       productName: items.name,
       quantity: items.quantity,
@@ -130,7 +133,10 @@ export default {
       method: credentials[index].medthod,
     }));
 
-    handleSuccess(res, transformedPayload);
+    console.log(credentials);
+    console.log(transformedPayload);
+
+    handleSuccess(res, credentials);
   }),
 
   // Get All Users by Filter

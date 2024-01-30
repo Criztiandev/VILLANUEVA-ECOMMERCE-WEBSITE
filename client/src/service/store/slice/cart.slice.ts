@@ -23,7 +23,7 @@ const cartSlice = createSlice({
     toggleCart: cartReducer.toggleCart,
     addToCart: cartReducer.addToCart,
     removeToCart: cartReducer.removeToCart,
-    clearCart: cartReducer.removeToCart,
+    clearCart: cartReducer.clearCart,
     increaseQuantity: cartReducer.increaseQuantity,
     decreaseQuantity: cartReducer.decreaseQuantity,
   },

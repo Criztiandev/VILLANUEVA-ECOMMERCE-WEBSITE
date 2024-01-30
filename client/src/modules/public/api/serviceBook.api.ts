@@ -41,8 +41,6 @@ export default {
       throw new Error("You cant Perform this Action");
     }
 
-    console.log(id);
-
     return await apiUtils.privateAxios().delete(`/${base}/${id}`);
   },
 

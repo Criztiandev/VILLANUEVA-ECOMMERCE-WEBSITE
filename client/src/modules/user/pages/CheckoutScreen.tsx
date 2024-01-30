@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootReducer } from "@/service/store";
 import Button from "@/components/Button";
 import GridStack from "@/components/GridStack";
@@ -16,11 +16,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import queryUtils from "@/utils/query.utils";
 import orderApi from "../api/order.api";
+import { clearCart } from "@/service/store/slice/cart.slice";
 
 const CheckoutScreen = () => {
   const { UID } = useSelector((state: RootReducer) => state.auth);
   const { products } = useSelector((state: RootReducer) => state.cart);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const userQuery = useQuery({
     queryFn: async () => userApi.fetchById(UID || ""),
@@ -49,12 +51,15 @@ const CheckoutScreen = () => {
     mutationFn: async (payload: OrderModel) => orderApi.create(payload),
     invalidateKey: ["orders"],
     toast: "Order has been placed",
+    onSuccess: () => {
+      dispatch(clearCart());
+      navigate("/orders");
+    },
   });
 
   useEffect(() => {
     if (products.length <= 0 || !UID) {
       navigate("/");
-      toast.error("Invalid Routes");
     }
   }, [products, UID]);
 

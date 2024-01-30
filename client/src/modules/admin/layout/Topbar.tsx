@@ -11,9 +11,7 @@ const Topbar = () => {
 
   const handleLogOut = () => {
     dispatch(clearCredentials());
-    setTimeout(() => {
-      navigate("/");
-    }, 800);
+    navigate("/");
   };
 
   return (

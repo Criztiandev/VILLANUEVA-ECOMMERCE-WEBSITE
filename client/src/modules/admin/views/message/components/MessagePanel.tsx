@@ -62,7 +62,7 @@ const MessagePanel = (props: Props) => {
   return (
     <>
       <div
-        className="w-full bg-white p-4 rounded-10px] flex flex-col  justify-between  rounded-[5px] shadow-md p-4"
+        className="w-full bg-white rounded-10px] flex flex-col  justify-between  rounded-[5px] shadow-md p-4"
         style={{ height: "calc(100vh - 120px)" }}>
         <div className="flex  justify-between pb-2">
           <h2 className="text-[24px] font-semibold">

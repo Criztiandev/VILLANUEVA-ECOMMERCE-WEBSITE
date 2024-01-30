@@ -90,7 +90,7 @@ export default {
   // Get User By Filter query
   // GET /api/user/:id (Private, Admin)
   getByFilter: asyncHandler(async (req: Request, res: Response) => {
-    const filter = req.query.filter;
+    const filter = req.query.filter || {};
 
     const credentials = await model
       .findById(filter)

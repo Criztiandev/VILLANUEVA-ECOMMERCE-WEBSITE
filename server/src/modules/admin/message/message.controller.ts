@@ -106,8 +106,6 @@ export default {
   getAll: asyncHandler(async (req: Request, res: Response) => {
     const { role } = req.query as { role: "user" | "admin" };
 
-    console.log(role);
-
     const exception = "-password -__v";
     const credentials = await model
       .find(role ? { role } : {})
@@ -134,8 +132,6 @@ export default {
   // GET /api/user/:id (Private, Admin)
   getById: asyncHandler(async (req: Request, res: Response) => {
     const UID = req.params.id;
-
-    console.log(UID);
 
     const existance = await model
       .findOne({ $or: [{ _id: UID }, { participants: UID }] })
