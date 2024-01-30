@@ -15,11 +15,18 @@ import orderApi from "./api/order.api";
 import OrderDetails from "./containers/OrderDetails";
 import ServiceDetails from "./containers/ServiceDetails";
 import serviceBookApi from "../public/api/serviceBook.api";
+import ArchiveProductOrderTable from "./pages/ArchiveScreen";
+import archiveApi from "../admin/api/archive.api";
 
 const FetchOrderTable = withTableFetching(OrderScreen, tableConfig.orderTable);
 const FetchServiceTable = withTableFetching(
   ServiceScreen,
   tableConfig.serviceSchedule
+);
+
+const FetchArchieveTable = withTableFetching(
+  ArchiveProductOrderTable,
+  tableConfig.ArchiveProductTable
 );
 
 const UID = localStorage.getItem("info")
@@ -55,6 +62,11 @@ export const userRoutes = createBrowserRouter([
       { path: "/service/shop/:id", element: <ServiceDetails /> },
       { path: "/checkout", element: <CheckoutScreen /> },
       { path: "/settings", element: <SettingsScreen /> },
+
+      {
+        path: "/order/archive/products",
+        element: <FetchArchieveTable fetchFn={archiveApi.fetchAllProducts} />,
+      },
     ],
   },
 ]);

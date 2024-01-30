@@ -6,6 +6,7 @@ import {
 } from "@/interface/model";
 import tableUtils from "@/utils/table.utils";
 import { TableStructProps } from "@/interface/component";
+import orderApi from "../api/order.api";
 
 const recentOrderTable: TableStructProps<RecentOrderModel> = {
   base: "recent-order",
@@ -84,4 +85,29 @@ const serviceSchedule: TableStructProps<ServiceScheduleModel> = {
   }),
 };
 
-export default { recentOrderTable, recentService, orderTable, serviceSchedule };
+const ArchiveProductTable: TableStructProps<OrderPayload> = {
+  base: "archive-product",
+  name: "archive-product-table",
+  columns: tableUtils.columnGenerator<OrderPayload>({
+    deleteFn: orderApi.deleteById,
+    invalidateKey: ["archive-product"],
+    options: [
+      { name: "refID", header: "Reference ID", isFirst: true },
+      { name: "quantity", header: "Quantity" },
+      { name: "price", header: "Price" },
+      { name: "purchasedDate", header: "Purchased Date" },
+      { name: "total", header: "Ammount" },
+      { name: "status", header: "Status", isBadge: true },
+      { name: "fullName", header: "Customer" },
+      { name: "_id", header: "Action", isLast: true, isEdit: false },
+    ],
+  }),
+};
+
+export default {
+  recentOrderTable,
+  recentService,
+  orderTable,
+  serviceSchedule,
+  ArchiveProductTable,
+};

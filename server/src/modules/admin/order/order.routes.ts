@@ -15,8 +15,8 @@ const {
 
 router.post("/create", create);
 router.post("/delete/batch", deleteBatch);
-router.put("/update/:id", updateById);
-router.delete("/delete/:id", deleteById);
+router.put("/:id", updateById);
+router.delete("/:id", deleteById);
 
 router.get("/", getAll);
 router.get("/:id", getById);

@@ -1,19 +1,19 @@
+import Button from "@/components/Button";
 import Container from "@/components/Container";
 import Table from "@/components/Table";
 import { OrderPayload } from "@/interface/model";
-import tableConfig from "../config/table.config";
-import Button from "@/components/Button";
+import tableConfig from "@/modules/admin/config/table.config";
 import { Link } from "react-router-dom";
 
-const OrderScreen = () => {
-  const { name, columns } = tableConfig.orderTable;
+const ArchiveProductOrderTable = () => {
+  const { name, columns } = tableConfig.ArchiveProductTable;
 
   return (
     <div className="px-[24px]">
       <Container>
-        <Table.Panel title="Order" name={name}>
-          <Link to={"/order/archive/products"}>
-            <Button title="Archive" />
+        <Table.Panel title="Completed Order" name={name}>
+          <Link to={"/order"}>
+            <Button title="Go Back" />
           </Link>
         </Table.Panel>
         <Table<OrderPayload> id={name} columns={columns} />
@@ -22,4 +22,4 @@ const OrderScreen = () => {
   );
 };
 
-export default OrderScreen;
+export default ArchiveProductOrderTable;

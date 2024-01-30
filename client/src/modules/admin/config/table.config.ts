@@ -111,9 +111,27 @@ const orderTable: TableStructProps<OrderPayload> = {
       { name: "price", header: "Price" },
       { name: "purchasedDate", header: "Purchased Date" },
       { name: "total", header: "Ammount" },
-      { name: "status", header: "Status" },
+      { name: "status", header: "Status", isBadge: true },
       { name: "fullName", header: "Customer" },
-      { name: "_id", header: "Action", isLast: true, isDelete: false },
+      { name: "_id", header: "Action", isLast: true, isEdit: false },
+    ],
+  }),
+};
+const ArchiveProductTable: TableStructProps<OrderPayload> = {
+  base: "archive-product",
+  name: "archive-product-table",
+  columns: tableUtils.columnGenerator<OrderPayload>({
+    deleteFn: orderApi.deleteById,
+    invalidateKey: ["archive-product"],
+    options: [
+      { name: "refID", header: "Reference ID", isFirst: true },
+      { name: "quantity", header: "Quantity" },
+      { name: "price", header: "Price" },
+      { name: "purchasedDate", header: "Purchased Date" },
+      { name: "total", header: "Ammount" },
+      { name: "status", header: "Status", isBadge: true },
+      { name: "fullName", header: "Customer" },
+      { name: "_id", header: "Action", isLast: true, isEdit: false },
     ],
   }),
 };
@@ -212,4 +230,5 @@ export default {
   userTable,
   serviceTable,
   serviceSchedule,
+  ArchiveProductTable,
 };

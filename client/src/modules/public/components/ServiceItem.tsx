@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import Button from "@/components/Button";
 import LoadingScreen from "@/containers/LoadingScreen";
 import { ServiceModel } from "@/interface/model";
 import fileApi from "@/service/api/file.api";
@@ -60,13 +61,21 @@ const ServiceItem = (props: Props) => {
 
       <div className="mt-4">
         <h3 className="text-[22px] font-semibold capitalize">Services</h3>
-        <ul className="flex flex-col gap-2 list-disc pl-6 ">
+        <ul className="gap-2 list-disc pl-6 grid grid-cols-2">
           {defaultServices?.map((service) => (
             <li key={service} className="text-base">
               {service}
             </li>
           ))}
         </ul>
+
+        <div className="flex mt-4">
+          <Button
+            title="Book Now"
+            className="w-full"
+            onClick={() => navigate(`${props._id}`)}
+          />
+        </div>
       </div>
     </div>
   );

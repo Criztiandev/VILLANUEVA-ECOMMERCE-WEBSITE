@@ -13,7 +13,6 @@ import FieldDisplay from "@/components/FieldDisplay";
 import productApi from "../api/product.api";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import queryUtils from "@/utils/query.utils";
 import orderApi from "../api/order.api";
 import { clearCart } from "@/service/store/slice/cart.slice";
@@ -91,7 +90,6 @@ const CheckoutScreen = () => {
       shippingFee: 40,
       tax: 0,
       medthod: "COD",
-      status: "Pending",
     };
 
     productMutation.mutate(result as any);

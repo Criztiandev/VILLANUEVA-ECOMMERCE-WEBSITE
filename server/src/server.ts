@@ -18,6 +18,7 @@ import orderRoutes from "./modules/admin/order/order.routes.ts";
 import serviceBookRoutes from "./modules/admin/serviceBook/serviceBook.routes.ts";
 import productCategoriesRoutes from "./modules/admin/productCategories/category.routes.ts";
 import serviceCategoriesRoutes from "./modules/admin/serviceCategories/category.routes.ts";
+import archiveRoutes from "./modules/admin/archive/archive.routes.ts";
 
 // Init
 dotnevn.config();
@@ -47,6 +48,7 @@ app.use("/api/v1/message", messageRoutes);
 app.use("/api/v1/service", serviceRoutes);
 app.use("/api/v1/orders", orderRoutes);
 app.use("/api/v1/service-book", serviceBookRoutes);
+app.use("/api/v1/archive", archiveRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

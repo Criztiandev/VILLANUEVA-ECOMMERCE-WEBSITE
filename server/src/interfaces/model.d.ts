@@ -110,7 +110,7 @@ export interface OrderModel {
   shippingFee: number;
   total: number;
   medthod: "COD";
-  status: "Pending" | "Processing" | "Delivered" | "Cancel";
+  status: "pending" | "canceled" | "transit" | "delivered" | "completed";
   createdAt?: string;
 }
 

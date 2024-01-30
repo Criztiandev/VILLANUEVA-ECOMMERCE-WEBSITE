@@ -144,8 +144,8 @@ export interface OrderModel {
   shippingFee: number;
   total: number;
   medthod: "COD";
-  status: "Pending" | "Processing" | "Delivered" | "Cancel";
   createdAt?: string;
+  status?: string;
 }
 
 export interface OrderPayload {

@@ -18,7 +18,12 @@ const orderSchema = new Schema<OrderModel>(
     shippingFee: { type: Number, required: true },
     total: { type: Number, required: true },
     medthod: { type: String, required: true, default: "COD" },
-    status: { type: String, required: true, default: "Pending" },
+    status: {
+      type: String,
+      required: true,
+      default: "pending",
+      enum: ["pending", "canceled", "transit", "delivered", "completed"],
+    },
   },
   { timestamps: true }
 );

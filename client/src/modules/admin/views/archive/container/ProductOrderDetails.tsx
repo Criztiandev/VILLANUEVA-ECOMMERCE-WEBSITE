@@ -11,7 +11,7 @@ import { ChangeEvent, useState } from "react";
 import Modal from "@/components/Modal";
 import { toast } from "react-toastify";
 
-const OrderDetails = () => {
+const ProductOrderDetails = () => {
   const [status, setStatus] = useState("");
   const { id } = useParams();
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ const OrderDetails = () => {
 
           <span>
             Status:{" "}
-            {payload?.status && (
+            {payload.status && (
               <span
                 className={`badge p-4 capitalize font-semibold ${
                   payload.status === "pending"
@@ -223,4 +223,4 @@ const OrderDetails = () => {
   );
 };
 
-export default OrderDetails;
+export default ProductOrderDetails;

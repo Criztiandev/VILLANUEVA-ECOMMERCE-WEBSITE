@@ -57,6 +57,15 @@ const Sidebar = () => {
         </li>
 
         <div className="divider"></div>
+        <li>
+          <details>
+            <NavTitle icon={ProductIcon} title="Archive" />
+            <ul>
+              <NavLink title="Products" path="/archive/products" />
+              <NavLink title="Service" path="/archive/service" />
+            </ul>
+          </details>
+        </li>
         <NavLink title="Message" icon={MessageIcon} path="/message" />
         <NavLink title="User" icon={UserIcon} path="/users" />
       </ul>

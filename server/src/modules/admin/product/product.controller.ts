@@ -47,6 +47,9 @@ export default {
     const UID = req.params.id;
     const payload = req.body;
 
+    console.log(UID);
+    console.log(payload);
+
     const existance = await model.findById(UID).lean().select("_id");
     if (!existance) handleError("Not Found, Please Try again");
 

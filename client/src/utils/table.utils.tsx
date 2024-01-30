@@ -3,7 +3,6 @@
 import { createColumnHelper } from "@tanstack/react-table";
 import { ColumnDef } from "@tanstack/react-table";
 import { ColumnOption } from "@/interface/component";
-import Badge from "@/components/Badge";
 import { QueryKey } from "@tanstack/react-query";
 import { useState } from "react";
 import queryUtils from "./query.utils";
@@ -70,18 +69,34 @@ export default {
           id: items.name as string,
           header: () => items.header,
           cell: (info) => {
-            if (items.badgeStatus === "error") {
-              return (
-                <Badge className="border-2 bg-[#ff3f3f80] border-blue-400  p-4 capitalize text-black">
-                  {info.getValue()} {items.content}
-                </Badge>
-              );
-            }
+            console.log(info.getValue());
 
             return (
-              <Badge className="border-2 bg-[#4ba8f480] border-blue-400  p-4 capitalize text-black">
+              <span
+                className={`badge p-4 capitalize font-semibold ${
+                  info.getValue() === "pending"
+                    ? "bg-[rgba(82,145,255,0.5)] border-2 border-[rgba(82,146,255,0.97)]"
+                    : info.getValue() === "cancel" ||
+                      info.getValue() === "rejected" ||
+                      info.getValue() === "failed" ||
+                      info.getValue() === "expired" ||
+                      info.getValue() === "declined" ||
+                      info.getValue() === "voided" ||
+                      info.getValue() === "error"
+                    ? "bg-[rgba(255,82,82,0.5)]  border-2 border-[rgba(255,82,82,0.97)]"
+                    : info.getValue() === "delivered" ||
+                      info.getValue() === "success" ||
+                      info.getValue() === "paid" ||
+                      info.getValue() === "approved"
+                    ? "bg-[rgba(80,194,97,0.5)] border-2 border-[rgba(44,140,75,0.97)]"
+                    : info.getValue() === "transit"
+                    ? "bg-[rgba(255,193,7,0.5)] border-2 border-[rgba(255,193,7,0.97)]"
+                    : info.getValue() === "completed"
+                    ? "bg-[rgba(80,194,97,0.5)] border-2 border-[rgba(44,140,75,0.97)]"
+                    : "bg-primary border-2 text-white"
+                }`}>
                 {info.getValue()} {items.content}
-              </Badge>
+              </span>
             );
           },
         });

@@ -7,9 +7,11 @@ import orderRoutes from "./routes/order.routes";
 import serviceRoutes from "./routes/service.routes";
 import messageRoutes from "./routes/message.routes";
 import userRoutes from "./routes/user.routes";
+import archiveRoutes from "./routes/archieve.routes";
 
 const adminRoutes = createBrowserRouter([
   { path: "/", element: <Dashboard /> },
+  ...archiveRoutes,
   ...productRoutes,
   ...categoriesRoutes,
   ...customerRoutes,

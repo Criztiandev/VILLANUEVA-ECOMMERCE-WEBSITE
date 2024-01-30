@@ -5,7 +5,6 @@ import model from "../../../models/order.model.ts";
 import { OrderModel } from "../../../interfaces/model.js";
 import productModel from "../../../models/product.model.ts";
 import userModel from "../../../models/user.model.ts";
-import { AnyARecord } from "dns";
 
 const handleError = (message: string) => {
   throw new Error(message);
@@ -27,39 +26,7 @@ const generateRandomReferenceNumber = (): string => {
 };
 
 export default {
-  // Create User
-  // POST /api/user/create (Private, Admin)
-  create: asyncHandler(async (req: Request, res: Response) => {
-    const payload: OrderModel = req.body;
-
-    //generate a random referene number
-    const productRef = generateRandomReferenceNumber();
-
-    const updatedPayload = { ...payload, refID: productRef };
-
-    const credentials = await model.create(updatedPayload);
-    if (!credentials) handleError("Something went wrong, Please Try again");
-
-    handleSuccess(res, credentials);
-  }),
-
-  // Update User By Id
-  // PUT /api/user/update/:id (Private, Admin)
-  updateById: asyncHandler(async (req: Request, res: Response) => {
-    const UID = req.params.id;
-    const payload = req.body;
-
-    const existance = await model.findById(UID).lean().select("_id");
-    if (!existance) handleError("Not Found, Please Try again");
-
-    const credentials = await model
-      .findOneAndUpdate({ _id: UID }, payload, { new: true })
-      .lean()
-      .select("_id");
-    if (!credentials) handleError("Something went wrong, Please Try again");
-
-    handleSuccess(res, credentials);
-  }),
+  // Delete User By Batch
 
   // Delete User By Id
   // DELETE /api/user/delete/:id (Private, Admin)
@@ -78,36 +45,20 @@ export default {
     handleDeleteSuccess(res, credentials);
   }),
 
-  // Delete User By Batch
-  // POST /api/user/delete/batch (Private, Admin)
-  deleteBatch: asyncHandler(async (req: Request, res: Response) => {
-    const ids = req.body;
-
-    const existance = await model.find({ _id: { $in: ids } }).lean();
-    if (!existance) handleError("Not Found, Please Try again");
-
-    const credentials = await model.deleteMany({ _id: { $in: ids } }).lean();
-    if (!credentials) handleError("Something went wrong, Please Try again");
-
-    handleDeleteSuccess(res, credentials);
-  }),
-
   // Get All Users
   // GET /api/user (Private, Admin)
-  getAll: asyncHandler(async (req: Request, res: Response) => {
+  getAllProducts: asyncHandler(async (req: Request, res: Response) => {
     try {
       const query = req.query || {};
 
-      const credentials = await model
-        .find({ status: { $ne: "completed" }, ...query })
-        .lean();
+      const credentials = await model.find({ status: "completed" }).lean();
       const productIds = credentials.map((item) => item.products).flat();
 
       const productDetails = productIds.map(async ({ _id, ...rest }) => {
         const products = await productModel
           .findById(_id)
           .lean()
-          .select("images name price stock");
+          .select("images name price");
 
         return {
           ...products,
@@ -148,20 +99,59 @@ export default {
     }
   }),
 
-  // Get All Users by Filter
-  // GET /api/user/:filter (Private, Admin)
-  getAllByFilter: asyncHandler(async (req: Request, res: Response) => {
-    const filter = req.params.filter || {};
-    const exception = "-password -__v";
+  getAllService: asyncHandler(async (req: Request, res: Response) => {
+    try {
+      const query = req.query || {};
 
-    const credentials = await model.find(filter).lean().select(exception);
-    if (!credentials) handleError("Something went wrong, Please Try again");
+      const credentials = await model.find(query).lean();
+      const productIds = credentials.map((item) => item.products).flat();
 
-    handleSuccess(res, credentials);
+      const productDetails = productIds.map(async ({ _id, ...rest }) => {
+        const products = await productModel
+          .findById(_id)
+          .lean()
+          .select("images name price");
+
+        return {
+          ...products,
+          ...rest,
+        };
+      });
+
+      const result = await Promise.all(productDetails);
+
+      const transformedPayload = credentials.map((credential, index) => {
+        const formattedDate = new Date(credential.createdAt).toLocaleDateString(
+          "en-US",
+          {
+            month: "2-digit",
+            day: "2-digit",
+            year: "2-digit",
+          }
+        );
+
+        return {
+          _id: credential._id,
+          refID: credential.refID,
+          fullName: credential.fullName,
+          productName: result[index].name,
+          quantity: result[index]?.quantity,
+          price: result[index].price,
+          purchasedDate: formattedDate,
+          total: credential.total,
+          method: credential.medthod,
+          status: credential.status,
+        };
+      });
+
+      // Send the transformed data as the response
+      handleSuccess(res, transformedPayload);
+    } catch (error) {
+      handleError("Error processing request");
+    }
   }),
 
   // Get User By Id
-  // GET /api/user/:id (Private, Admin)
   getById: asyncHandler(async (req: Request, res: Response) => {
     const UID = req.params.id;
 
