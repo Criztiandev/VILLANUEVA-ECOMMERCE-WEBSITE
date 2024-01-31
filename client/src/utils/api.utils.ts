@@ -53,8 +53,6 @@ export default {
   },
 
   errorHandler: (error: AxiosError<ServerErrorResponse>) => {
-    console.log(error);
-
     if (error?.response) {
       const payload = error?.response;
       if (payload) {

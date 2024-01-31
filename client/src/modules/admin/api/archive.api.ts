@@ -20,6 +20,26 @@ export default {
       return e;
     }
   },
+  fetchAllService: async (filter: any) => {
+    try {
+      const queryString = Object.entries(filter)
+        .map(
+          ([key, value]) =>
+            `${encodeURIComponent(key)}=${encodeURIComponent(value as any)}`
+        )
+        .join("&");
+
+      const res = await apiUtils
+        .privateAxios()
+        .get(`/${base}/services?${queryString}`);
+
+      console.log(res.data);
+
+      return res.data;
+    } catch (e) {
+      return e;
+    }
+  },
 
   fetchById: async (UID: string) => {
     try {

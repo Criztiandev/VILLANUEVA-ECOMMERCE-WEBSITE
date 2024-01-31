@@ -12,7 +12,7 @@ const ArchiveProductOrderTable = () => {
     <div className="px-[24px]">
       <Container>
         <Table.Panel title="Completed Order" name={name}>
-          <Link to={"/order"}>
+          <Link to={"/"}>
             <Button title="Go Back" />
           </Link>
         </Table.Panel>

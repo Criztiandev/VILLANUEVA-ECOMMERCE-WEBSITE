@@ -2,9 +2,10 @@ import { Request, Response } from "express";
 import asyncHandler from "express-async-handler";
 
 import model from "../../../models/order.model.ts";
-import { OrderModel } from "../../../interfaces/model.js";
 import productModel from "../../../models/product.model.ts";
 import userModel from "../../../models/user.model.ts";
+import serviceModel from "../../../models/serviceModel.ts";
+import serviceBookModel from "../../../models/serviceBook.model.ts";
 
 const handleError = (message: string) => {
   throw new Error(message);
@@ -101,56 +102,46 @@ export default {
     }
   }),
 
-  getAllService: asyncHandler(async (req: Request, res: Response) => {
-    try {
-      const query = req.query || {};
+  getAllServices: asyncHandler(async (req: Request, res: Response) => {
+    const query = req.query || {};
+    const allowedStatusValues = ["completed"];
 
-      const credentials = await model.find(query).lean();
-      const productIds = credentials.map((item) => item.products).flat();
+    const credentials = await serviceBookModel
+      .find({ status: { $in: allowedStatusValues }, ...query })
+      .lean();
+    if (!credentials) handleError("Something went wrong, Please Try again");
 
-      const productDetails = productIds.map(async ({ _id, ...rest }) => {
-        const products = await productModel
-          .findById(_id)
-          .lean()
-          .select("images name price");
+    const serviceIds = credentials?.map((item: any) => item?.serviceId);
+    const customerIDs = credentials?.map((item: any) => item?.customer);
 
+    const services = serviceIds?.map(async (item: any) => {
+      const service = await serviceModel.findById(item).lean().select("name");
+      return {
+        ...service,
+      };
+    });
+
+    const customers = customerIDs?.map(async (item: any) => {
+      const customer = await userModel.findById(item).lean().select("fullName");
+      return {
+        ...customer,
+      };
+    });
+
+    const result = await Promise.all(services);
+    const customerResult = await Promise.all(customers);
+
+    const transformedPayload = credentials.map(
+      (credential: any, index: any) => {
         return {
-          ...products,
-          ...rest,
+          ...credential,
+          serviceId: result[index].name,
+          customer: customerResult[index].fullName,
         };
-      });
+      }
+    );
 
-      const result = await Promise.all(productDetails);
-
-      const transformedPayload = credentials.map((credential, index) => {
-        const formattedDate = new Date(credential.createdAt).toLocaleDateString(
-          "en-US",
-          {
-            month: "2-digit",
-            day: "2-digit",
-            year: "2-digit",
-          }
-        );
-
-        return {
-          _id: credential._id,
-          refID: credential.refID,
-          fullName: credential.fullName,
-          productName: result[index].name,
-          quantity: result[index]?.quantity,
-          price: result[index].price,
-          purchasedDate: formattedDate,
-          total: credential.total,
-          method: credential.medthod,
-          status: credential.status,
-        };
-      });
-
-      // Send the transformed data as the response
-      handleSuccess(res, transformedPayload);
-    } catch (error) {
-      handleError("Error processing request");
-    }
+    handleSuccess(res, transformedPayload);
   }),
 
   // Get User By Id

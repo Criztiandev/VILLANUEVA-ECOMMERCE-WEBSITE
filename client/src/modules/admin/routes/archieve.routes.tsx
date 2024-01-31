@@ -3,11 +3,18 @@ import withTableFetching from "@/hoc/withTableFetching.hoc";
 import MainEntryPoint from "../views/products";
 import tableConfig from "../config/table.config";
 import archiveApi from "../api/archive.api";
-import ArchiveProductOrderTable from "../views/archive/pages/ArchiveTable";
+import ProductArchiveTable from "../views/archive/pages/ProductArchiveTable";
 import ProductDetails from "../views/archive/container/ProductDetails";
+import ServiceArchiveTable from "../views/archive/pages/ServiceArchiveTable";
+
 const FetchProductArchiveTable = withTableFetching(
-  ArchiveProductOrderTable,
-  tableConfig.ArchiveProductTable
+  ProductArchiveTable,
+  tableConfig.ProductArchiveTable
+);
+
+const FetchServiceArchiveTable = withTableFetching(
+  ServiceArchiveTable,
+  tableConfig.ServiceArchiveTable
 );
 
 const archiveRoutes = [
@@ -20,6 +27,14 @@ const archiveRoutes = [
         element: (
           <FetchProductArchiveTable
             fetchFn={() => archiveApi.fetchAllProducts({})}
+          />
+        ),
+      },
+      {
+        path: "/archive/service",
+        element: (
+          <FetchServiceArchiveTable
+            fetchFn={() => archiveApi.fetchAllService({})}
           />
         ),
       },

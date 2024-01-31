@@ -7,6 +7,7 @@ import {
 import tableUtils from "@/utils/table.utils";
 import { TableStructProps } from "@/interface/component";
 import orderApi from "../api/order.api";
+import serviceBookApi from "@/modules/public/api/serviceBook.api";
 
 const recentOrderTable: TableStructProps<RecentOrderModel> = {
   base: "recent-order",
@@ -115,6 +116,30 @@ const ArchiveProductTable: TableStructProps<OrderPayload> = {
     ],
   }),
 };
+const ServiceArchiveTable: TableStructProps<ServiceScheduleModel> = {
+  base: "archive-service-schedule-table",
+  name: "archive-service-schedule-table",
+  columns: tableUtils.columnGenerator<ServiceScheduleModel>({
+    updateFn: () => {},
+    deleteFn: serviceBookApi.deleteById,
+    invalidateKey: ["archive-service-schedule-table"],
+    options: [
+      { name: "serviceId", header: "Service ID", isFirst: true },
+      { name: "customer", header: "Customer" },
+      { name: "schedule", header: "Schedule" },
+      { name: "budget", header: "Budget" },
+      { name: "completionDate", header: "Completion Date" },
+      { name: "status", header: "Status", isBadge: true },
+      {
+        name: "_id",
+        header: "Action",
+        isLast: true,
+        isDelete: true,
+        isEdit: false,
+      },
+    ],
+  }),
+};
 
 export default {
   recentOrderTable,
@@ -122,4 +147,5 @@ export default {
   orderTable,
   serviceSchedule,
   ArchiveProductTable,
+  ServiceArchiveTable,
 };

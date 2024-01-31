@@ -69,8 +69,6 @@ export default {
           id: items.name as string,
           header: () => items.header,
           cell: (info) => {
-            console.log(info.getValue());
-
             return (
               <span
                 className={`badge p-4 capitalize font-semibold ${

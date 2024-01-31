@@ -118,7 +118,7 @@ const orderTable: TableStructProps<OrderPayload> = {
     ],
   }),
 };
-const ArchiveProductTable: TableStructProps<OrderPayload> = {
+const ProductArchiveTable: TableStructProps<OrderPayload> = {
   base: "archive-product",
   name: "archive-product-table",
   columns: tableUtils.columnGenerator<OrderPayload>({
@@ -225,6 +225,30 @@ const serviceSchedule: TableStructProps<ServiceScheduleModel> = {
     ],
   }),
 };
+const ServiceArchiveTable: TableStructProps<ServiceScheduleModel> = {
+  base: "archive-service-schedule",
+  name: "archive-service-schedule-table",
+  columns: tableUtils.columnGenerator<ServiceScheduleModel>({
+    updateFn: () => {},
+    deleteFn: serviceBookApi.deleteById,
+    invalidateKey: ["archive-service-schedule-table"],
+    options: [
+      { name: "serviceId", header: "Service ID", isFirst: true },
+      { name: "customer", header: "Customer" },
+      { name: "schedule", header: "Schedule" },
+      { name: "budget", header: "Budget" },
+      { name: "completionDate", header: "Completion Date" },
+      { name: "status", header: "Status", isBadge: true },
+      {
+        name: "_id",
+        header: "Action",
+        isLast: true,
+        isDelete: true,
+        isEdit: false,
+      },
+    ],
+  }),
+};
 
 export default {
   productTable,
@@ -237,5 +261,6 @@ export default {
   userTable,
   serviceTable,
   serviceSchedule,
-  ArchiveProductTable,
+  ProductArchiveTable,
+  ServiceArchiveTable,
 };

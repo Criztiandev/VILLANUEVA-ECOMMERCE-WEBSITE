@@ -18,6 +18,7 @@ import ArchiveProductOrderTable from "./pages/ArchiveScreen";
 import archiveApi from "../admin/api/archive.api";
 import ProductOrderDetails from "./containers/ProductOrderDetails";
 import ServiceScheduleDetails from "./containers/ServiceScheduleDetails";
+import ServiceArchiveTable from "./pages/ServiceArchiveScreen";
 
 const FetchOrderTable = withTableFetching(OrderScreen, tableConfig.orderTable);
 const FetchServiceTable = withTableFetching(
@@ -28,6 +29,11 @@ const FetchServiceTable = withTableFetching(
 const FetchArchieveTable = withTableFetching(
   ArchiveProductOrderTable,
   tableConfig.ArchiveProductTable
+);
+
+const FetchServiceArchiveTable = withTableFetching(
+  ServiceArchiveTable,
+  tableConfig.ServiceArchiveTable
 );
 
 const UID = localStorage.getItem("info")
@@ -67,6 +73,14 @@ export const userRoutes = createBrowserRouter([
         element: (
           <FetchArchieveTable
             fetchFn={() => archiveApi.fetchAllProducts({ UID: UID })}
+          />
+        ),
+      },
+      {
+        path: "/service/archive",
+        element: (
+          <FetchServiceArchiveTable
+            fetchFn={() => archiveApi.fetchAllService({ customer: UID })}
           />
         ),
       },
