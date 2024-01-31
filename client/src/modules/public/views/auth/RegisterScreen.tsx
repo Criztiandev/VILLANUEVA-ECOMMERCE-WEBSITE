@@ -191,9 +191,9 @@ const RegisterScreen = () => {
         </Form>
         <div className="flex justify-center items-center">
           <span className="my-4 text-center">
-            Don't have an account?{" "}
-            <Link to={"/register"} className="border-b border-black">
-              Register
+            Don have an account?{" "}
+            <Link to={"/login"} className="border-b border-black">
+              Login
             </Link>
           </span>
         </div>
