@@ -4,7 +4,7 @@ import MainEntryPoint from "../views/products";
 import tableConfig from "../config/table.config";
 import archiveApi from "../api/archive.api";
 import ArchiveProductOrderTable from "../views/archive/pages/ArchiveTable";
-import ProductDetails from "../views/archive/container/ProductOrderDetails";
+import ProductDetails from "../views/archive/container/ProductDetails";
 const FetchProductArchiveTable = withTableFetching(
   ArchiveProductOrderTable,
   tableConfig.ArchiveProductTable

@@ -1,86 +1,208 @@
-import crypto from "crypto-js";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import Button from "@/components/Button";
+import Container from "@/components/Container";
 import Field from "@/components/Field";
 import Form from "@/components/Form";
-import Stack from "@/components/FlexStack";
-import { Link, useNavigate } from "react-router-dom";
-import queryUtils from "@/utils/query.utils";
-import Button from "@/components/Button";
-import Heading from "@/components/Heading";
-import Text from "@/components/Text";
-import { LoginData } from "@/interface/auth";
-import Logo from "@/assets/images/Logo.png";
-import Background from "@/assets/images/background-2.jpg";
-import { loginValidationSchema } from "../../validation/auth.validation";
-import authApi from "../../api/auth.api";
+import GridStack from "@/components/GridStack";
+import BackgrundV2 from "@/assets/images/background-2.jpg";
+import Logo from "@/assets/images/logo.png";
 
+import { UserModel } from "@/interface/model";
+import queryUtils from "@/utils/query.utils";
+import Select from "@/components/Select";
+
+import LoadingScreen from "@/containers/LoadingScreen";
+import usePhillAddress from "@/hooks/usePhillAddress";
+import AddressSelect from "@/modules/admin/views/customer/components/AddressSelect";
+import customerValidationSchema from "@/modules/admin/validation/customer.validation";
+import customerApi from "@/modules/admin/api/customer.api";
+import Text from "@/components/Text";
+import Heading from "@/components/Heading";
+import { Link } from "react-router-dom";
 const RegisterScreen = () => {
-  const navigate = useNavigate();
+  const {
+    finalAddress,
+    region,
+    province,
+    cities,
+    municipalities,
+    barangays,
+    handleSelectRegion,
+    handleSelectProvince,
+    handleSelectCities,
+    handleSelectMunicipalities,
+    handleSelectedBarangay,
+  } = usePhillAddress();
 
   const mutation = queryUtils.mutation({
-    mutationFn: async (payload: LoginData) => await authApi.register(payload),
-    toast: "Register successfully",
-    invalidateKey: ["user"],
-    onSuccess: () => {
-      navigate("/login");
-    },
+    mutationFn: async (payload: UserModel) => await customerApi.create(payload),
+    invalidateKey: ["customer"],
+    toast: "Created Customer Successfully",
   });
 
-  const onSubmit = async ({ email, password }: LoginData) => {
-    const encryptedPwd = crypto.AES.encrypt(
-      password,
-      import.meta.env.VITE_PASSWORD_SECRET
-    ).toString();
-    mutation.mutate({ password: encryptedPwd, email });
+  const handleSubmit = (payload: UserModel) => {
+    mutation.mutate(payload);
   };
 
+  if (region.isLoading) return <LoadingScreen />;
+  const { data: regionRes } = region as { data: any };
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 h-[100vh] bg-white">
-      <div className="relative flex justify-center items-center flex-col">
+    <div className="grid grid-cols-2 gap-4">
+      <div className="p-[32px]">
         <Link to={"/"}>
-          <div className=" flex gap-2  items-center absolute top-0 md:left-0  p-4 text-[22px] font-semibold">
-            <img src={Logo} className="w-[100px] h-[100px] object-cover" />
+          <div className=" flex gap-2  items-center  p-4 text-[22px] font-semibold">
+            <img
+              src={Logo}
+              className="w-[100px] h-[100px] object-cover rounded-full"
+            />
             <span className="capitalize">villanueva gardens</span>
           </div>
         </Link>
-        <Heading level={1}>Register</Heading>
-        <Text as="span">Lorem ipsum dolor sit amet adipiscing elit.</Text>
-        <span className="my-4 mb-8"></span>
+        <div className="text-center mb-16">
+          <Heading level={1}>Registration</Heading>
+          <Text as="span">Lorem ipsum dolor sit amet adipiscing elit.</Text>
+        </div>
+        <Form<UserModel>
+          onSubmit={handleSubmit}
+          validation={customerValidationSchema}>
+          <GridStack columns={2} gap={16}>
+            <Field
+              title="First Name"
+              name="firstName"
+              placeholder="Enter Custoemr Full Name"
+              required
+            />
+            <Field
+              title="Middle name"
+              name="middleName"
+              placeholder="Enter Custoemr Full Name"
+              required
+            />
+            <Field
+              title="Last Name"
+              name="lastName"
+              placeholder="Enter Custoemr Full Name"
+              required
+            />
+          </GridStack>
 
-        <Form<LoginData>
-          validation={loginValidationSchema}
-          onSubmit={onSubmit}
-          className="flex flex-col w-96 ">
-          <Stack dir="col">
+          <GridStack columns={2} gap={16} className="my-4">
+            <Field title="Age" name="age" placeholder="Enter Street" />
+            <Field
+              type="date"
+              title="Birth date"
+              name="birthDate"
+              placeholder="Enter Custoemr Full Name"
+              required
+            />
+            <Field
+              title="Contact"
+              name="contact"
+              placeholder="Enter Custoemr Full Name"
+              required
+            />
+
+            <Select
+              title="Gender"
+              name="gender"
+              placeholder="Select Gender"
+              option={[
+                { title: "Male", value: "male" },
+                { title: "Female", value: "female" },
+              ]}
+            />
+          </GridStack>
+
+          <GridStack columns={2} gap={16}>
+            <Field title="Street" name="street" placeholder="Enter Street" />
+            <Field
+              title="Building"
+              name="building"
+              placeholder="Enter Building"
+            />
+            <Field title="House no" name="houseNo" placeholder="Enter House" />
+
+            <Field default={region} name="region" hidden className="hidden" />
+
+            <AddressSelect
+              title="Region"
+              disabled={region.isLoading}
+              onSelect={handleSelectRegion}
+              options={regionRes}
+            />
+            <AddressSelect
+              title="Provice"
+              disabled={province?.isLoading || province?.data === undefined}
+              onSelect={handleSelectProvince}
+              options={province.data}
+            />
+            <AddressSelect
+              title="Cities"
+              disabled={cities.isLoading || cities?.data === undefined}
+              onSelect={handleSelectCities}
+              options={cities.data}
+            />
+            <AddressSelect
+              title="Municipality"
+              disabled={
+                municipalities.isLoading || municipalities?.data === undefined
+              }
+              onSelect={handleSelectMunicipalities}
+              options={municipalities.data}
+            />
+            <AddressSelect
+              title="Barangay"
+              disabled={barangays.isLoading || barangays?.data === undefined}
+              onSelect={handleSelectedBarangay}
+              options={barangays.data}
+            />
+
+            <Field default={finalAddress} name="address" required hidden />
+          </GridStack>
+          <div className="my-4">
+            <Field
+              title="Postal Code"
+              name="postalCode"
+              placeholder="Enter Postal Code"
+            />
+          </div>
+
+          <GridStack columns={2} gap={16}>
             <Field
               type="email"
               title="Email"
               name="email"
-              placeholder="Enter your Email"
+              placeholder="Enter Email"
+              required
             />
             <Field
               type="password"
               title="Password"
               name="password"
-              placeholder="Enter your Password"
-              autoComplete="current-password"
+              placeholder="Enter Password"
+              required
             />
-          </Stack>
-          <hr className="border border-black mb-4" />
+          </GridStack>
 
-          <Button title="Register" disabled={mutation.isPending} />
+          <Container className="flex flex-col gap-4 mt-4">
+            <Button title="Register" />
+          </Container>
         </Form>
-        <span className="my-4">
-          Do have an account?
-          <Link to={"/login"} className="border-b border-black">
-            Login
-          </Link>
-        </span>
+        <div className="flex justify-center items-center">
+          <span className="my-4 text-center">
+            Don't have an account?{" "}
+            <Link to={"/register"} className="border-b border-black">
+              Register
+            </Link>
+          </span>
+        </div>
       </div>
-      <div className="bg-slate-300 relative">
-        <div className="bg-[#00000063] w-screen h-screen absolute z-10"></div>
+      <div className="bg-slate-300  sticky top-0">
+        <div className="bg-[#00000063] w-screen  absolute z-10 h-full"></div>
         <img
-          src={Background}
-          className="object-cover w-screen h-screen"
+          src={BackgrundV2}
+          className="object-cover w-screen h-full"
           loading="lazy"
         />
       </div>

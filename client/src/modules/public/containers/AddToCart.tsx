@@ -18,7 +18,6 @@ const AddToCart = () => {
 
   useEffect(() => {
     if (isActive) {
-      // turn off the scroll bar
       document.body.style.overflow = "hidden";
     }
 

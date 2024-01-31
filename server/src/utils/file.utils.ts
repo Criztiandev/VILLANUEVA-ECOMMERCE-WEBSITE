@@ -1,5 +1,5 @@
 import multer from "multer";
-import * as path from "path";
+import { extname } from "path"; // Import extname from path module
 
 const storage = (target: string) =>
   multer.diskStorage({
@@ -10,7 +10,7 @@ const storage = (target: string) =>
     filename: (req, file, callback) => {
       callback(
         null,
-        file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+        file.fieldname + "_" + Date.now() + extname(file.originalname) // Use extname directly
       );
     },
   });

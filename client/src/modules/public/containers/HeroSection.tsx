@@ -13,7 +13,7 @@ const HeroSection = () => {
         </p>
 
         <div className="mt-[24px]">
-          <Link to={"/shop"}>
+          <Link to={"/products"}>
             <button className="btn rounded-[0px] text-base w-[150px] h-[50px] bg-[#244d4d] text-white">
               Shop now
             </button>
