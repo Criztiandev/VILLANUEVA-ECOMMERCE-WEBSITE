@@ -50,7 +50,11 @@ const ServiceScheduleDetails = () => {
   const messageQuery = useQuery({
     queryFn: async () =>
       await messageApi.fetchAll({
-        title: serviceBookedQuery?.data?.payload?.serviceId?.name,
+        title:
+          serviceBookedQuery?.data?.payload?.serviceId?.name
+            .split(" ")
+            .join("_")
+            .toLowerCase() + UID,
       }),
     queryKey: ["messages"],
     enabled: !!serviceBookedQuery?.data?.payload?.customer?._id,
@@ -95,9 +99,10 @@ const ServiceScheduleDetails = () => {
 
   const handleSendMessage = (result: Message) => {
     const customerID = serviceBookedQuery?.data?.payload?.customer?._id;
+    const productName = serviceBookedQuery.data.payload?.serviceId?.name;
 
     messageMutation.mutate({
-      title: payload?.serviceId?.name,
+      title: productName.split(" ").join("_").toLowerCase() + UID,
       sender: UID || "",
       content: result.content,
       target: customerID,
@@ -120,7 +125,6 @@ const ServiceScheduleDetails = () => {
   const payload: ServiceScheduleModel = serviceBookedQuery?.data?.payload;
   const messagePayload = messageQuery?.data?.payload[0];
 
-  console.log(messageQuery?.data);
   return (
     <>
       <div className="p-[24px]">

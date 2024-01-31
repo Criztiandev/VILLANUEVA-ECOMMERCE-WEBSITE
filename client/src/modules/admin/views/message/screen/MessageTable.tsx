@@ -25,7 +25,7 @@ const MessageTable = () => {
   const [selectedConvo, setSelectedConvo] = useState("");
 
   const convoQuery = useQuery({
-    queryFn: async () => await messageApi.fetchAll(),
+    queryFn: async () => await messageApi.fetchAll({}),
     queryKey: ["convo"],
   });
 

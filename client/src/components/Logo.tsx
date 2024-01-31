@@ -6,7 +6,7 @@ const Logo = () => {
       <img
         src={LogoImg}
         alt="img"
-        className="object-cover w-[120px] h-[120px]"
+        className="object-cover w-[120px] h-[120px] rounded-full"
         loading="lazy"
       />
       <span className="font-semibold text-[18px] capitalize">

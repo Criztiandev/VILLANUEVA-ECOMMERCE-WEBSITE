@@ -26,5 +26,4 @@ router.delete("/:id", deleteById);
 router.get("/", getAll);
 router.get("/:id", getById);
 router.get("/:filter", getAllByFilter);
-
 export default router;

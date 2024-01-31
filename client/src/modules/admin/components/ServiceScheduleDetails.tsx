@@ -55,7 +55,11 @@ const ServiceScheduleDetails = () => {
   const messageQuery = useQuery({
     queryFn: async () =>
       await messageApi.fetchAll({
-        title: serviceBookedQuery?.data?.payload?.serviceId?.name,
+        title:
+          serviceBookedQuery?.data?.payload?.serviceId?.name
+            .split(" ")
+            .join("_")
+            .toLowerCase() + serviceBookedQuery?.data?.payload?.customer?._id,
       }),
     queryKey: ["messages"],
     enabled: !!serviceBookedQuery?.data?.payload?.customer?._id,
@@ -85,18 +89,20 @@ const ServiceScheduleDetails = () => {
   };
 
   const payload: ServiceScheduleModel = serviceBookedQuery?.data?.payload;
-  const messagePayload = messageQuery?.data?.payload[0];
 
-  const handleSendMessage = (formData: Message) => {
-    const customerID = (payload?.customer as any)?._id;
+  const handleSendMessage = (result: Message) => {
+    const customerID = serviceBookedQuery?.data?.payload?.customer?._id;
+    const productName = serviceBookedQuery.data.payload?.serviceId?.name;
 
     messageMutation.mutate({
-      title: payload?.serviceId?.name,
+      title: productName.split(" ").join("_").toLowerCase() + customerID,
       sender: UID || "",
-      content: formData?.content,
+      content: result.content,
       target: customerID,
     });
   };
+
+  const messagePayload = messageQuery?.data?.payload[0];
 
   return (
     <>
@@ -261,21 +267,22 @@ const ServiceScheduleDetails = () => {
           {(payload?.customer as any)?.fullName}
         </h3>
         <div className="h-[300px] border my-4 p-4 flex flex-col gap-2 overflow-y-scroll">
-          {messagePayload?.messages?.map((items: MessageModel) => {
-            if (items?.sender === UID) {
-              return (
-                <div className="chat chat-end">
-                  <div className="chat-bubble">{items.content}</div>
-                </div>
-              );
-            } else {
-              return (
-                <div className="chat chat-start">
-                  <div className="chat-bubble">{items.content}</div>
-                </div>
-              );
-            }
-          })}
+          {messagePayload &&
+            messagePayload?.messages?.map((items: MessageModel) => {
+              if (items?.sender === UID) {
+                return (
+                  <div className="chat chat-end">
+                    <div className="chat-bubble">{items.content}</div>
+                  </div>
+                );
+              } else {
+                return (
+                  <div className="chat chat-start">
+                    <div className="chat-bubble">{items.content}</div>
+                  </div>
+                );
+              }
+            })}
         </div>
 
         <Form<Message> onSubmit={handleSendMessage} validation={singleMessage}>

@@ -31,6 +31,23 @@ export default {
       return e;
     }
   },
+  fetchConvo: async (filter: any) => {
+    try {
+      const queryString = Object.entries(filter)
+        .map(
+          ([key, value]) =>
+            `${encodeURIComponent(key)}=${encodeURIComponent(value as any)}`
+        )
+        .join("&");
+
+      const res = await apiUtils
+        .privateAxios()
+        .get(`/${base}/convo?${queryString}`);
+      return res.data;
+    } catch (e) {
+      return e;
+    }
+  },
 
   updateById: async (UID: string, payload: any) =>
     await apiUtils.privateAxios().put(`${base}/${UID}`, payload),

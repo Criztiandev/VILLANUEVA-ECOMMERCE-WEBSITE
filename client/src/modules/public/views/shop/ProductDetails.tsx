@@ -141,19 +141,7 @@ const ProductDetails = () => {
         <div className="grid grid-cols-[auto_600px] gap-[48px] mt-[64px]">
           <div>
             <h2 className="text-[32px] font-bold mb-4">Details</h2>
-            <p>
-              Reference site about Lorem Ipsum, giving information on its
-              origins, as well as a random Lipsum generator. Reference site
-              about Lorem Ipsum, giving information on its origins, as well as a
-              random Lipsum generator. Reference site about Lorem Ipsum, giving
-              information on its origins, as well as a random Lipsum generator.
-            </p>
-            <ul className="my-4 flex flex-col gap-2">
-              <li>Details 1</li>
-              <li>Details 2</li>
-              <li>Details 3</li>
-              <li>Details 4</li>
-            </ul>
+            <p>{result?.summary}</p>
 
             <div className="mt-8 flex flex-col ap-4">
               <div className="border-t-2 border-b-2 py-2 ">
@@ -164,24 +152,21 @@ const ProductDetails = () => {
               <div className="border-b-2 py-2 my-4">
                 <h3 className="text-[18px] font-medium mb-4">Shipping</h3>
                 <p className="text-base">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse varius enim in eros elementum tristique. Duis
-                  cursus, mi quis viverra ornare, eros dolor interdum nulla, ut
-                  commodo diam libero vitae erat. Aenean faucibus nibh et justo
-                  cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus
-                  tristique posuere.
+                  Our shipping policy ensures timely and secure delivery of your
+                  orders, providing transparent information on shipping rates,
+                  estimated delivery times, and any applicable terms and
+                  conditions to guarantee a seamless and reliable shopping
+                  experience.
                 </p>
               </div>
 
               <div className="border-b-2 py-2">
                 <h3 className="text-[18px] font-medium mb-4">Returns</h3>
                 <p className="text-base">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Suspendisse varius enim in eros elementum tristique. Duis
-                  cursus, mi quis viverra ornare, eros dolor interdum nulla, ut
-                  commodo diam libero vitae erat. Aenean faucibus nibh et justo
-                  cursus id rutrum lorem imperdiet. Nunc ut sem vitae risus
-                  tristique posuere.
+                  Our return policy is designed to offer you peace of mind,
+                  allowing hassle-free returns within a specified period,
+                  accompanied by clear guidelines on eligibility criteria and
+                  procedures to ensure your satisfaction with our products.
                 </p>
               </div>
             </div>

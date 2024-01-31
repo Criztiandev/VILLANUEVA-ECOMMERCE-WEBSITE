@@ -86,7 +86,7 @@ const CartItem = (props: Props) => {
               src={(coverImageQuery?.data as string) || ""}
               alt="cover"
               loading="lazy"
-              className="rounded-[5px]"
+              className="rounded-[5px] object-cover w-full h-full"
             />
           </div>
           <div className="flex gap-2 flex-col">

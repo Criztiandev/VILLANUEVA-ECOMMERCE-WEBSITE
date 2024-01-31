@@ -27,7 +27,7 @@ const ProductOrderDetails = () => {
     invalidateKey: ["orders"],
     toast: "Cancel Order Successfully",
     onSuccess: () => {
-      navigate("/order");
+      navigate("/");
     },
   });
 

@@ -61,6 +61,7 @@ export const userRoutes = createBrowserRouter([
         ),
       },
       { path: "/service/:id", element: <ServiceScheduleDetails /> },
+      { path: "/archive/service/:id", element: <ServiceScheduleDetails /> },
       { path: "/product/shop", element: <ProductShopScreen /> },
       { path: "/product/shop/:id", element: <ProductDetails /> },
       { path: "/service/shop", element: <ServiceShopScreen /> },

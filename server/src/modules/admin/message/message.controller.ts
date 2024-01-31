@@ -5,6 +5,7 @@ import asyncHandler from "express-async-handler";
 import model from "../../../models/message.model.ts";
 import userModel from "../../../models/user.model.ts";
 import { MessageModel } from "../../../interfaces/model.js";
+import messageModel from "../../../models/message.model.ts";
 
 export default {
   // Create User
@@ -12,44 +13,27 @@ export default {
   create: asyncHandler(async (req: Request, res: Response) => {
     const { sender, content, target, title } = req.body as MessageModel;
 
-    // Check if the target exists
-    const targetExistence = await userModel
-      .findById(target)
-      .lean()
-      .select("_id fullName");
-    if (!targetExistence) throw new Error("Target user doesn't exist");
+    const existingConvo = await model.findOne({ title: title });
 
-    // Check if a conversation with the target exists
-    const convoExistence = await model
-      .findOne({ participants: target })
-      .lean()
-      .select("_id");
+    if (!existingConvo) {
+      const newConvo = await model.create({
+        title: title,
+        messages: [{ sender, content }], // Assuming you want to add the first message
+      });
 
-    if (convoExistence) {
-      // Instead of creating, update the conversation
-      const updatedConvo = await model
-        .findOneAndUpdate(
-          { participants: target },
-          { $push: { messages: { sender, content } } },
-          { new: true }
-        )
-        .lean()
-        .select("_id");
+      if (!newConvo) throw new Error("Something went wrong");
+      res.status(201).json({ success: true, data: newConvo });
+    } else {
+      // update the message
+      const updatedConvo = await model.findOneAndUpdate(
+        { title: title },
+        { $push: { messages: { sender, content } } },
+        { new: true } // Return the updated document
+      );
 
-      if (!updatedConvo) throw new Error("Update Failed");
-      handleSuccess(res, updatedConvo); // Return the updated conversation
-      return;
+      if (!updatedConvo) throw new Error("Something went wrong");
+      res.status(200).json({ success: true, data: updatedConvo });
     }
-
-    // If no existing conversation, create a new one
-    const newConvo = await model.create({
-      title: title ? title : targetExistence.fullName,
-      participants: [target],
-      messages: [{ target, sender, content }],
-    });
-
-    if (!newConvo) handleError("Something went wrong, Please try again later");
-    handleSuccess(res, newConvo);
   }),
 
   // Update User By Id

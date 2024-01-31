@@ -48,6 +48,8 @@ const CheckoutScreen = () => {
 
   const total = totalValue() + 40;
   const productaPayload = productQuery?.data;
+
+  console.log(productQuery?.data);
   return (
     <>
       <div className="px-[24px]">
@@ -99,7 +101,7 @@ const CheckoutScreen = () => {
             {products.length > 0 && (
               <div className="py-4 flex flex-col gap-2">
                 <Button
-                  title="Payment"
+                  title="Checkout"
                   className="w-full"
                   onClick={handleSubmit}
                 />
@@ -130,11 +132,11 @@ const CheckoutScreen = () => {
                     </div>
                     <div className="flex justify-between items-center font-semibold">
                       <span>Shipping</span>
-                      <span>0</span>
+                      <span>P 40</span>
                     </div>
                     <div className="flex justify-between items-center font-semibold">
                       <span>Tax</span>
-                      <span>P 40</span>
+                      <span>P 0</span>
                     </div>
                     <div className="flex justify-between items-center font-semibold">
                       <span>Discount</span>

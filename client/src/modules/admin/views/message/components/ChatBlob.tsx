@@ -19,7 +19,9 @@ const ChatBlob = (convo: Props) => {
         </div>
 
         <div>
-          <h3 className="font-semibold">{convo?.title}</h3>
+          <h3 className="font-semibold capitalize">
+            {convo?.title.substring(0, 14)}
+          </h3>
           <span className="text-[14px] text-gray-400">
             {convo.messages[0].content}
           </span>

@@ -2,14 +2,9 @@ import { MessageModel } from "../interfaces/model.ts";
 import mongoose, { Schema, model, Document } from "mongoose";
 
 const messageSchema = new mongoose.Schema({
-  target: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Reference to the User model
-    required: true,
-  },
   sender: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User", // Reference to the User model
+    ref: "user", // Reference to the User model
     required: true,
   },
   content: {
@@ -24,13 +19,6 @@ const messageSchema = new mongoose.Schema({
 
 const conversationSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  participants: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // Reference to the User model
-      required: true,
-    },
-  ],
   messages: [messageSchema],
 });
 

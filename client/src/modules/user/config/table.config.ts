@@ -117,12 +117,11 @@ const ArchiveProductTable: TableStructProps<OrderPayload> = {
   }),
 };
 const ServiceArchiveTable: TableStructProps<ServiceScheduleModel> = {
-  base: "archive-service-schedule-table",
+  base: "archive-service-schedule",
   name: "archive-service-schedule-table",
   columns: tableUtils.columnGenerator<ServiceScheduleModel>({
-    updateFn: () => {},
     deleteFn: serviceBookApi.deleteById,
-    invalidateKey: ["archive-service-schedule-table"],
+    invalidateKey: ["archive-service-schedule"],
     options: [
       { name: "serviceId", header: "Service ID", isFirst: true },
       { name: "customer", header: "Customer" },

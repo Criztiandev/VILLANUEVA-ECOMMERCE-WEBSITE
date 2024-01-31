@@ -4,13 +4,14 @@ import Notification from "../../layout/Notification";
 import GridStack from "@/components/GridStack";
 import StatsCard from "./components/StatsCard";
 import Container from "@/components/Container";
-import { ProductModel } from "@/interface/model";
+import { OrderPayload, ProductModel } from "@/interface/model";
 import { useQuery } from "@tanstack/react-query";
 import productApi from "../../api/product.api";
 import LoadingScreen from "@/containers/LoadingScreen";
 import ProductBlob from "./components/ProductBlob";
 import orderApi from "../../api/order.api";
 import serviceBookApi from "@/modules/public/api/serviceBook.api";
+import OrderBlob from "./components/OrderBlob";
 
 const MainEntryPoint = () => {
   const productQuery = useQuery({
@@ -31,7 +32,7 @@ const MainEntryPoint = () => {
   if (productQuery.isLoading) return <LoadingScreen />;
   const { payload: result } = productQuery?.data as { payload: ProductModel[] };
   const products = productQuery.data?.payload?.slice(0, 5);
-  const orders = orderQuery?.data.payload;
+  const orders = orderQuery?.data?.payload;
   const booked = bookedQuery?.data?.payload;
 
   return (
@@ -54,8 +55,8 @@ const MainEntryPoint = () => {
             <Container className="w-[1200px]  bg-white px-[24px] shadow-md py-4">
               <h3 className="text-[18px] font-semibold mb-2">Recent Orders</h3>
               <div className="mt-4  flex flex-col gap-2">
-                {orders?.map((product: ProductModel) => (
-                  <ProductBlob {...product} />
+                {orders?.map((product: OrderPayload) => (
+                  <OrderBlob {...product} />
                 ))}
               </div>
             </Container>

@@ -3,7 +3,7 @@ import fileApi from "@/service/api/file.api";
 import { useQuery } from "@tanstack/react-query";
 
 const ProductBlob = (props: ProductModel) => {
-  const modfiedName = props?.name.split(" ").join("_").toLowerCase();
+  const modfiedName = props?.name?.split(" ").join("_").toLowerCase();
   const coverImage =
     props.images && props.images.length > 0 ? props.images[0] : "";
 

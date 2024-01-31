@@ -5,7 +5,6 @@ import model from "../../../models/order.model.ts";
 import { OrderModel } from "../../../interfaces/model.js";
 import productModel from "../../../models/product.model.ts";
 import userModel from "../../../models/user.model.ts";
-import { AnyARecord } from "dns";
 
 const handleError = (message: string) => {
   throw new Error(message);

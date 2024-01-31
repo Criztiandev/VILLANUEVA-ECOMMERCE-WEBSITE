@@ -6,6 +6,7 @@ import archiveApi from "../api/archive.api";
 import ProductArchiveTable from "../views/archive/pages/ProductArchiveTable";
 import ProductDetails from "../views/archive/container/ProductDetails";
 import ServiceArchiveTable from "../views/archive/pages/ServiceArchiveTable";
+import ServiceScheduleDetails from "../components/ServiceScheduleDetails";
 
 const FetchProductArchiveTable = withTableFetching(
   ProductArchiveTable,
@@ -39,6 +40,7 @@ const archiveRoutes = [
         ),
       },
       { path: "/archive/products/:id", element: <ProductDetails /> },
+      { path: "/archive/service/:id", element: <ServiceScheduleDetails /> },
     ],
   },
 ];
