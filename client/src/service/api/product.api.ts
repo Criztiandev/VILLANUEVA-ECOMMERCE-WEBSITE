@@ -1,15 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import tableConfig from "@/config/table.config";
 import { User } from "@/interface/user";
+import tableConfig from "@/modules/admin/config/table.config";
 import apiUtils from "@/utils/api.utils";
 
 const { base } = tableConfig.productTable;
 
 export default {
   create: async (payload: User) =>
-    await apiUtils
-      .privateAxios({ isFile: true })
-      .post(`/${base}/create`, payload),
+    await apiUtils.privateAxios().post(`/${base}/create`, payload),
 
   fetchAll: async () =>
     await apiUtils.privateAxios().get(`/${base}?size=10&index=0`),
@@ -18,9 +16,7 @@ export default {
     await apiUtils.privateAxios().get(`/${base}/${UID}`),
 
   updateById: async (UID: string, payload: any) =>
-    await apiUtils
-      .privateAxios({ isFile: true })
-      .put(`${base}/${UID}`, payload),
+    await apiUtils.privateAxios().put(`${base}/${UID}`, payload),
 
   deleteById: async (id: string) => {
     const currentId = JSON.parse(localStorage.getItem("info") || "");

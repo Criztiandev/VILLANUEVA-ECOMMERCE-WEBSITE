@@ -139,19 +139,7 @@ const ProductDetails = () => {
         <div className="grid grid-cols-[auto_600px] gap-[48px] mt-[64px]">
           <div>
             <h2 className="text-[32px] font-bold mb-4">Details</h2>
-            <p>
-              Reference site about Lorem Ipsum, giving information on its
-              origins, as well as a random Lipsum generator. Reference site
-              about Lorem Ipsum, giving information on its origins, as well as a
-              random Lipsum generator. Reference site about Lorem Ipsum, giving
-              information on its origins, as well as a random Lipsum generator.
-            </p>
-            <ul className="my-4 flex flex-col gap-2">
-              <li>Details 1</li>
-              <li>Details 2</li>
-              <li>Details 3</li>
-              <li>Details 4</li>
-            </ul>
+            <p>{result?.summary}</p>
 
             <div className="mt-8 flex flex-col ap-4">
               <div className="border-t-2 border-b-2 py-2 ">

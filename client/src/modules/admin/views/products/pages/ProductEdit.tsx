@@ -52,43 +52,20 @@ const ProductEdit = () => {
     enabled: !!id,
   });
 
-  const mutation = queryUtils.mutation({
-    mutationFn: async ({ name, data }: { name: string; data: ProductModel }) =>
-      productApi.sendFile(`${name}`, data),
-    invalidateKey: ["products"],
-    toast: "Create product Successfully",
-    onSuccess: () => {
-      handleImageClear();
-    },
+  const mutation = queryUtils?.mutation({
+    mutationFn: async (payload: ProductModel) =>
+      productApi.updateById(id || "", payload),
+    invalidateKey: [`product-${id}`],
+    toast: "Updated successfully",
   });
 
   if (categoryQuery.isLoading || productQuery.isLoading)
     return <LoadingScreen />;
-
-  const handleSubmit = (payload: ProductModel) => {
-    const formData = new FormData();
-
-    const resultImages = Array.from(selectedImages || []);
-
-    const coverIndex = resultImages.findIndex(
-      (item: any) => item.name === cover.name
-    );
-
-    // If the cover image is found, move it to the beginning of the array
-    if (coverIndex !== -1) {
-      const coverImage = resultImages.splice(coverIndex, 1)[0]; // Remove cover image from its current position
-      resultImages?.unshift(coverImage); // Add cover image to the beginning of the array
-    }
-
-    Array.from(resultImages || []).forEach((file) => {
-      formData.append(`product`, file as any);
-    });
-
-    for (const key in payload) {
-      formData.append(key, (payload as any)[key]);
-    }
-
-    mutation.mutate({ name: payload.name, data: formData as any });
+  const handleSubmit = (payload: any) => {
+    mutation.mutate({
+      name: payload?.name,
+      data: payload as any,
+    } as any);
   };
 
   const handleSlotAction = (e: any) => {
@@ -108,7 +85,7 @@ const ProductEdit = () => {
 
   return (
     <div className="overflow-hidden">
-      <h1 className="mt-8 mb-4 text-[32px] font-bold">Product Create</h1>
+      <h1 className="mt-8 mb-4 text-[32px] font-bold">Product Edit</h1>
 
       <Container className="my-8 mx-auto border-t border-gray-300 py-4">
         <Form<ProductModel>
@@ -179,11 +156,11 @@ const ProductEdit = () => {
                 name="name"
                 placeholder="Enter Product Name"
                 required
-                default={result.name}
+                default={result?.name}
               />
               <GridStack columns={2} gap={16} className="w-full">
                 <Select
-                  default={result.category}
+                  default={result?.category}
                   title="Category"
                   name="category"
                   placeholder={
@@ -205,7 +182,7 @@ const ProductEdit = () => {
                   title="Price"
                   name="price"
                   placeholder="Enter Price"
-                  default={result.price}
+                  default={result?.price}
                   required
                 />
                 <Field
@@ -213,7 +190,7 @@ const ProductEdit = () => {
                   title="Stocks"
                   name="stock"
                   required
-                  default={result.stock}
+                  default={result?.stock}
                   placeholder="Enter Stocks"
                 />
                 <Field
@@ -221,14 +198,14 @@ const ProductEdit = () => {
                   title="Shipping Fee"
                   name="shippingFee"
                   required
-                  default={result.shippingFee}
+                  default={result?.shippingFee}
                   placeholder="Enter Stocks"
                 />
                 <Select
                   title="Status"
                   name="status"
                   placeholder="Select status"
-                  default={result.status}
+                  default={result?.status}
                   option={[
                     { title: "New", value: "new" },
                     { title: "Sales", value: "sales" },
@@ -240,12 +217,12 @@ const ProductEdit = () => {
                 <Toggle
                   title="Featured"
                   name="isFeatured"
-                  default={result.isPublished}
+                  default={result?.isPublished}
                 />
                 <Toggle
                   title="Published"
                   name="isPublished"
-                  default={result.isFeatured}
+                  default={result?.isFeatured}
                 />
               </GridStack>
 
@@ -257,7 +234,7 @@ const ProductEdit = () => {
               <Textarea
                 title="Description"
                 name="description"
-                default={result.description}
+                default={result?.description}
               />
             </FlexStack>
           </GridStack>
