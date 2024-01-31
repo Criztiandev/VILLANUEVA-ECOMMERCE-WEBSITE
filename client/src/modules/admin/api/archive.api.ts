@@ -3,9 +3,18 @@ import apiUtils from "@/utils/api.utils";
 const base = "archive";
 
 export default {
-  fetchAllProducts: async () => {
+  fetchAllProducts: async (filter: any) => {
     try {
-      const res = await apiUtils.privateAxios().get(`/${base}/products`);
+      const queryString = Object.entries(filter)
+        .map(
+          ([key, value]) =>
+            `${encodeURIComponent(key)}=${encodeURIComponent(value as any)}`
+        )
+        .join("&");
+
+      const res = await apiUtils
+        .privateAxios()
+        .get(`/${base}/products?${queryString}`);
       return res.data;
     } catch (e) {
       return e;

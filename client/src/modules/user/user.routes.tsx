@@ -1,7 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import RootScreen from ".";
 import { createBrowserRouter } from "react-router-dom";
-import HomeScreen from "./pages/HomeScreen";
 import OrderScreen from "./pages/OrderScreen";
 import ServiceScreen from "./pages/ServiceScreen";
 import ProductShopScreen from "./pages/ProductShopScreen";
@@ -17,6 +16,7 @@ import ServiceDetails from "./containers/ServiceDetails";
 import serviceBookApi from "../public/api/serviceBook.api";
 import ArchiveProductOrderTable from "./pages/ArchiveScreen";
 import archiveApi from "../admin/api/archive.api";
+import ProductOrderDetails from "./containers/ProductOrderDetails";
 
 const FetchOrderTable = withTableFetching(OrderScreen, tableConfig.orderTable);
 const FetchServiceTable = withTableFetching(
@@ -33,21 +33,18 @@ const UID = localStorage.getItem("info")
   ? JSON.parse(localStorage.getItem("info") || "")
   : null;
 
-console.log(UID);
-
 export const userRoutes = createBrowserRouter([
   {
     path: "/",
     element: <RootScreen />,
     children: [
-      { path: "/", element: <HomeScreen /> },
       {
-        path: "/order",
+        path: "/",
         element: (
           <FetchOrderTable fetchFn={() => orderApi.fetchAll({ UID: UID })} />
         ),
       },
-      { path: "/order/:id", element: <OrderDetails /> },
+      { path: "/:id", element: <OrderDetails /> },
       {
         path: "/service",
         element: (
@@ -65,8 +62,13 @@ export const userRoutes = createBrowserRouter([
 
       {
         path: "/order/archive/products",
-        element: <FetchArchieveTable fetchFn={archiveApi.fetchAllProducts} />,
+        element: (
+          <FetchArchieveTable
+            fetchFn={() => archiveApi.fetchAllProducts({ UID: UID })}
+          />
+        ),
       },
+      { path: "/order/archive/products/:id", element: <ProductOrderDetails /> },
     ],
   },
 ]);

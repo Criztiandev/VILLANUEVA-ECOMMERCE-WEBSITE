@@ -1,7 +1,7 @@
 import Container from "@/components/Container";
 import Table from "@/components/Table";
 import { ServiceScheduleModel } from "@/interface/model";
-import tableConfig from "@/modules/admin/config/table.config";
+import tableConfig from "../config/table.config";
 
 const ServiceScreen = () => {
   const { name, columns } = tableConfig.serviceSchedule;

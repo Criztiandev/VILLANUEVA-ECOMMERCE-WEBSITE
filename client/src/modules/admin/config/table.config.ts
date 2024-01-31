@@ -214,7 +214,13 @@ const serviceSchedule: TableStructProps<ServiceScheduleModel> = {
       { name: "budget", header: "Budget" },
       { name: "completionDate", header: "Completion Date" },
       { name: "status", header: "Status", isBadge: true },
-      { name: "_id", header: "Action", isLast: true, isDelete: false },
+      {
+        name: "_id",
+        header: "Action",
+        isLast: true,
+        isDelete: false,
+        isEdit: false,
+      },
     ],
   }),
 };

@@ -80,7 +80,13 @@ const serviceSchedule: TableStructProps<ServiceScheduleModel> = {
       { name: "budget", header: "Budget" },
       { name: "completionDate", header: "Completion Date" },
       { name: "status", header: "Status", isBadge: true },
-      { name: "_id", header: "Action", isLast: true, isDelete: false },
+      {
+        name: "_id",
+        header: "Action",
+        isLast: true,
+        isDelete: false,
+        isEdit: false,
+      },
     ],
   }),
 };
@@ -99,7 +105,13 @@ const ArchiveProductTable: TableStructProps<OrderPayload> = {
       { name: "total", header: "Ammount" },
       { name: "status", header: "Status", isBadge: true },
       { name: "fullName", header: "Customer" },
-      { name: "_id", header: "Action", isLast: true, isEdit: false },
+      {
+        name: "_id",
+        header: "Action",
+        isLast: true,
+        isEdit: false,
+        isDelete: false,
+      },
     ],
   }),
 };

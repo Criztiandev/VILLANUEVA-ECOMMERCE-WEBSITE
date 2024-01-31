@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import DashboardIcon from "@/assets/icons/dashboard_light_icon.svg";
 import OrderIcon from "@/assets/icons/order_light_icon.svg";
 import NaviIcon from "@/assets/icons/service_light_icon.svg";
-import SettingsIcon from "@/assets/icons/settings_light_icon.svg";
 import Logo from "@/components/Logo";
 const Sidebar = () => {
   return (
@@ -10,8 +8,7 @@ const Sidebar = () => {
       <Logo />
 
       <ul className="menu mt-8">
-        <NavLink title="Dashboard" path="/" icon={DashboardIcon} />
-        <NavLink title="My Order" path="/order" icon={OrderIcon} />
+        <NavLink title="My Order" path="/" icon={OrderIcon} />
         <NavLink title="My Service" path="/service" icon={NaviIcon} />
 
         <div className="divider"></div>
@@ -19,7 +16,6 @@ const Sidebar = () => {
         <NavLink title="Products" path="/product/shop" icon={OrderIcon} />
         <NavLink title="Service" path="/service/shop" icon={NaviIcon} />
         <div className="divider"></div>
-        <NavLink title="Settings" icon={SettingsIcon} path="/settings" />
       </ul>
     </aside>
   );

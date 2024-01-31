@@ -51,7 +51,9 @@ export default {
     try {
       const query = req.query || {};
 
-      const credentials = await model.find({ status: "completed" }).lean();
+      const credentials = await model
+        .find({ status: "completed", ...query })
+        .lean();
       const productIds = credentials.map((item) => item.products).flat();
 
       const productDetails = productIds.map(async ({ _id, ...rest }) => {

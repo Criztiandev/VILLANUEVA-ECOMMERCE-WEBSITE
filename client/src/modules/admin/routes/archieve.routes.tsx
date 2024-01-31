@@ -18,7 +18,9 @@ const archiveRoutes = [
       {
         path: "/archive/products",
         element: (
-          <FetchProductArchiveTable fetchFn={archiveApi.fetchAllProducts} />
+          <FetchProductArchiveTable
+            fetchFn={() => archiveApi.fetchAllProducts({})}
+          />
         ),
       },
       { path: "/archive/products/:id", element: <ProductDetails /> },
