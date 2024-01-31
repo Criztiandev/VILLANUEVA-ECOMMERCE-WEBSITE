@@ -6,13 +6,9 @@ export const serviceValidation = z.object({
     .gte(1, "Quantity Required")
     .max(10000000, "Quantity must be less than 10000000"),
 
-  schedule: z
-    .string()
-    .min(0, "schedule is required")
-    .max(255, "schedule to large"),
   completionDate: z
     .string()
-    .min(0, "schedule is required")
-    .max(255, "schedule to large"),
-  message: z.string().min(0, "schedule is required"),
+    .min(0, "Completion Date is required")
+    .max(255, "Completion Date to large"),
+  location: z.string().min(0, "Location is required"),
 });

@@ -110,7 +110,7 @@ const ArchiveProductTable: TableStructProps<OrderPayload> = {
         header: "Action",
         isLast: true,
         isEdit: false,
-        isDelete: false,
+        isDelete: true,
       },
     ],
   }),

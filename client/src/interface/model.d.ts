@@ -66,6 +66,7 @@ export interface ServiceScheduleModel {
   completionDate: string;
   customer: string;
   budget: number;
+  location: string;
   status: string;
 }
 
@@ -114,6 +115,7 @@ export interface CategoryModel {
 
 export interface MessageModel {
   _id?: string;
+  title?: string;
   target: string;
   sender?: string;
   content: string;

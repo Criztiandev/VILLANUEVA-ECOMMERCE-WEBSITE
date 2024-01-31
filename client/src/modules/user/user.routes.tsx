@@ -17,6 +17,7 @@ import serviceBookApi from "../public/api/serviceBook.api";
 import ArchiveProductOrderTable from "./pages/ArchiveScreen";
 import archiveApi from "../admin/api/archive.api";
 import ProductOrderDetails from "./containers/ProductOrderDetails";
+import ServiceScheduleDetails from "./containers/ServiceScheduleDetails";
 
 const FetchOrderTable = withTableFetching(OrderScreen, tableConfig.orderTable);
 const FetchServiceTable = withTableFetching(
@@ -53,6 +54,7 @@ export const userRoutes = createBrowserRouter([
           />
         ),
       },
+      { path: "/service/:id", element: <ServiceScheduleDetails /> },
       { path: "/product/shop", element: <ProductShopScreen /> },
       { path: "/product/shop/:id", element: <ProductDetails /> },
       { path: "/service/shop", element: <ServiceShopScreen /> },

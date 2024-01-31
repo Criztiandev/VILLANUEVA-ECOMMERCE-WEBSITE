@@ -17,6 +17,7 @@ import orderApi from "../api/order.api";
 import userApi from "../api/user.api";
 import serviceApi from "../api/service.api";
 import serviceCategoriesApi from "../api/serviceCategories.api";
+import serviceBookApi from "@/modules/public/api/serviceBook.api";
 
 const productTable: TableStructProps<ProductModel> = {
   base: "products",
@@ -205,7 +206,7 @@ const serviceSchedule: TableStructProps<ServiceScheduleModel> = {
   name: "service-schedule-table",
   columns: tableUtils.columnGenerator<ServiceScheduleModel>({
     updateFn: () => {},
-    deleteFn: () => {},
+    deleteFn: serviceBookApi.deleteById,
     invalidateKey: ["service-schedule-table"],
     options: [
       { name: "serviceId", header: "Service ID", isFirst: true },
@@ -218,7 +219,7 @@ const serviceSchedule: TableStructProps<ServiceScheduleModel> = {
         name: "_id",
         header: "Action",
         isLast: true,
-        isDelete: false,
+        isDelete: true,
         isEdit: false,
       },
     ],

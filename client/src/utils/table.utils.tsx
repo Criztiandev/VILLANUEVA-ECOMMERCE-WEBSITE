@@ -87,9 +87,11 @@ export default {
                     : info.getValue() === "delivered" ||
                       info.getValue() === "success" ||
                       info.getValue() === "paid" ||
-                      info.getValue() === "approved"
+                      info.getValue() === "approved" ||
+                      info.getValue() === "finished"
                     ? "bg-[rgba(80,194,97,0.5)] border-2 border-[rgba(44,140,75,0.97)]"
-                    : info.getValue() === "transit"
+                    : info.getValue() === "transit" ||
+                      info.getValue() === "process"
                     ? "bg-[rgba(255,193,7,0.5)] border-2 border-[rgba(255,193,7,0.97)]"
                     : info.getValue() === "completed"
                     ? "bg-[rgba(80,194,97,0.5)] border-2 border-[rgba(44,140,75,0.97)]"

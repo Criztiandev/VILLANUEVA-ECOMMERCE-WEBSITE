@@ -4,6 +4,8 @@ import asyncHandler from "express-async-handler";
 // chage this
 import model from "../../../models/serviceBook.model.ts";
 import { ServiceScheduleModel } from "../../../interfaces/model.js";
+import serviceModel from "../../../models/serviceModel.ts";
+import userModel from "../../../models/user.model.ts";
 
 export default {
   // Create User
@@ -11,12 +13,16 @@ export default {
   create: asyncHandler(async (req: Request, res: Response) => {
     const payload: ServiceScheduleModel = req.body;
 
-    // check the schedule if exist
-    const existance = await model.findOne({
-      $or: [{ schedule: payload.schedule }],
+    // check if the user choose already the service
+
+    // check if the user has already chosen the service
+    const existingService = await model.findOne({
+      customer: payload?.customer,
+      serviceId: payload?.serviceId,
+      status: { $ne: "completed" },
     });
 
-    if (existance) handleError("Schedule already exist");
+    if (existingService) handleError("Schedule already exist");
 
     const credentials = await model.create(payload);
     if (!credentials) handleError("Something went wrong, Please Try again");
@@ -80,11 +86,48 @@ export default {
   // GET /api/user (Private, Admin)
   getAll: asyncHandler(async (req: Request, res: Response) => {
     const query = req.query || {};
+    const allowedStatusValues = [
+      "pending",
+      "cancel",
+      "deal",
+      "process",
+      "finished",
+    ];
 
-    const credentials = await model.find(query).lean();
+    const credentials = await model
+      .find({ status: { $in: allowedStatusValues }, ...query })
+      .lean();
     if (!credentials) handleError("Something went wrong, Please Try again");
 
-    handleSuccess(res, credentials);
+    const serviceIds = credentials?.map((item) => item.serviceId);
+    const customerIDs = credentials?.map((item) => item.customer);
+
+    const services = serviceIds?.map(async (item) => {
+      const service = await serviceModel.findById(item).lean().select("name");
+      return {
+        ...service,
+      };
+    });
+
+    const customers = customerIDs?.map(async (item) => {
+      const customer = await userModel.findById(item).lean().select("fullName");
+      return {
+        ...customer,
+      };
+    });
+
+    const result = await Promise.all(services);
+    const customerResult = await Promise.all(customers);
+
+    const transformedPayload = credentials.map((credential, index) => {
+      return {
+        ...credential,
+        serviceId: result[index].name,
+        customer: customerResult[index].fullName,
+      };
+    });
+
+    handleSuccess(res, transformedPayload);
   }),
 
   // Get User By Filter query
@@ -112,7 +155,23 @@ export default {
       .select("-password -__v");
     if (!credentials) handleError("Something went wrong, Please Try again");
 
-    handleSuccess(res, credentials);
+    const serviceDetails = await serviceModel
+      .findById(credentials?.serviceId)
+      .lean()
+      .select("name description services images");
+
+    const customerDetails = await userModel
+      .findById(credentials?.customer)
+      .lean()
+      .select("fullName age email contact address");
+
+    const transformedPayload = {
+      ...credentials,
+      serviceId: serviceDetails,
+      customer: customerDetails,
+    };
+
+    handleSuccess(res, transformedPayload);
   }),
 };
 

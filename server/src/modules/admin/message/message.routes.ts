@@ -14,11 +14,13 @@ const {
   getAll,
   getAllByFilter,
   getById,
+  deleteByFilter,
 } = controller;
 
 router.post("/create", create);
 router.post("/delete/batch", deleteBatch);
 router.put("/:id", updateById);
+router.post("/filter", deleteByFilter);
 router.delete("/:id", deleteById);
 
 router.get("/", getAll);

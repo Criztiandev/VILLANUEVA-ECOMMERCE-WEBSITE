@@ -10,7 +10,7 @@ export default {
   // Create User
   // POST /api/user/create (Private, Admin)
   create: asyncHandler(async (req: Request, res: Response) => {
-    const { sender, content, target } = req.body as MessageModel;
+    const { sender, content, target, title } = req.body as MessageModel;
 
     // Check if the target exists
     const targetExistence = await userModel
@@ -43,7 +43,7 @@ export default {
 
     // If no existing conversation, create a new one
     const newConvo = await model.create({
-      title: targetExistence.fullName,
+      title: title ? title : targetExistence.fullName,
       participants: [target],
       messages: [{ target, sender, content }],
     });
@@ -86,6 +86,20 @@ export default {
 
     handleDeleteSuccess(res, credentials);
   }),
+  deleteByFilter: asyncHandler(async (req: Request, res: Response) => {
+    const query = req.query || {};
+
+    const existance = await model.findOne(query).lean().select("_id");
+    if (!existance) handleError("Not Found, Please Try again");
+
+    const credentials = await model
+      .findOneAndDelete(query)
+      .lean()
+      .select("_id");
+    if (!credentials) handleError("Something went wrong, Please Try again");
+
+    handleDeleteSuccess(res, credentials);
+  }),
 
   // Delete User By Batch
   // POST /api/user/delete/batch (Private, Admin)
@@ -104,13 +118,9 @@ export default {
   // Get All Users
   // GET /api/user (Private, Admin)
   getAll: asyncHandler(async (req: Request, res: Response) => {
-    const { role } = req.query as { role: "user" | "admin" };
+    const query = req.query || {};
 
-    const exception = "-password -__v";
-    const credentials = await model
-      .find(role ? { role } : {})
-      .lean()
-      .select(exception);
+    const credentials = await model.find({ ...query }).lean();
     if (!credentials) handleError("Something went wrong, Please Try again");
 
     handleSuccess(res, credentials);

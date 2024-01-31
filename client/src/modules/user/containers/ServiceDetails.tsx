@@ -2,29 +2,22 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams } from "react-router-dom";
 import LoadingScreen from "@/containers/LoadingScreen";
-import {
-  MessageModel,
-  ServiceModel,
-  ServiceScheduleModel,
-} from "@/interface/model";
+import { ServiceModel, ServiceScheduleModel } from "@/interface/model";
 import fileApi from "@/service/api/file.api";
 import Button from "@/components/Button";
 import Form from "@/components/Form";
 import Field from "@/components/Field";
-import Textarea from "@/components/Textarea";
 import queryUtils from "@/utils/query.utils";
 import { useSelector } from "react-redux";
 import { RootReducer } from "@/service/store";
 import serviceBookApi from "@/modules/public/api/serviceBook.api";
 import { serviceValidation } from "../validation/service.validation";
 import serviceApi from "../api/service.api";
-import messageApi from "../api/message.api";
 
 interface Service {
-  schedule: string;
   completionDate: string;
   budget: number;
-  message: string;
+  location: string;
 }
 
 const ServiceDetails = () => {
@@ -63,13 +56,6 @@ const ServiceDetails = () => {
     toast: "Service booked successfully",
   });
 
-  const messageMutation = queryUtils?.mutation({
-    mutationFn: async (payload: MessageModel) =>
-      await messageApi.create(payload),
-    invalidateKey: ["message"],
-    toast: "Message sent successfully",
-  });
-
   if (serviceQuery.isLoading || imagesQuery.isLoading) return <LoadingScreen />;
 
   if (serviceQuery.isError) {
@@ -84,17 +70,12 @@ const ServiceDetails = () => {
   const handleSubmit = (payload: Service) => {
     mutation.mutate({
       serviceId: result?._id,
-      schedule: payload.schedule,
+      schedule: payload.completionDate,
       completionDate: payload.completionDate,
       customer: UID || "",
+      location: payload?.location,
       budget: payload.budget,
       status: "pending",
-    });
-
-    messageMutation.mutate({
-      content: payload?.message,
-      sender: UID || "",
-      target: UID || "",
     });
   };
 
@@ -237,12 +218,6 @@ const ServiceDetails = () => {
                 <div className="my-4">
                   <Field
                     type="date"
-                    title="Prefered Schedule"
-                    name="schedule"
-                    placeholder="Enter Schedule"
-                  />
-                  <Field
-                    type="date"
                     title="Completion Schedule"
                     name="completionDate"
                     placeholder="Enter Schedule"
@@ -253,16 +228,8 @@ const ServiceDetails = () => {
                   <Field
                     type="string"
                     title="Location"
-                    name="address"
+                    name="location"
                     placeholder="Enter Location"
-                  />
-                </div>
-
-                <div>
-                  <Textarea
-                    title="Message"
-                    name="message"
-                    placeholder="Enter your message here"
                   />
                 </div>
 
