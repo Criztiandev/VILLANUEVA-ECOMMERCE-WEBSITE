@@ -24,7 +24,6 @@ interface Message {
 
 const MessagePanel = (props: Props) => {
   const { UID } = useSelector((state: RootReducer) => state.auth);
-
   const convoQuery = useQuery({
     queryFn: async () => messageApi.fetchById(props?.chatID || ""),
     queryKey: [`convo-${props?.chatID}`],
@@ -51,10 +50,9 @@ const MessagePanel = (props: Props) => {
 
   const handleSubmit = (payload: Message) => {
     mutation.mutate({
+      title: convoQuery?.data?.payload?.title,
       sender: UID || "",
-      target: convoQuery?.data?.payload.participants.filter(
-        (item: any) => item !== UID
-      )[0],
+      target: "",
       content: payload?.content,
     });
   };

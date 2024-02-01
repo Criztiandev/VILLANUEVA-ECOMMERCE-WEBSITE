@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
 import LoadingScreen from "@/containers/LoadingScreen";
 import { useMessageContext } from "../context/MessageContext";
+import userApi from "../api/user.api";
 
 interface Message {
   content: string;
@@ -22,16 +23,24 @@ const MessageBox = () => {
   const { state, toggleMessage } = useMessageContext();
   const { UID } = useSelector((state: RootReducer) => state.auth);
 
-  const messageQuery = useQuery({
-    queryFn: async () => messageApi.fetchById(UID || ""),
-    queryKey: ["message"],
-    enabled: !!UID,
+  const userDetailQuery = useQuery({
+    queryFn: async () => userApi.fetchById(UID || ""),
+    queryKey: ["user"],
   });
 
   const messageMutation = queryUtils.mutation({
     mutationFn: async (payload: MessageModel) =>
       await messageApi.create(payload),
     invalidateKey: ["message"],
+  });
+
+  const messageQuery = useQuery({
+    queryFn: async () =>
+      messageApi.fetchAll({
+        title: userDetailQuery?.data?.payload?.fullName,
+      }),
+    queryKey: ["message"],
+    enabled: !!UID,
   });
 
   useEffect(() => {
@@ -55,6 +64,7 @@ const MessageBox = () => {
     }
 
     messageMutation.mutate({
+      title: userDetailQuery?.data?.payload?.fullName,
       sender: UID!,
       content: payload.content,
       target: UID!,
@@ -77,21 +87,22 @@ const MessageBox = () => {
             </div>
 
             <div className="h-full flex flex-col  overflow-scroll p-4">
-              {payload?.messages.map((message: MessageModel) => {
-                if (message?.sender === UID) {
+              {payload &&
+                payload[0]?.messages?.map((message: MessageModel) => {
+                  if (message?.sender === UID) {
+                    return (
+                      <div className="chat chat-end" key={message?._id}>
+                        <div className="chat-bubble">{message?.content}</div>
+                      </div>
+                    );
+                  }
+
                   return (
-                    <div className="chat chat-end" key={message?._id}>
-                      <div className="chat-bubble">{message.content}</div>
+                    <div className="chat chat-start" key={message?._id}>
+                      <div className="chat-bubble">{message?.content}</div>
                     </div>
                   );
-                }
-
-                return (
-                  <div className="chat chat-start" key={message?._id}>
-                    <div className="chat-bubble">{message.content}</div>
-                  </div>
-                );
-              })}
+                })}
             </div>
 
             <div className="px-2">
