@@ -27,6 +27,14 @@ export default {
       return e;
     }
   },
+  fetchBestProduct: async () => {
+    try {
+      const res = await apiUtils.privateAxios().get(`${base}/best`);
+      return res.data;
+    } catch (e) {
+      return e;
+    }
+  },
 
   updateById: async (UID: string, payload: any) =>
     await apiUtils.privateAxios().put(`${base}/${UID}`, payload),

@@ -58,7 +58,10 @@ export default {
     if (payload.status === "completed" && existance.products.length > 0) {
       const productIds = existance.products.map((item) => item._id);
       const productDetails = productIds.map(async (id) => {
-        const products = await productModel.findById(id).lean().select("stock");
+        const products = await productModel
+          .findById(id)
+          .lean()
+          .select("stock sales");
 
         return products;
       });
@@ -69,9 +72,15 @@ export default {
         return stock;
       });
 
+      const updatedSales = result.map((item, index) => {
+        const sales = item.sales + existance.products[index].quantity;
+        return sales;
+      });
+
       const updatedProductDetails = productIds.map(async (id, index) => {
         const products = await productModel.findByIdAndUpdate(id, {
           stock: updatedStocks[index],
+          sales: updatedSales[index],
         });
 
         return products;

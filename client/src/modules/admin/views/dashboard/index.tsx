@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Sidebar from "../../layout/Sidebar";
 import Topbar from "../../layout/Topbar";
 import Notification from "../../layout/Notification";
@@ -12,6 +13,7 @@ import ProductBlob from "./components/ProductBlob";
 import orderApi from "../../api/order.api";
 import serviceBookApi from "@/modules/public/api/serviceBook.api";
 import OrderBlob from "./components/OrderBlob";
+import Barchart from "@/components/Barchart";
 
 const MainEntryPoint = () => {
   const productQuery = useQuery({
@@ -29,6 +31,11 @@ const MainEntryPoint = () => {
     queryKey: ["service-booked"],
   });
 
+  const statsQuery = useQuery({
+    queryFn: async () => productApi.fetchBestProduct(),
+    queryKey: ["best-product"],
+  });
+
   if (productQuery.isLoading) return <LoadingScreen />;
   const { payload: result } = productQuery?.data as { payload: ProductModel[] };
   const products = productQuery.data?.payload?.slice(0, 5);
@@ -37,9 +44,9 @@ const MainEntryPoint = () => {
 
   return (
     <>
-      <main className="flex  ">
+      <main className="flex   ">
         <Sidebar />
-        <section className=" flex flex-col w-screen overflow-x-hidden">
+        <section className=" flex flex-col w-screen overflow-x-hidden overflow-y-scroll">
           <Topbar />
           <div className="px-[32px]">
             <GridStack columns={3} gap={16} className=" my-4">
@@ -49,7 +56,9 @@ const MainEntryPoint = () => {
             </GridStack>
           </div>
 
-          <div>{/* Bar Chart */}</div>
+          <Container className="bg-white p-4 mx-8 mb-4 rounded-[5px]">
+            <Barchart data={statsQuery?.data} />
+          </Container>
 
           <div className="flex gap-4 px-[32px] h-[60%]">
             <Container className="w-[1200px]  bg-white px-[24px] shadow-md py-4">

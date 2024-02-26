@@ -38,6 +38,7 @@ export interface ProductModel {
   description?: string;
   isPublished: boolean;
   isFeatured: boolean;
+  sales: number;
 }
 
 export interface CartModel {

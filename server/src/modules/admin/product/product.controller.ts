@@ -9,6 +9,7 @@ import { dirname } from "path";
 import model from "../../../models/product.model.ts";
 import categoryModel from "../../../models/productsCategory.model.ts";
 import productModel from "../../../models/product.model.ts";
+import { mode } from "crypto-js";
 
 export default {
   // Create User
@@ -153,6 +154,32 @@ export default {
     if (!credentials) handleError("Something went wrong, Please Try again");
 
     handleSuccess(res, credentials);
+  }),
+
+  getBestProduct: asyncHandler(async (req: Request, res: Response) => {
+    try {
+      // Assuming your model has a 'name' field for the product name
+      const products = await model.find({}).limit(5).lean();
+
+      const dataset = products.map((items) => {
+        return {
+          label: items.name,
+          data: [items.sales],
+          backgroundColor: `rgba(${Math.floor(
+            Math.random() * 256
+          )}, ${Math.floor(Math.random() * 256)}, ${Math.floor(
+            Math.random() * 256
+          )}, 0.5)`,
+        };
+      });
+
+      res.status(200).json({
+        payload: dataset,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   }),
 };
 

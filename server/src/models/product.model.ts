@@ -15,6 +15,7 @@ const productSchema = new Schema<ProductModel>(
     summary: { type: String, required: true },
     isPublished: { type: Boolean, default: false },
     isFeatured: { type: Boolean, default: false },
+    sales: { type: Number, default: 0 },
   },
   { timestamps: true }
 );

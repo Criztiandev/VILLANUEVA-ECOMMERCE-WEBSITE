@@ -17,6 +17,7 @@ const {
   getAll,
   getById,
   getByFilter,
+  getBestProduct,
 } = controller;
 
 router.post(
@@ -28,6 +29,7 @@ router.post("/delete/batch", deleteBatch);
 router.put("/:id", updateById);
 router.delete("/:id", deleteById);
 
+router.get("/best", getBestProduct);
 router.get("/", getAll);
 router.get("/:id", getById);
 router.get("/:filter", getByFilter);

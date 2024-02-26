@@ -23,6 +23,9 @@
   },
   "homepage": "https://github.com/Criztiandev/Boilerplate-MERN-TS-#readme",
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "@types/react-chartjs-2": "^2.5.7",
+    "chart.js": "^4.4.1",
+    "concurrently": "^8.2.2",
+    "react-chartjs-2": "^5.2.0"
   }
 }
