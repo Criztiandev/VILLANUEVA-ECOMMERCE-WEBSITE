@@ -181,6 +181,31 @@ export default {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }),
+
+  getTotalSales: asyncHandler(async (req: Request, res: Response) => {
+    try {
+      // Fetch all products from the model
+      const products = await model.find({}).lean();
+
+      // Calculate total sales based on quantity and price
+      const totalSales = products.reduce((acc, product) => {
+        // Assuming each product has "quantity" and "price" properties
+        const productQuantity = product.stock || 0;
+        const productPrice = product.price || 0;
+        const productSales = productQuantity * productPrice;
+        return acc + productSales;
+      }, 0);
+
+      res.status(200).json({
+        payload: {
+          totalSales: totalSales,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
+  }),
 };
 
 // Utils

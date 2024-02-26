@@ -20,6 +20,10 @@ const MainEntryPoint = () => {
     queryFn: async () => productApi.fetchAll(),
     queryKey: ["products"],
   });
+  const salesQuery = useQuery({
+    queryFn: async () => productApi.fetchTotalSales(),
+    queryKey: ["sales"],
+  });
 
   const orderQuery = useQuery({
     queryFn: async () => orderApi.fetchAll(),
@@ -37,7 +41,7 @@ const MainEntryPoint = () => {
   });
 
   if (productQuery.isLoading) return <LoadingScreen />;
-  const { payload: result } = productQuery?.data as { payload: ProductModel[] };
+  const sales = salesQuery.data?.payload;
   const products = productQuery.data?.payload?.slice(0, 5);
   const orders = orderQuery?.data?.payload;
   const booked = bookedQuery?.data?.payload;
@@ -50,8 +54,8 @@ const MainEntryPoint = () => {
           <Topbar />
           <div className="px-[32px]">
             <GridStack columns={3} gap={16} className=" my-4">
-              <StatsCard title="Total Orders" value={orders?.length || 0} />
-              <StatsCard title="Total Products" value={result?.length || 0} />
+              <StatsCard title="Total Sales" value={sales.totalSales || 0} />
+              <StatsCard title="Total Order" value={orders?.length || 0} />
               <StatsCard title="Schedule" value={booked?.length || 0} />
             </GridStack>
           </div>

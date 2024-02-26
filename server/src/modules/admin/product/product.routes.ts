@@ -18,6 +18,7 @@ const {
   getById,
   getByFilter,
   getBestProduct,
+  getTotalSales,
 } = controller;
 
 router.post(
@@ -30,6 +31,7 @@ router.put("/:id", updateById);
 router.delete("/:id", deleteById);
 
 router.get("/best", getBestProduct);
+router.get("/totalSales", getTotalSales);
 router.get("/", getAll);
 router.get("/:id", getById);
 router.get("/:filter", getByFilter);

@@ -36,6 +36,16 @@ export default {
     }
   },
 
+  fetchTotalSales: async () => {
+    try {
+      const res = await apiUtils.privateAxios().get(`${base}/totalSales`);
+      console.log(res.data);
+      return res.data;
+    } catch (e) {
+      return e;
+    }
+  },
+
   updateById: async (UID: string, payload: any) =>
     await apiUtils.privateAxios().put(`${base}/${UID}`, payload),
 
