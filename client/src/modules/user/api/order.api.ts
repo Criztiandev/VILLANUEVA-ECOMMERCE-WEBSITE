@@ -16,7 +16,9 @@ export default {
         )
         .join("&");
 
-      const res = await apiUtils.privateAxios().get(`/${base}?${queryString}`);
+      const res = await apiUtils
+        .privateAxios()
+        .get(`/${base}/user?${queryString}`);
       return res.data;
     } catch (e) {
       return e;

@@ -19,8 +19,10 @@ const ReturnDetails = () => {
     enabled: !!id,
   });
 
+  console.log(orderQuery.data);
+
   const statusMutation = queryUtils?.mutation({
-    mutationFn: async () => orderApi.returnProducts(id || ""),
+    mutationFn: async () => orderApi?.returnProducts(id || ""),
     invalidateKey: ["orders"],
     toast: "Cancel Order Successfully",
     onSuccess: () => {
@@ -30,7 +32,7 @@ const ReturnDetails = () => {
 
   if (orderQuery?.isLoading) return <LoadingScreen />;
 
-  const payload: OrderModel = orderQuery?.data?.payload;
+  const payload: OrderModel = orderQuery?.data?.payload || [];
   const formattedDate = new Date(
     payload?.createdAt as string
   ).toLocaleDateString("en-US", {
@@ -87,8 +89,12 @@ const ReturnDetails = () => {
               </div>
 
               <div className="h-[370px] mb-4 overflow-y-scroll">
-                {payload?.products.map((items: any) => (
-                  <ProductDetailsItem cover={items?.images[0]} {...items} />
+                {payload?.products?.map((items: any) => (
+                  <ProductDetailsItem
+                    key={items}
+                    cover={items?.images?.[0]}
+                    {...items}
+                  />
                 ))}
               </div>
 

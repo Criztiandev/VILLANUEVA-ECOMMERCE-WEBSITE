@@ -134,7 +134,64 @@ export default {
     try {
       const query = req.query || {};
 
-      const credentials = await model.find({ status: { $ne: "cancel" } });
+      let credentials = await model.find({
+        $or: [
+          { status: "pending" },
+          { status: "transit" },
+          { status: "delivered" },
+        ],
+      });
+
+      const productIds = credentials.map((item) => item.products).flat();
+
+      const productDetails = productIds.map(async ({ _id, ...rest }) => {
+        const products = await productModel
+          .findById(_id)
+          .lean()
+          .select("images name price stock");
+
+        return {
+          ...products,
+          ...rest,
+        };
+      });
+
+      const result = await Promise.all(productDetails);
+
+      const transformedPayload = credentials.map((credential, index) => {
+        const formattedDate = new Date(credential.createdAt).toLocaleDateString(
+          "en-US",
+          {
+            month: "2-digit",
+            day: "2-digit",
+            year: "2-digit",
+          }
+        );
+
+        return {
+          _id: credential._id,
+          refID: credential.refID,
+          fullName: credential.fullName,
+          productName: result[index].name,
+          quantity: result[index]?.quantity,
+          price: result[index].price,
+          purchasedDate: formattedDate,
+          total: credential.total,
+          method: credential.medthod,
+          status: credential.status,
+        };
+      });
+
+      // Send the transformed data as the response
+      handleSuccess(res, transformedPayload);
+    } catch (error) {
+      handleError("Error processing request");
+    }
+  }),
+
+  getAllUser: asyncHandler(async (req: Request, res: Response) => {
+    try {
+      let credentials = await model.find({});
       const productIds = credentials.map((item) => item.products).flat();
 
       const productDetails = productIds.map(async ({ _id, ...rest }) => {

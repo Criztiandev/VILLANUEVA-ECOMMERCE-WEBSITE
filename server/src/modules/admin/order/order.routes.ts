@@ -13,6 +13,7 @@ const {
   getById,
   getAllReturned,
   returnProduct,
+  getAllUser,
 } = controller;
 
 router.post("/create", create);
@@ -21,6 +22,7 @@ router.put("/:id", updateById);
 router.delete("/:id", deleteById);
 router.delete("/return/:id", returnProduct);
 
+router.get("/user", getAllUser);
 router.get("/", getAll);
 router.get("/tite", getAll);
 router.get("/returned", getAllReturned);
