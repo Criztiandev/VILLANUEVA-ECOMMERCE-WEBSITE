@@ -272,7 +272,9 @@ const ServiceScheduleDetails = () => {
               if (items?.sender === UID) {
                 return (
                   <div className="chat chat-end">
-                    <div className="chat-bubble">{items.content}</div>
+                    <div className="chat-bubble bg-blue-400/70 text-black">
+                      {items.content}
+                    </div>
                   </div>
                 );
               } else {

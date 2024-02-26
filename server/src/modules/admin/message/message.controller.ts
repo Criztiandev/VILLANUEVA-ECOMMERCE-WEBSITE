@@ -104,7 +104,6 @@ export default {
   getAll: asyncHandler(async (req: Request, res: Response) => {
     const query = req.query || {};
 
-    console.log(query);
     const credentials = await model.find({ ...query }).lean();
     if (!credentials) handleError("Something went wrong, Please Try again");
 

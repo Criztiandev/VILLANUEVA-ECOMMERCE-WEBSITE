@@ -80,8 +80,10 @@ const MessagePanel = (props: Props) => {
           {convoQuery?.data?.payload?.messages?.map((message: MessageModel) => {
             if (message?.sender === UID) {
               return (
-                <div className="chat chat-end" key={message?._id}>
-                  <div className="chat-bubble">{message.content}</div>
+                <div className="chat chat-end " key={message?._id}>
+                  <div className="chat-bubble  bg-blue-400/70 text-black">
+                    {message.content}
+                  </div>
                 </div>
               );
             }

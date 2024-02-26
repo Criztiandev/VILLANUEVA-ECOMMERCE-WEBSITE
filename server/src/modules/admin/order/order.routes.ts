@@ -11,15 +11,19 @@ const {
   getAll,
   getAllByFilter,
   getById,
+  getAllReturned,
+  returnProduct,
 } = controller;
 
 router.post("/create", create);
 router.post("/delete/batch", deleteBatch);
 router.put("/:id", updateById);
 router.delete("/:id", deleteById);
+router.delete("/return/:id", returnProduct);
 
 router.get("/", getAll);
+router.get("/tite", getAll);
+router.get("/returned", getAllReturned);
 router.get("/:id", getById);
 router.get("/:filter", getAllByFilter);
-
 export default router;

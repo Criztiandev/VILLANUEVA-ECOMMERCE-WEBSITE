@@ -93,6 +93,7 @@ export default {
 
     const credentials = await model.find(filter).lean().select(exception);
     if (!credentials) handleError("Something went wrong, Please Try again");
+    console.log(credentials);
 
     handleSuccess(res, credentials);
   }),

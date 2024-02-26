@@ -28,6 +28,8 @@ const Table = <T,>({ columns, ...props }: TableProps<T>) => {
   const [columnFilters, setColumnsFilter] = useState<ColumnFiltersState>([]);
   const [rowSelection, setRowSelection] = useState({});
 
+  console.log(payload);
+
   const dispatch = useDispatch();
   const selection = useSelector((state: RootReducer) => state.table[props.id]);
 

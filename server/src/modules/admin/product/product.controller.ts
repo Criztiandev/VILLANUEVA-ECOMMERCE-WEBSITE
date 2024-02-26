@@ -136,6 +136,8 @@ export default {
       .select("-password -__v");
     if (!credentials) handleError("Something went wrong, Please Try again");
 
+    console.log("credentials");
+
     handleSuccess(res, credentials);
   }),
 

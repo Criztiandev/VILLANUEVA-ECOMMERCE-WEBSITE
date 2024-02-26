@@ -34,7 +34,6 @@ const Sidebar = () => {
           </details>
         </li>
 
-        <NavLink title="Order List" path="/order" icon={OrderIcon} />
         <li>
           <details>
             <NavTitle title="Customer" icon={CustomerIcon} />
@@ -55,6 +54,9 @@ const Sidebar = () => {
             </ul>
           </details>
         </li>
+
+        <NavLink title="Order List" path="/order" icon={OrderIcon} />
+        <NavLink title="Return List" path="/order/returned" icon={OrderIcon} />
 
         <div className="divider"></div>
         <li>

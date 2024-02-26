@@ -48,8 +48,36 @@ export default {
     const UID = req.params.id;
     const payload = req.body;
 
-    const existance = await model.findById(UID).lean().select("_id");
+    const existance = await model
+      .findById(UID)
+      .lean()
+      .select("_id products stocks");
     if (!existance) handleError("Not Found, Please Try again");
+
+    // update the stocs of each product if the status is completed
+    if (payload.status === "completed" && existance.products.length > 0) {
+      const productIds = existance.products.map((item) => item._id);
+      const productDetails = productIds.map(async (id) => {
+        const products = await productModel.findById(id).lean().select("stock");
+
+        return products;
+      });
+
+      const result = await Promise.all(productDetails);
+      const updatedStocks = result.map((item, index) => {
+        const stock = item.stock - existance.products[index].quantity;
+        return stock;
+      });
+
+      const updatedProductDetails = productIds.map(async (id, index) => {
+        const products = await productModel.findByIdAndUpdate(id, {
+          stock: updatedStocks[index],
+        });
+
+        return products;
+      });
+      await Promise.all(updatedProductDetails);
+    }
 
     const credentials = await model
       .findOneAndUpdate({ _id: UID }, payload, { new: true })
@@ -97,9 +125,7 @@ export default {
     try {
       const query = req.query || {};
 
-      const credentials = await model
-        .find({ status: { $ne: "completed" }, ...query })
-        .lean();
+      const credentials = await model.find({ status: { $ne: "cancel" } });
       const productIds = credentials.map((item) => item.products).flat();
 
       const productDetails = productIds.map(async ({ _id, ...rest }) => {
@@ -153,7 +179,12 @@ export default {
     const filter = req.params.filter || {};
     const exception = "-password -__v";
 
-    const credentials = await model.find(filter).lean().select(exception);
+    // fetch all except cancelled
+
+    const credentials = await model
+      .find({ status: { $ne: "canceled" } })
+      .lean()
+      .select(exception);
     if (!credentials) handleError("Something went wrong, Please Try again");
 
     handleSuccess(res, credentials);
@@ -207,5 +238,68 @@ export default {
     credentials.address = addressPayload as any;
 
     handleSuccess(res, credentials);
+  }),
+
+  getAllReturned: asyncHandler(async (req: Request, res: Response) => {
+    try {
+      console.log("hi");
+
+      const query = req.query || {};
+
+      const credentials = await model.find({ status: "cancel" }).lean();
+      const productIds = credentials.map((item) => item.products).flat();
+
+      const productDetails = productIds.map(async ({ _id, ...rest }) => {
+        const products = await productModel
+          .findById(_id)
+          .lean()
+          .select("images name price stock");
+
+        return {
+          ...products,
+          ...rest,
+        };
+      });
+
+      const result = await Promise.all(productDetails);
+
+      const transformedPayload = credentials.map((credential, index) => {
+        const formattedDate = new Date(credential.createdAt).toLocaleDateString(
+          "en-US",
+          {
+            month: "2-digit",
+            day: "2-digit",
+            year: "2-digit",
+          }
+        );
+
+        return {
+          _id: credential._id,
+          refID: credential.refID,
+          fullName: credential.fullName,
+          productName: result[index].name,
+          quantity: result[index]?.quantity,
+          price: result[index].price,
+          purchasedDate: formattedDate,
+          total: credential.total,
+          method: credential.medthod,
+          status: credential.status,
+        };
+      });
+
+      // Send the transformed data as the response
+      handleSuccess(res, transformedPayload);
+    } catch (error) {
+      handleError("Error processing request");
+    }
+  }),
+
+  returnProduct: asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const details = await model.findByIdAndDelete(id).lean();
+    if (!details) handleError("Not Found, Please Try again");
+
+    handleSuccess(res, details);
   }),
 };

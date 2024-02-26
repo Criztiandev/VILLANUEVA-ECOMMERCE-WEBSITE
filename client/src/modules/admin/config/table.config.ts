@@ -118,6 +118,24 @@ const orderTable: TableStructProps<OrderPayload> = {
     ],
   }),
 };
+const returnTable: TableStructProps<OrderPayload> = {
+  base: "return",
+  name: "return-table",
+  columns: tableUtils.columnGenerator<OrderPayload>({
+    deleteFn: orderApi.deleteById,
+    invalidateKey: ["return"],
+    options: [
+      { name: "refID", header: "Reference ID", isFirst: true },
+      { name: "quantity", header: "Quantity" },
+      { name: "price", header: "Price" },
+      { name: "purchasedDate", header: "Purchased Date" },
+      { name: "total", header: "Ammount" },
+      { name: "status", header: "Status", isBadge: true },
+      { name: "fullName", header: "Customer" },
+      { name: "_id", header: "Action", isLast: true, isEdit: false },
+    ],
+  }),
+};
 const ProductArchiveTable: TableStructProps<OrderPayload> = {
   base: "archive-product",
   name: "archive-product-table",
@@ -258,6 +276,7 @@ export default {
   orderTable,
   recentTable,
   messageTable,
+  returnTable,
   userTable,
   serviceTable,
   serviceSchedule,

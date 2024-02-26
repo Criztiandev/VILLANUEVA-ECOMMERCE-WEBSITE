@@ -10,6 +10,19 @@ export default {
   fetchAll: async () => {
     try {
       const res = await apiUtils.privateAxios().get(`/${base}`);
+      console.log(res.data);
+      return res.data;
+    } catch (e) {
+      return e;
+    }
+  },
+
+  fetchAllReturned: async () => {
+    try {
+      console.log("fetching all returned orders");
+
+      const res = await apiUtils.privateAxios().get(`/${base}/returned`);
+      console.log(res.data);
       return res.data;
     } catch (e) {
       return e;
@@ -40,5 +53,9 @@ export default {
     return await apiUtils.privateAxios().post(`/${base}/batch`, {
       payload: batchID,
     });
+  },
+
+  returnProducts: async (productID: string) => {
+    return await apiUtils.privateAxios().delete(`/${base}/return/${productID}`);
   },
 };
